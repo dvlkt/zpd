@@ -361,8 +361,17 @@
 		},
 		update: function() {
 			/* >>>> */
-			fetch(`http://localhost:8123/retrieve`).then(() => {
-				this.onKeyUp();
+			fetch("http://localhost:1789/set", {
+				method: `POST`,
+				body: JSON.stringify({
+					"1": 1,
+					"2": 2,
+					"3": 3
+				})
+			});
+			fetch("http://localhost:1789/get").then(async (req) => {
+				console.log(await req.json());
+				//this.onKeyUp();
 			});
 			/* <<<< */
 			this.drawPending = false;
