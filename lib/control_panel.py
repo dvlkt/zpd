@@ -1,4 +1,5 @@
 import pygame, pygame.gfxdraw
+import os
 import data, algorithm
 
 WINDOW_WIDTH = 700
@@ -13,9 +14,9 @@ fonts = {}
 texts = {}
 def _render_text(value, pos, size, color=(0, 0, 0), serif=False):
 	if serif:
-		font_path = "resources/dm-serif-text-regular.ttf"
+		font_path = os.path.join(data.directory, "resources/dm-serif-text-regular.ttf")
 	else:
-		font_path = "resources/inter-regular.ttf"
+		font_path = os.path.join(data.directory, "resources/inter-regular.ttf")
 
 	if fonts.get(size) == None:
 		fonts[size] = pygame.font.Font(font_path, size)

@@ -1,3 +1,5 @@
+import os
+
 game_title = None
 def set_game_title(value):
     global game_title
@@ -22,3 +24,5 @@ game_action_count = None
 def set_game_action_count(value):
     global game_action_count
     game_action_count = value
+
+directory = os.path.join(os.path.dirname(os.path.realpath(__file__)))

@@ -1,4 +1,5 @@
 import os
+import data
 
 current_name = ""
 current = None
@@ -16,6 +17,6 @@ def set_initialized():
     is_initialized = True
 
 available = []
-for a in os.listdir("algorithms"):
+for a in os.listdir(os.path.join(data.directory, "algorithms")):
     if a[-3:] == ".py" and a != "__init__.py":
         available.append(a[:-3])
