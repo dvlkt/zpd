@@ -1,8 +1,8 @@
 import pygame, pygame.gfxdraw
 import data, algorithm
 
-WINDOW_WIDTH = 0 # TODO
-WINDOW_HEIGHT = 0 # TODO
+WINDOW_WIDTH = 700
+WINDOW_HEIGHT = 500
 VIEW_COLORS = [(30, 27, 20), (237, 49, 49), (49, 71, 237), (80, 242, 21), (242, 55, 236), (242, 123, 19), (237, 106, 198)]
 
 pygame.init()
@@ -39,12 +39,12 @@ def _render_button(label, pos, on_click):
 window = None
 def init():
 	global window
-	window = pygame.display.set_mode((700, 500))
+	window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 	pygame.display.set_caption("Kontroles panelis")
 
 
 is_algorithm_selection_open = False
-algorithm_selection = pygame.Surface((700, 500))
+algorithm_selection = pygame.Surface((WINDOW_WIDTH, WINDOW_HEIGHT))
 def process():
 	global is_algorithm_selection_open, algorithm_selection
 
@@ -80,7 +80,7 @@ def process():
 	_render_text(f"Rezultāts: {data.game_score}", (10, 235), 12)
 
 	# Copyright notice
-	_render_text("© 2023, Dāvis Lektauers un Kazimirs Kārlis Brakovskis", (5, 480), 12)
+	_render_text("© 2023, Dāvis Lektauers un Kazimirs Kārlis Brakovskis", (5, WINDOW_HEIGHT - 20), 12)
 
 	# Algorithm selection
 	def select_algorithm(i):
@@ -88,7 +88,7 @@ def process():
 		algorithm.set_algorithm(algorithm.available[i])
 		is_algorithm_selection_open = False
 	if is_algorithm_selection_open:
-		pygame.draw.rect(window, (30, 27, 20), (0, 0, 700, 500))
+		pygame.draw.rect(window, (30, 27, 20), (0, 0, WINDOW_WIDTH, WINDOW_HEIGHT))
 		for i in range(len(algorithm.available)):
 			_render_button(algorithm.available[i], (250, 10 + i * 35), lambda: select_algorithm(i))
 	
