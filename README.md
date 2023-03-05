@@ -11,10 +11,7 @@
 
 ## Algoritms (```/lib/```)
 
-Lai jebkura no šajā projektā pieejamajām spēlēm strādātu, fonā ir jābūt palaistam mašīnmācīšanās skriptam. Lai to paveiktu,
-atveriet ```/lib/main.py```, izmantojot Python 3 interpretētāju.
-
-Ja nevēlaties atvērt kontroles paneli, izmantojiet "--nogui" karogu.
+Lai jebkura no šajā projektā pieejamajām spēlēm strādātu, fonā ir jābūt palaistam mašīnmācīšanās skriptam. Lai to paveiktu, atveriet ```/lib/main.py```, izmantojot Python 3 interpretētāju. Ja nevēlaties atvērt kontroles paneli, izmantojiet "--nogui" flagu.
 
 Pieejamie algoritmi ir:
 

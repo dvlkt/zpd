@@ -52,8 +52,8 @@ class Server(BaseHTTPRequestHandler):
 
 		action = algorithm.current.update({ # This is where the magic happens
 			"action_count": data.game_action_count,
-			"view": data.game_view,
 			"view_dimensions": data.game_view_dimensions,
+			"view": data.game_view,
 			"score": data.game_score,
 			"lost": has_lost
 		})

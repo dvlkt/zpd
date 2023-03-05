@@ -30,6 +30,8 @@ def run_server_thread():
 def run_panel_thread():
 	print("🎛️  Kontroles panelis veiksmīgi atvērts!")
 
+	control_panel.init()
+
 	try:
 		while True:
 			control_panel.process()

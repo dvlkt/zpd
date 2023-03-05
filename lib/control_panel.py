@@ -7,9 +7,6 @@ VIEW_COLORS = [(30, 27, 20), (237, 49, 49), (49, 71, 237), (80, 242, 21), (242, 
 
 pygame.init()
 
-window = pygame.display.set_mode((700, 500))
-pygame.display.set_caption("Kontroles panelis")
-
 
 # Utility function to handle text rendering easily
 fonts = {}
@@ -37,6 +34,13 @@ def _render_button(label, pos, on_click):
 		mpos = pygame.mouse.get_pos()
 		if mpos[0] > pos[0] and mpos[1] > pos[1] and mpos[0] < pos[0] + 200 and mpos[1] < pos[1] + 25:
 			on_click()
+
+
+window = None
+def init():
+	global window
+	window = pygame.display.set_mode((700, 500))
+	pygame.display.set_caption("Kontroles panelis")
 
 
 is_algorithm_selection_open = False
