@@ -7,8 +7,6 @@
 
 **Darba vadītāja:** Agnese Kramēna-Juzova
 
-
-
 ***
 
 ## Algoritms (```/lib/```)
@@ -16,8 +14,22 @@
 Lai jebkura no šajā projektā pieejamajām spēlēm strādātu, fonā ir jābūt palaistam mašīnmācīšanās skriptam. Lai to paveiktu,
 atveriet ```/lib/main.py```, izmantojot Python 3 interpretētāju.
 
+Ja nevēlaties atvērt kontroles paneli, izmantojiet "--nogui" karogu.
 
+Pieejamie algoritmi ir:
 
-## Google Chrome dino game (```/dino-game/```)
+- ```random``` - veic darbības pēc nejaušības principa. Domāts tikai testēšanai; tas neko nemācās.
 
-Lai to spēlētu, atveriet ```/dino-game/index.html``` interneta pārlūkprogrammā.
+## *Google Chrome* dinozaura spēle (```/chrome-dino/```)
+
+Lai to spēlētu, atveriet ```/chrome-dino/index.html``` interneta pārlūkprogrammā.
+
+## Citas plānotas spēles
+
+- Idk
+
+***
+
+Vairāk koda paskaidrojumiem un pamācībām skatīt ```TECHNICAL.md```.
+
+© 2022-2023, Dāvis Lektauers un Kazimirs Kārlis Brakovskis

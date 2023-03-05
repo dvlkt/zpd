@@ -360,20 +360,6 @@
 			this.canvasCtx.clearRect(0, 0, this.dimensions.WIDTH, this.dimensions.HEIGHT)
 		},
 		update: function() {
-			/* >>>> */
-			fetch("http://localhost:1789/set", {
-				method: `POST`,
-				body: JSON.stringify({
-					"1": 1,
-					"2": 2,
-					"3": 3
-				})
-			});
-			fetch("http://localhost:1789/get").then(async (req) => {
-				console.log(await req.json());
-				//this.onKeyUp();
-			});
-			/* <<<< */
 			this.drawPending = false;
 			var now = getTimeStamp();
 			var deltaTime = now - (this.time || now);
@@ -537,9 +523,6 @@
 			return !!this.raqId
 		},
 		gameOver: function() {
-			/* >>>> */
-			fetch(`http://localhost:8123/set/lost`).then(() => {});
-			/* <<<< */
 			this.playSound(this.soundFx.HIT);
 			vibrate(200);
 			this.stop();
@@ -1494,4 +1477,115 @@
 		}
 	}
 })();
-new Runner('#runner');
+/* >>>> */
+let runnerInstance = new Runner('#runner');
+/* >>>> */
+
+/* >>>> */
+const VIEW_WIDTH = 20
+const VIEW_HEIGHT = 10
+let isConnectedToServer = false;
+let statusElement = document.querySelector("#status");
+let isInitRequestSent = false;
+
+const simulateKeyPress = (isJump, isKeyDown) => {
+	let event = new Event(isKeyDown ? "keydown" : "keyup");
+	event.keyCode = isJump ? 32 : 40;
+	event.which = event.keyCode;
+	event.altKey = false;
+	event.ctrlKey = true;
+	event.shiftKey = false;
+	event.metaKey = false;
+	document.dispatchEvent(event);
+}
+
+setInterval(() => {
+	let request = {
+		score: runnerInstance.distanceRan ? Math.round(runnerInstance.distanceRan * 0.025) : 0, // Apparently this is how the score is calculated
+		view: [],
+		lost: runnerInstance.crashed
+	};
+
+	// Send the dimensions and title for the first request
+	if (!isInitRequestSent) {
+		request.title = "Google Chrome Dino"
+		request.viewDimensions = [VIEW_WIDTH, VIEW_HEIGHT];
+		request.actionCount = 2;
+		isInitRequestSent = true;
+	}
+
+	// Construct the view 
+	for (let x = 0; x < VIEW_WIDTH; x++) {
+		let thisCol = [];
+		for (let y = 0; y < VIEW_HEIGHT; y++) {
+			thisCol.push(0);
+		}
+		request.view.push(thisCol);
+	}
+	let runnerObstacles = runnerInstance.horizon.obstacles;
+	for (let i = 0; i < runnerObstacles.length; i++) {
+		let obstacleX1 = Math.floor((runnerObstacles[i].xPos) * (VIEW_WIDTH / runnerInstance.canvas.clientWidth));
+		let obstacleY1 = Math.floor((runnerObstacles[i].yPos) * (VIEW_HEIGHT / runnerInstance.canvas.clientHeight));
+		let obstacleX2 = Math.ceil((runnerObstacles[i].xPos + runnerObstacles[i].typeConfig.width) * (VIEW_WIDTH / runnerInstance.canvas.clientWidth));
+		let obstacleY2 = obstacleY1 + 1
+
+		for (let x = obstacleX1; x <= obstacleX2; x++) {
+			for (let y = obstacleY1; y <= obstacleY2; y++) {
+				request.view[x][y] = 2;
+			}
+		}
+	}
+	let dinoX = Math.floor(runnerInstance.tRex.xPos * (VIEW_WIDTH / runnerInstance.canvas.clientWidth))
+	let dinoY = Math.floor(runnerInstance.tRex.yPos * (VIEW_HEIGHT / runnerInstance.canvas.clientHeight))
+	for (let x = dinoX; x <= dinoX + 1; x++) {
+		for (let y = dinoY; y <= dinoY + 2; y++) {
+			request.view[x][y] = 1;
+		}
+	}
+
+	// Make the request
+	fetch("http://localhost:1789", {
+		method: "POST",
+		body: JSON.stringify(request)
+	}).then(async (req) => {
+		// Display the connection status
+		if (!isConnectedToServer) {
+			isConnectedToServer = true;
+
+			statusElement.innerText = "Savienots ar serveri.";
+			statusElement.className = "green";
+
+			isInitRequestSent = false;
+		}
+
+		// Restart the game if necessary
+		if (isConnectedToServer && runnerInstance.crashed) {
+			runnerInstance.restart();
+		}
+
+		// Execute the actions
+		let data = await req.json();
+		if (data.action !== -1) {
+			simulateKeyPress(data.action === 0, true);
+			setTimeout(() => simulateKeyPress(data.action === 0, false), 100);
+		}
+	}).catch((err) => {
+		if (isConnectedToServer) {
+			isConnectedToServer = false;
+
+			statusElement.innerText = "Nav savienojuma ar serveri.";
+			statusElement.className = "red";
+
+			console.error(err);
+		}
+	});
+}, 100);
+window.onbeforeunload = () => {
+	fetch("http://localhost:1789", {
+		method: "POST",
+		body: JSON.stringify({
+			reset: true
+		})
+	});
+}
+/* <<<< */

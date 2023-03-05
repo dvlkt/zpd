@@ -3,22 +3,56 @@
 	<head>
 		<meta charset="UTF-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>Chrome Dino Game</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">	
+
+		<title>Google Chrome dinozaura spēle</title>
+
 		<style>
-			.runner-container {
+			#runner {
 				display: block;
-				width: 670px;
+				width: 600px;
 				margin: auto;
 			}
+
+			* {
+				font-family: "Inter", sans-serif;
+			}
+
+			h1, h3, p {
+				text-align: center;
+				margin-bottom: 0;
+			}
+			h1, h1 i {
+				font-family: "DM Serif Text", serif;
+			}
+			
+			#status {
+				margin-top: 0;
+			}
+			#status.green {
+				color: #166126;
+			}
+			#status.red {
+				color: #941717;
+			}
 		</style>
+
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Text:ital@0;1&family=Inter&display=swap" rel="stylesheet">
 	</head>
+
 	<body>
+		<h1><i>Chrome</i> dinozaura spēle</h1>
+		<h3 id="status">Savienojas...</h3>
+
 		<div id="runner">
 			<div class="runner-container">
-				<canvas class="runner-canvas" style="width: 670px; height: 150px;" width="670" height="150"></canvas>
+				<canvas class="runner-canvas" style="width: 600px; height: 150px;" width="600" height="150"></canvas>
 			</div>
 		</div>
+
+		<p>&copy; 2023, Dāvis Lektauers un Kazimirs Kārlis Brakovskis</p>
 
 		<section id="offline-resources" style="display: none">
 			<img id="offline-resources-1x" src="assets/1.png">
@@ -30,5 +64,6 @@
 			</template>
 		</section>
 	</body>
+
 	<script src="script.js" type="text/javascript"></script>
 </html>
