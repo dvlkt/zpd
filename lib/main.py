@@ -1,8 +1,8 @@
 from http.server import HTTPServer
 import threading, sys
 
-import api_server
-import control_panel
+import api_server, control_panel
+import algorithm
 
 def main():
 	# Start the server and control panel in separate threads
@@ -12,6 +12,11 @@ def main():
 	if not "--nogui" in sys.argv:
 		panel_thread = threading.Thread(target=run_panel_thread)
 		panel_thread.start()
+	
+	# Parse CLI arguments
+	for i in sys.argv:
+		if "--algorithm=" in i:
+			algorithm.set_algorithm(i[12:])
 
 
 def run_server_thread():
