@@ -370,11 +370,15 @@
 					this.tRex.updateJump(deltaTime)
 				}
 				this.runningTime += deltaTime;
-				var hasObstacles = this.runningTime > this.config.CLEAR_TIME;
+				/* >>>> */
+				var hasObstacles = true; //this.runningTime > this.config.CLEAR_TIME;
+				/* >>>> */
 				if (this.tRex.jumpCount == 1 && !this.playingIntro) {
 					this.playIntro()
 				}
-				if (this.playingIntro) {
+				/* >>>> */
+				if (false) {
+				/* >>>> */
 					this.horizon.update(0, this.currentSpeed, hasObstacles)
 				} else {
 					deltaTime = !this.started ? 0 : deltaTime;
@@ -543,7 +547,8 @@
 					score_d = document.getElementById("score-5").innerHTML
 				}
 				if (currentScore > score_d) {
-					var xhr = new XMLHttpRequest();
+					/* >>>> */ // (this is some stuff that is not in the original game but was added by the people running the site I ripped this off from)
+					/* var xhr = new XMLHttpRequest();
 					xhr.open('GET', '/inc/check.php?score=' + currentScore, false);
 					xhr.send();
 					if (xhr.status != 200) {} else {
@@ -560,7 +565,8 @@
 							xhr.send();
 							location.reload()
 						}
-					}
+					} */
+					/* >>>> */
 				}
 			}
 			this.time = getTimeStamp()
@@ -667,7 +673,9 @@
 	}
 
 	function getTimeStamp() {
-		return new Date().getTime();
+		/* >>>> */
+		return new Date().getTime() * 5;
+		/* >>>> */
 	}
 
 	function GameOverPanel(canvas, textImgPos, restartImgPos, dimensions) {
@@ -1515,7 +1523,7 @@ setInterval(() => {
 	}
 
 	// Construct the view 
-	for (let x = 0; x < VIEW_WIDTH; x++) {
+	for (let x = 0; x < VIEW_WIDTH; x++) {3
 		let thisCol = [];
 		for (let y = 0; y < VIEW_HEIGHT; y++) {
 			thisCol.push(0);
@@ -1531,6 +1539,10 @@ setInterval(() => {
 
 		for (let x = obstacleX1; x <= obstacleX2; x++) {
 			for (let y = obstacleY1; y <= obstacleY2; y++) {
+				if (request.view[x] === undefined || request.view[x][y] === undefined) {
+					continue;
+				}
+
 				request.view[x][y] = 2;
 			}
 		}
@@ -1579,7 +1591,7 @@ setInterval(() => {
 			console.error(err);
 		}
 	});
-}, 100);
+}, 10);
 window.onbeforeunload = () => {
 	fetch("http://localhost:1789", {
 		method: "POST",
