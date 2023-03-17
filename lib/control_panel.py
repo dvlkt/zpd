@@ -1,5 +1,6 @@
-import pygame, pygame.gfxdraw
 import os
+os.environ["PYGAME_HIDE_SUPPORT_PROMPT"] = "hide" # Hide the pygame welcome message
+import pygame, pygame.gfxdraw
 import data, algorithm
 
 WINDOW_WIDTH = 700
