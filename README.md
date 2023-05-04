@@ -1,11 +1,11 @@
 <div align="center">
-    <h1>Automatizēta spēļu spēlēšana, izmantojot mašīnmācīšanās algoritmus</h1>
-    <h3>Skolēnu zinātniski pētnieciskais darbs</h3>
+    <h1>Hiperparametru ietekme uz Q mācīšanos videospēļu vidē</h1>
+    <h3>Zinātniskās pētniecības darbs informātikas/programmēšanas sekcijā</h3>
 </div>
 
-**Autori:** Dāvis Lektauers, Kazimirs Kārlis Brakovskis
+**Darba autori:** Dāvis Lektauers, Kazimirs Kārlis Brakovskis
 
-**Darba vadītāja:** Agnese Kramēna-Juzova
+**Darba vadītāja:** Mg.sr.soc. Agnese Kramēna-Juzova
 
 ***
 
@@ -16,6 +16,8 @@ Lai jebkura no šajā projektā pieejamajām spēlēm strādātu, fonā ir jāb�
 Pieejamie algoritmi ir:
 
 - ```random``` - veic darbības pēc nejaušības principa. Domāts tikai testēšanai; tas neko nemācās.
+
+- ```q-learning``` - Q mācīšanās algoritms.
 
 ## *Google Chrome* dinozaura spēle (```/chrome-dino/```)
 
