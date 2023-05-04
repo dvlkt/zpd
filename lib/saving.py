@@ -8,11 +8,11 @@ def save(file_path):
         os.makedirs(os.path.join(data.directory, "saves"))
     
     file = open(os.path.join(data.directory, "saves", file_path), "w")
-    file.write(str(algorithm.get_save_data()))
+    file.write(json.dumps(algorithm.get_save_data()))
     file.close()
 
 def load(file_path):
     global load_data
     file = open(os.path.join(data.directory, "saves", file_path), "r")
-    load_data = json.load(file.read())
+    load_data = json.loads(str(file.read()))
     algorithm.set_algorithm(algorithm.current_name)
