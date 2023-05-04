@@ -1,7 +1,6 @@
-import json, random, runpy
+import json, random
 from http.server import BaseHTTPRequestHandler, HTTPServer
-import data
-import algorithm
+import data, algorithm, saving
 
 PORT = 1789
 
@@ -35,7 +34,7 @@ class Server(BaseHTTPRequestHandler):
                 algorithm.current.init({
                     "action_count": data.game_action_count,
                     "view_dimensions": data.game_view_dimensions
-                }, "")
+                }, saving.load_data)
                 algorithm.set_initialized()
 
             if body.get("view") != None:

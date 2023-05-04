@@ -1,7 +1,7 @@
 import os
 os.environ["PYGAME_HIDE_SUPPORT_PROMPT"] = "hide" # Hide the pygame welcome message
 import pygame, pygame.gfxdraw
-import data, algorithm
+import data, algorithm, saving
 
 WINDOW_WIDTH = 700
 WINDOW_HEIGHT = 500
@@ -146,11 +146,13 @@ def process():
     def save_file():
         global is_save_menu_open
         is_save_menu_open = False
+        saving.save(_get_input_value("file_name"))
         _set_input_value("file_name", "")
     
     def load_file():
         global is_load_menu_open
         is_load_menu_open = False
+        saving.load(_get_input_value("file_name"))
         _set_input_value("file_name", "")
     
     def cancel_file():

@@ -25,3 +25,9 @@ def set_algorithm(value):
     current = __import__(f"algorithms.{current_name}", fromlist=["init", "update", "save"])
     is_initialized = False
 set_algorithm("random")
+
+def get_save_data():
+    if current != None:
+        return current.save()
+    else:
+        return None

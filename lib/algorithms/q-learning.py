@@ -7,7 +7,8 @@ Q_table={}
 PQtable=None
 def init(data,load):
     global Q_table,acount
-    Q_table={}
+    if load!=None:
+        Q_table=load
     acount=data["action_count"]
 def update(data):
     global Q_table,PQtable,Paction
