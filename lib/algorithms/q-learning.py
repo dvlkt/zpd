@@ -33,4 +33,4 @@ def update(data):
         Q_table[str(data["view"])]=[0 for i in range(data["action_count"]+1)]
     return 0
 def save():
-    pass
+    return Q_table

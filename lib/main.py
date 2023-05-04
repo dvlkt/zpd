@@ -6,8 +6,8 @@ import algorithm
 
 def main():
     # Start the server and control panel in separate threads
-    server_thread = threading.Thread(target=run_server_thread)
-    server_thread.start()
+    #server_thread = threading.Thread(target=run_server_thread)
+    #server_thread.start()
 
     if not "--nogui" in sys.argv:
         panel_thread = threading.Thread(target=run_panel_thread)
