@@ -41,7 +41,7 @@ class Server(BaseHTTPRequestHandler):
                 data.set_game_view(body["view"])
             if body.get("score") != None:
                 data.set_game_score(body["score"])
-            if body.get("lost") != None:
+            if body.get("lost") != None and body["lost"]:
                 has_lost = True
 
         ## Return data ##
