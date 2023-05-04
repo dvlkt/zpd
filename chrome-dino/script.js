@@ -1045,7 +1045,9 @@
 				this.canvasCtx.drawImage(Runner.imageSprite, sourceX, sourceY, sourceWidth, sourceHeight, this.xPos, this.yPos, this.config.WIDTH_DUCK, this.config.HEIGHT)
 			} else {
 				if (this.ducking && this.status == Trex.status.CRASHED) {
-					this.xPos++
+					/* >>>> */
+					//this.xPos++ // This made the dino move forward all the time
+					/* >>>> */
 				}
 				this.canvasCtx.drawImage(Runner.imageSprite, sourceX, sourceY, sourceWidth, sourceHeight, this.xPos, this.yPos, this.config.WIDTH, this.config.HEIGHT)
 			}
