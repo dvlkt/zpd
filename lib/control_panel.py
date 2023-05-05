@@ -5,7 +5,6 @@ import data, algorithm, saving
 
 WINDOW_WIDTH = 700
 WINDOW_HEIGHT = 500
-VIEW_COLORS = [(30, 27, 20), (237, 49, 49), (49, 71, 237), (80, 242, 21), (242, 55, 236), (242, 123, 19), (237, 106, 198)]
 
 pygame.init()
 
@@ -79,8 +78,9 @@ is_algorithm_selection_open = False
 algorithm_selection = pygame.Surface((WINDOW_WIDTH, WINDOW_HEIGHT))
 is_save_menu_open = False
 is_load_menu_open = False
+max_state_parameter_val = 0
 def process():
-    global _pressed_keys, is_algorithm_selection_open, algorithm_selection, is_save_menu_open, is_load_menu_open
+    global _pressed_keys, is_algorithm_selection_open, algorithm_selection, is_save_menu_open, is_load_menu_open, max_state_parameter_val
 
     _pressed_keys = []
     for event in pygame.event.get():
@@ -110,23 +110,44 @@ def process():
 
     # State
     _render_text("Stāvoklis:", (10, 110), 18)
-    if data.game_state_size != None and data.game_state != None:
+    if data.game_state_size != None and data.game_state != None: 
+        for i in range(data.game_state_size):
+            if data.game_state[i] > max_state_parameter_val:
+                max_state_parameter_val = data.game_state[i]
+
         state_pixel_width = 100 / data.game_state_size
-        for i in range(len(data.game_state)):
-            pass
-            #pygame.draw.rect(window, VIEW_COLORS[data.game_view[x]], (10 + x * view_pixel_size, 135 + y * view_pixel_size, view_pixel_size, view_pixel_size))
-    _render_text(f"Rezultāts: {data.game_score}", (10, 235), 12)
+        for i in range(data.game_state_size):
+            brightness = max(min(abs(data.game_state[i] / max_state_parameter_val) * 255, 255), 0)
+            pygame.draw.rect(window, (brightness, brightness, brightness), (10 + i * state_pixel_width, 135, state_pixel_width, 25))
+    _render_text(f"Spēles rezultāts: {data.game_score}", (10, 160), 12)
+    _render_text(f"Epizode: {len(saving.statistics)}", (10, 175), 12)
+
+    # Statistics
+    _render_text("Sasniegtais spēles rezultāts:", (10, 200), 18)
+    if len(saving.statistics) > 0 and saving.statistics != None:
+        graph_w = 500
+        graph_h = 100
+
+        max_graph_val = 0
+        for i in range(len(saving.statistics)):
+            if int(saving.statistics[i]) > max_graph_val:
+                max_graph_val = int(saving.statistics[i])
+
+        for i in range(len(saving.statistics)):
+            col_w = round(graph_w / len(saving.statistics))
+            col_h = min(round(int(saving.statistics[i]) / max_graph_val * graph_h), graph_h)
+            pygame.draw.rect(window, (30, 27, 20), (10 + i * col_w, 225 + graph_h - col_h, col_w, col_h))
 
     # Saving and loading buttons
     def open_save_menu():
         global is_save_menu_open
         is_save_menu_open = True
-    _render_button(f"Saglabāt stāvokli", (10, 265), open_save_menu)
+    _render_button(f"Saglabāt stāvokli", (10, 350), open_save_menu)
 
     def open_load_menu():
         global is_load_menu_open
         is_load_menu_open = True
-    _render_button(f"Ielādēt stāvokli", (220, 265), open_load_menu)
+    _render_button(f"Ielādēt stāvokli", (220, 350), open_load_menu)
 
     # Copyright notice
     _render_text("© 2023, Dāvis Lektauers un Kazimirs Kārlis Brakovskis", (5, WINDOW_HEIGHT - 20), 12)
