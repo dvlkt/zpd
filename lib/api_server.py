@@ -55,17 +55,22 @@ class Server(BaseHTTPRequestHandler):
         self.send_header("Access-Control-Allow-Origin", "*")
         self.end_headers()
 
-        action = algorithm.current.update({ # This is where the magic happens
-            "action_count": data.game_action_count,
-            "state_size": data.game_state_size,
-            "state": data.game_state,
-            "score": data.game_score,
-            "lost": has_lost
-        })
+        if data.game_action_count != None and data.game_state_size != None and data.game_state != None and data.game_score != None:
+            action = algorithm.current.update({ # This is where the magic happens
+                "action_count": data.game_action_count,
+                "state_size": data.game_state_size,
+                "state": data.game_state,
+                "score": data.game_score,
+                "lost": has_lost
+            })
 
-        self.wfile.write(bytes(json.dumps({
-            "action": action
-        }), "utf-8"))
+            self.wfile.write(bytes(json.dumps({
+                "action": action
+            }), "utf-8"))
+        else:
+            self.wfile.write(bytes(json.dumps({
+                "action": -1
+            }), "utf-8"))
     
 
     def log_message(self, format, *args):
