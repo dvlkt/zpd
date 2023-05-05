@@ -1,5 +1,5 @@
 import os
-import data
+import data, saving
 
 current_name = ""
 current = None
@@ -24,6 +24,7 @@ def set_algorithm(value):
     current_name = value
     current = __import__(f"algorithms.{current_name}", fromlist=["init", "update", "save"])
     is_initialized = False
+    saving.statistics = None
 set_algorithm("random")
 
 def get_save_data():

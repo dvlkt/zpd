@@ -120,11 +120,16 @@ def process():
             brightness = max(min(abs(data.game_state[i] / max_state_parameter_val) * 255, 255), 0)
             pygame.draw.rect(window, (brightness, brightness, brightness), (10 + i * state_pixel_width, 135, state_pixel_width, 25))
     _render_text(f"Spēles rezultāts: {data.game_score}", (10, 160), 12)
-    _render_text(f"Epizode: {len(saving.statistics)}", (10, 175), 12)
+
+    if saving.statistics == None:
+        episode = 0
+    else:
+        episode = len(saving.statistics)
+    _render_text(f"Epizode: {episode}", (10, 175), 12)
 
     # Statistics
-    _render_text("Sasniegtais spēles rezultāts:", (10, 200), 18)
-    if len(saving.statistics) > 0 and saving.statistics != None:
+    _render_text("Sasniegtie spēles rezultāti:", (10, 200), 18)
+    if saving.statistics != None and len(saving.statistics) > 0:
         graph_w = 500
         graph_h = 100
 
