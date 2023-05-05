@@ -113,8 +113,8 @@ def process():
     if data.game_view_dimensions != None and data.game_view != None:
         view_pixel_size = max(100 / data.game_view_dimensions[0], 100 / data.game_view_dimensions[1])
         for x in range(len(data.game_view)):
-            for y in range(len(data.game_view[x])):
-                pygame.draw.rect(window, VIEW_COLORS[data.game_view[x][y]], (10 + x * view_pixel_size, 135 + y * view_pixel_size, view_pixel_size, view_pixel_size))
+            pass
+            #pygame.draw.rect(window, VIEW_COLORS[data.game_view[x]], (10 + x * view_pixel_size, 135 + y * view_pixel_size, view_pixel_size, view_pixel_size))
     _render_text(f"Rezultāts: {data.game_score}", (10, 235), 12)
 
     # Saving and loading buttons
