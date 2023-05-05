@@ -12,22 +12,22 @@ class Server(BaseHTTPRequestHandler):
 
         ## Parse received data ##
         if body.get("reset") != None:
-            data.set_game_state_size(None)
-            data.set_game_title(None)
-            data.set_game_action_count(None)
-            data.set_game_state(None)
-            data.set_initialized(False)
+            data.game_state_size = None
+            data.game_title = None
+            data.game_action_count = None
+            data.game_state = None
+            algorithm.is_initialized = False
             saving.statistics = None
 
         if body.get("stateSize") != None:
             if data.game_state_size == None:
-                data.set_game_state_size(body["stateSize"])
+                data.game_state_size = body["stateSize"]
         if body.get("title") != None:
             if data.game_title == None:
-                data.set_game_title(body["title"])
+                data.game_title = body["title"]
         if body.get("actionCount") != None:
             if data.game_action_count == None:
-                data.set_game_action_count(body["actionCount"])
+                data.game_action_count = body["actionCount"]
 
         has_lost = False
         if data.game_state_size != None and data.game_title != None and data.game_action_count != None:
@@ -36,12 +36,12 @@ class Server(BaseHTTPRequestHandler):
                     "action_count": data.game_action_count,
                     "state_size": data.game_state_size
                 }, saving.load_data)
-                algorithm.set_initialized()
+                algorithm.is_initialized = True
 
             if body.get("state") != None:
-                data.set_game_state(body["state"])
+                data.game_state = body["state"]
             if body.get("score") != None:
-                data.set_game_score(body["score"])
+                data.game_score = body["score"]
             if body.get("lost") != None and body["lost"]:
                 has_lost = True
         

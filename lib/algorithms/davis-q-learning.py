@@ -46,29 +46,6 @@ def update(data):
 
     return action - 1
 
-    """ if str(data['view']) in q_table:
-        sQtable=q_table[str(data["view"])]
-
-        #handles the previous data table
-        if data['lost']:
-            reward=-1000000
-        else:
-            reward=1
-        if PQtable!=None:
-            PQtable[Paction]=PQtable[Paction]-learning_rate*(PQtable[Paction]-(reward+discount_factor*max(SQtable)))
-        action_r=random()
-        if action_r>epsilon:
-            action=q_table[str(data["view"])].index(max(q_table[str(data["view"])]))
-            return action-1
-        else:
-            action=randint(0,len(q_table[str(data["view"])])-1)
-            return action-1
-        PQtable=sQtable
-        Paction=action
-    else:
-        q_table[str(data["view"])]=[0 for i in range(data["action_count"]+1)]
-    return 0 """
-
 def save():
     return q_table
 

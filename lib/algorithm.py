@@ -5,9 +5,6 @@ current_name = ""
 current = None
 
 is_initialized = False # True if the init() function has been called for the current algorithm
-def set_initialized():
-    global is_initialized
-    is_initialized = True
 
 available = []
 for a in os.listdir(os.path.join(data.directory, "algorithms")):
