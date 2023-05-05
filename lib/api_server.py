@@ -17,7 +17,8 @@ class Server(BaseHTTPRequestHandler):
             data.set_game_action_count(None)
             data.set_game_view(None)
             data.set_initialized(False)
-        
+            saving.statistics = None
+
         if body.get("viewDimensions") != None:
             if data.game_view_dimensions == None:
                 data.set_game_view_dimensions((body["viewDimensions"][0], body["viewDimensions"][1]))
@@ -43,6 +44,11 @@ class Server(BaseHTTPRequestHandler):
                 data.set_game_score(body["score"])
             if body.get("lost") != None and body["lost"]:
                 has_lost = True
+        
+        if saving.statistics == None:
+            saving.statistics = []
+        if has_lost:
+            saving.statistics.append(str(data.game_score))
 
         ## Return data ##
         self.send_response(200)
