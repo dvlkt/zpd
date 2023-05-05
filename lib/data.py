@@ -10,15 +10,15 @@ def set_game_score(value):
     global game_score
     game_score = value
 
-game_view = []
-def set_game_view(value):
-    global game_view
-    game_view = value
+game_state = []
+def set_game_state(value):
+    global game_state
+    game_state = value
 
-game_view_dimensions = None
-def set_game_view_dimensions(value):
-    global game_view_dimensions
-    game_view_dimensions = value
+game_state_size = None
+def set_game_state_size(value):
+    global game_state_size
+    game_state_size = value
 
 game_action_count = None
 def set_game_action_count(value):

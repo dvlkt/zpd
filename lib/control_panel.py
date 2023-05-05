@@ -108,11 +108,11 @@ def process():
         is_algorithm_selection_open = True
     _render_button(f"Mainīt algoritmu", (10, 70), open_algorithm_selection)
 
-    # Simplified view
-    _render_text("Vienkāršots skats:", (10, 110), 18)
-    if data.game_view_dimensions != None and data.game_view != None:
-        view_pixel_size = max(100 / data.game_view_dimensions[0], 100 / data.game_view_dimensions[1])
-        for x in range(len(data.game_view)):
+    # State
+    _render_text("Stāvoklis:", (10, 110), 18)
+    if data.game_state_size != None and data.game_state != None:
+        state_pixel_width = 100 / data.game_state_size
+        for i in range(len(data.game_state)):
             pass
             #pygame.draw.rect(window, VIEW_COLORS[data.game_view[x]], (10 + x * view_pixel_size, 135 + y * view_pixel_size, view_pixel_size, view_pixel_size))
     _render_text(f"Rezultāts: {data.game_score}", (10, 235), 12)

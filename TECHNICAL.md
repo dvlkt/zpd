@@ -9,7 +9,7 @@ Jaunu algoritmu var izveidot, pievienojot ```{algoritma nosaukums}.py``` failu i
 ```
 {
     "action_count": 0, // Skaits darbībām, ko spēlē var izdarīt
-    "view_dimensions": (0, 0) // Spēles skata izmērs
+    "state_size": 0 // Spēles stāvokļa parametru daudzums
 }
 ```
 
@@ -20,14 +20,14 @@ Otrais funkcijas arguments, ```load```, pašlaik neko nedara, bet vēlāk tiks i
 ```
 {
     "action_count": 0, // Skaits darbībām, ko spēlē var izdarīt
-    "view_dimensions": (0, 0) // Spēles skata izmērs
-    "view": [] // 2D masīvs, kas satur skaitļus, kur katrs skaitlis ir savs pikselis spēles skatā
+    "state_size": 0 // Spēles stāvokļa parametru daudzums
+    "state": [] // Masīvs, kas satur spēles stāvokļa parametrus kā skaitļus
     "score": 0 // Pašreizējais rezultāts spēlē
     "lost": False // Vai spēle tikko tika zaudēta? (spēle gan parasti tiek nekavējoties restartēta automātiski)
 }
 ```
 
-```action_count``` un ```view_dimensions``` ir pieejami ne tikai ```init``` funkcijā, bet arī šeit, taču pēc ```init``` funkcijas tie nekad nemainīsies. Tās ir būtībā konstantes. Šajai funkcijai ir jāatgriež skaitlis no -1 līdz ```action_count``` - 1, kas apzīmē darbību, kas jāizpilda spēlē.
+```action_count``` un ```state_size``` ir pieejami ne tikai ```init``` funkcijā, bet arī šeit, taču pēc ```init``` funkcijas tie nekad nemainīsies. Tās ir būtībā konstantes. Šajai funkcijai ir jāatgriež skaitlis no -1 līdz ```action_count``` - 1, kas apzīmē darbību, kas jāizpilda spēlē.
 
 Trešā funkcija, ```save()```, pašlaik neko nedara, taču vēlāk tiks izmantota datu saglabāšanai.
 
@@ -53,11 +53,11 @@ Klients (spēle) un serveris (AI) komunicē caur HTTP POST pieprasījumiem. Serv
 
 ```title: string``` - šī īpašība ir obligāti pirmoreiz jānosūta; pēc tam to vairs nevar nomainīt. Tas ir vienkārši spēles nosaukums.
 
-```viewDimensions: [number, number]``` - šī īpašība ir obligāti pirmoreiz jānosūta. Tas ir izmērs spēles skatam, kas pēc tam tiks sūtīts.
+```stateSize: number``` - šī īpašība ir obligāti pirmoreiz jānosūta. Tas ir daudzums stāvokļu parametriem, kas pēc tam tiks sūtīti
 
 ```actionCount: number``` - šī īpašība ir obligāti pirmoreiz jānosūta. Tas ir skaits darbībām, ko var spēlē izdarīt.
 
-```view: [[number]]``` - 2D skaitļu masīvs, kur katrs skaitlis ir savs pikselis spēles skatā.
+```state: [number]``` - skaitļu masīvs, kur katrs skaitlis ir savs parametrs stāvoklim.
 
 ```score: number``` - rezultāts spēlē.
 
@@ -67,4 +67,4 @@ Klients (spēle) un serveris (AI) komunicē caur HTTP POST pieprasījumiem. Serv
 
 Jebkuru no šīm īpašībām var pieprasījumā izlaist, ja vien aprakstā nav norādīts citādāk. Serveris pēc tam atgriež atpakaļ JSON objektu ar tikai vienu īpašību:
 
-```action: number``` - skaitlis no -1 līdz ```action_count``` - 1, kas apzīmē darbību, kas jāizpilda spēlē.
+```action: number``` - skaitlis no ```-1``` līdz ```actionCount - 1```, kas apzīmē darbību, kas jāizpilda spēlē.

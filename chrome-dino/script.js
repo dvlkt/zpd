@@ -1492,8 +1492,7 @@ let runnerInstance = new Runner('#runner');
 /* >>>> */
 
 /* >>>> */
-const VIEW_WIDTH = 20
-const VIEW_HEIGHT = 1
+const STATE_SIZE = 3
 let isConnectedToServer = false;
 let statusElement = document.querySelector("#status");
 let isInitRequestSent = false;
@@ -1512,58 +1511,27 @@ const simulateKeyPress = (isJump, isKeyDown) => {
 setInterval(() => {
 	let request = {
 		score: runnerInstance.distanceRan ? Math.round(runnerInstance.distanceRan * 0.025) : 0, // Apparently this is how the score is calculated
-		view: [],
+		state: [],
 		lost: runnerInstance.crashed
 	};
 
 	// Send the dimensions and title for the first request
 	if (!isInitRequestSent) {
 		request.title = "Google Chrome Dino"
-		request.viewDimensions = [3, 1];
+		request.stateSize = STATE_SIZE;
 		request.actionCount = 2;
 		isInitRequestSent = true;
 	}
 
-	// Construct the view 
-	/* for (let x = 0; x < VIEW_WIDTH; x++) {3
-		let thisCol = [];
-		for (let y = 0; y < VIEW_HEIGHT; y++) {
-			thisCol.push(0);
-		}
-		request.view.push(thisCol);
-	} */
+	// Construct the state 
 	let runnerObstacles = runnerInstance.horizon.obstacles;
 	for (let i = 0; i < 3; i++) {
 		if (i >= runnerObstacles.length) {
-			request.view.push(1000);
+			request.state.push(1000);
 		} else {
-			request.view.push(Math.round(runnerObstacles[i].xPos / 20));
+			request.state.push(Math.round(runnerObstacles[i].xPos / 20));
 		}
 	}
-
-	/* for (let i = 0; i < runnerObstacles.length; i++) {
-		let obstacleX1 = Math.floor((runnerObstacles[i].xPos) * (VIEW_WIDTH / runnerInstance.canvas.clientWidth));
-		//let obstacleY1 = Math.floor((runnerObstacles[i].yPos) * (VIEW_HEIGHT / runnerInstance.canvas.clientHeight));
-		let obstacleX2 = Math.ceil((runnerObstacles[i].xPos + runnerObstacles[i].typeConfig.width) * (VIEW_WIDTH / runnerInstance.canvas.clientWidth));
-		//let obstacleY2 = obstacleY1 + 1
-
-		for (let x = obstacleX1; x <= obstacleX2; x++) {
-			for (let y = 0; y < VIEW_HEIGHT; y++) {
-				if (request.view[x] === undefined || request.view[x][y] === undefined) {
-					continue;
-				}
-
-				request.view[x][y] = 2;
-			}
-		}
-	}
-	let dinoX = Math.floor(runnerInstance.tRex.xPos * (VIEW_WIDTH / runnerInstance.canvas.clientWidth))
-	//let dinoY = Math.floor(runnerInstance.tRex.yPos * (VIEW_HEIGHT / runnerInstance.canvas.clientHeight))
-	for (let x = dinoX; x <= dinoX + 1; x++) {
-		for (let y = 0; y < VIEW_HEIGHT; y++) {
-			request.view[x][y] = 1;
-		}
-	} */
 
 	// Make the request
 	fetch("http://localhost:1789", {

@@ -12,16 +12,16 @@ class Server(BaseHTTPRequestHandler):
 
         ## Parse received data ##
         if body.get("reset") != None:
-            data.set_game_view_dimensions(None)
+            data.set_game_state_size(None)
             data.set_game_title(None)
             data.set_game_action_count(None)
-            data.set_game_view(None)
+            data.set_game_state(None)
             data.set_initialized(False)
             saving.statistics = None
 
-        if body.get("viewDimensions") != None:
-            if data.game_view_dimensions == None:
-                data.set_game_view_dimensions((body["viewDimensions"][0], body["viewDimensions"][1]))
+        if body.get("stateSize") != None:
+            if data.game_state_size == None:
+                data.set_game_state_size(body["stateSize"])
         if body.get("title") != None:
             if data.game_title == None:
                 data.set_game_title(body["title"])
@@ -30,16 +30,16 @@ class Server(BaseHTTPRequestHandler):
                 data.set_game_action_count(body["actionCount"])
 
         has_lost = False
-        if data.game_view_dimensions != None and data.game_title != None and data.game_action_count != None:
+        if data.game_state_size != None and data.game_title != None and data.game_action_count != None:
             if not algorithm.is_initialized:
                 algorithm.current.init({
                     "action_count": data.game_action_count,
-                    "view_dimensions": data.game_view_dimensions
+                    "state_size": data.game_state_size
                 }, saving.load_data)
                 algorithm.set_initialized()
 
-            if body.get("view") != None:
-                data.set_game_view(body["view"])
+            if body.get("state") != None:
+                data.set_game_state(body["state"])
             if body.get("score") != None:
                 data.set_game_score(body["score"])
             if body.get("lost") != None and body["lost"]:
@@ -57,8 +57,8 @@ class Server(BaseHTTPRequestHandler):
 
         action = algorithm.current.update({ # This is where the magic happens
             "action_count": data.game_action_count,
-            "view_dimensions": data.game_view_dimensions,
-            "view": data.game_view,
+            "state_size": data.game_state_size,
+            "state": data.game_state,
             "score": data.game_score,
             "lost": has_lost
         })
