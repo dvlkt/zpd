@@ -1,10 +1,10 @@
 from random import *
 from math import *
 
-learning_rate = 0.5
-discount_factor = 0.8
-q0 = 1
-epsilon = 0.1
+learning_rate = 0.2
+discount_factor = 0.9
+q0 = 10
+epsilon = 0.05
 
 q_table = {}
 
@@ -28,7 +28,7 @@ def update(data):
     # Update previous state/action Q values
     if last_action != None or last_state != None:
         if data["lost"]:
-            reward = -1000000
+            reward = -10
         else:
             reward = 1
         

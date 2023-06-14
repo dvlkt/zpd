@@ -19,10 +19,10 @@ def save(file_path):
 def load(file_path):
     global load_data
 
+    algorithm.set_algorithm(algorithm.current_name)
+
     data_file = open(os.path.join(data.directory, "saves", file_path), "r")
     load_data = json.loads(str(data_file.read()))
 
     statistics_file = open(os.path.join(data.directory, "saves", f"{file_path}_statistics"), "r")
     statistics = statistics_file.read().split("\n")
-    
-    algorithm.set_algorithm(algorithm.current_name)

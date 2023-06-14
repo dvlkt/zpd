@@ -1492,7 +1492,7 @@ let runnerInstance = new Runner('#runner');
 /* >>>> */
 
 /* >>>> */
-const STATE_SIZE = 3
+const STATE_SIZE = 1
 let isConnectedToServer = false;
 let statusElement = document.querySelector("#status");
 let isInitRequestSent = false;
