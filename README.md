@@ -11,21 +11,27 @@
 
 ## Algoritms (```/lib/```)
 
-Lai jebkura no šajā projektā pieejamajām spēlēm strādātu, fonā ir jābūt palaistam mašīnmācīšanās skriptam. Lai to paveiktu, atveriet ```/lib/main.py```, izmantojot Python 3 interpretētāju. Ja nevēlaties atvērt kontroles paneli, izmantojiet "--nogui" flagu.
+Lai jebkura no šajā projektā pieejamajām spēlēm strādātu, fonā ir jābūt palaistam mašīnmācīšanās skriptam. Lai to paveiktu, atveriet ```/lib/main.py```, izmantojot Python 3 interpretētāju. Visus argumentus var apskatīt ```TECHNICAL.md```.
 
 Pieejamie algoritmi ir:
 
 - ```random``` - veic darbības pēc nejaušības principa. Domāts tikai testēšanai; tas neko nemācās.
 
-- ```q-learning``` - Q mācīšanās algoritms.
+- ```kazimirs-q-learning``` - Kazimira veidots Q mācīšanās algoritms.
+
+- ```davis-q-learning``` - Dāvja veidots Q mācīšanās algoritms.
 
 ## *Google Chrome* dinozaura spēle (```/chrome-dino/```)
 
 Lai to spēlētu, atveriet ```/chrome-dino/index.html``` interneta pārlūkprogrammā.
 
-## Citas plānotas spēles
+## *Minesweeper*
 
-- Idk
+Šī spēle vēl nav iekļauta šajā repozitorijā.
+
+## Trešā spēle
+
+Vēl tiks izlemta.
 
 ***
 

@@ -1,3 +1,17 @@
+# Komandas argumenti
+
+Vadošā programma izmanto Python 3 un ceļš uz galveno skriptu ir ```lib/main.py```.
+
+| Arguments | Īsināts arguments | Apraksts |
+|---|---|---|
+| ```--help``` | ```-h``` | Parādīt *help* informāciju |
+| ```--algorithm``` | ```-a``` | Izmantojamais algoritms (no ```/lib/algorithms``` direktorija). |
+| ```--state-input``` | ```-i``` | Ceļš uz datni, no kura ielādēt algoritma iekšējo stāvokli. Ja netiks norādīts, algoritms sāks mācīties no jauna. |
+| ```--state-output``` | ```-o``` | Ceļš uz datni, kur tiks saglabāts algoritma iekšējais stāvoklis. Ja netiks norādīts, tas netiks saglabāts. |
+| ```--result-output``` | ```-r``` | Ceļš uz datni, kur saglabāt algoritma rezultātus spēlē. Ja netiks norādīts, tie netiks saglabāti. |
+| ```--graph-output``` | ```-g``` | Ceļš uz direktoriju, kur saglabāt Matplotlib grafikus par rezultātiem spēlē. Ja netiks norādīts, grafiki netiks izveidoti. |
+| ```--no-visualization``` | ```-nv``` | Izslēgt vizualizāciju atsevišķā logā |
+
 # Jaunu algoritmu pievienošana
 
 Jaunu algoritmu var izveidot, pievienojot ```{algoritma nosaukums}.py``` failu iekšā ```/lib/algorithms```.
@@ -51,20 +65,18 @@ def save():
 
 Klients (spēle) un serveris (AI) komunicē caur HTTP POST pieprasījumiem. Serveris tiek atvērts portā 1789. Klients patvaļīgi var sūtīt POST pieprasījumus, lai serverim nosūtītu jaunus datus par spēlē esošo situāciju. Šo pieprasījumu saturs ir JSON dati. Šeit ir visas īpašības, kas šajā JSON objektā var būt:
 
-```title: string``` - šī īpašība ir obligāti pirmoreiz jānosūta; pēc tam to vairs nevar nomainīt. Tas ir vienkārši spēles nosaukums.
+| Nosaukums | Mainīgā veids | Apraksts |
+|---|---|---|
+| ```title``` | ```string``` | Šī īpašība ir obligāti pirmoreiz jānosūta; pēc tam to vairs nevar nomainīt. Tas ir vienkārši spēles nosaukums. |
+| ```stateSize``` | ```number``` | Šī īpašība ir obligāti pirmoreiz jānosūta. Tas ir daudzums stāvokļu parametriem, kas pēc tam tiks sūtīti |
+| ```actionCount``` | ```number``` | Šī īpašība ir obligāti pirmoreiz jānosūta. Tas ir skaits darbībām, ko var spēlē izdarīt. |
+| ```state``` | ```[number]``` | Skaitļu masīvs, kur katrs skaitlis ir savs parametrs stāvoklim. |
+| ```score``` | ```number``` | Rezultāts spēlē. |
+| ```lost``` | ```boolean``` | Apraksta, vai spēle šajā mirklī tika zaudēta. |
+| ```reset``` | ```boolean``` | Ja šāda īpašība eksistē (vērtība nav svarīga), tad serverim ir jārestartē pilnīgi viss algoritms. Šo var izmantot tad, kad spēle tiek aizvērta, lai pēc tam varētu atvērt kādu jaunu spēli. |
 
-```stateSize: number``` - šī īpašība ir obligāti pirmoreiz jānosūta. Tas ir daudzums stāvokļu parametriem, kas pēc tam tiks sūtīti
+Jebkuru no šīm īpašībām var pieprasījumā izlaist, ja vien aprakstā nav norādīts citādāk. Serveris pēc tam atgriež atpakaļ šādu JSON objektu:
 
-```actionCount: number``` - šī īpašība ir obligāti pirmoreiz jānosūta. Tas ir skaits darbībām, ko var spēlē izdarīt.
-
-```state: [number]``` - skaitļu masīvs, kur katrs skaitlis ir savs parametrs stāvoklim.
-
-```score: number``` - rezultāts spēlē.
-
-```lost: boolean``` - apraksta, vai spēle šajā mirklī tika zaudēta.
-
-```reset: boolean``` - ja šāda īpašība eksistē (nav svarīga vērtība), tad serverim ir jārestartē pilnīgi viss algoritms. Šo var izmantot tad, kad spēle tiek aizvērta, lai pēc tam varētu atvērt kādu jaunu spēli.
-
-Jebkuru no šīm īpašībām var pieprasījumā izlaist, ja vien aprakstā nav norādīts citādāk. Serveris pēc tam atgriež atpakaļ JSON objektu ar tikai vienu īpašību:
-
-```action: number``` - skaitlis no ```-1``` līdz ```actionCount - 1```, kas apzīmē darbību, kas jāizpilda spēlē.
+| Nosaukums | Mainīgā veids | Apraksts |
+|---|---|---|
+| ```action``` | ```number``` | Skaitlis no ```-1``` līdz ```actionCount - 1```, kas apzīmē darbību, kas jāizpilda spēlē. |

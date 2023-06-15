@@ -30,8 +30,8 @@ def main():
         "-o", "--state-output",
         help="Ceļš uz datni, kur tiks saglabāts algoritma iekšējais stāvoklis. Ja netiks norādīts, tas netiks saglabāts")
     arg_parser.add_argument(
-        "-d", "--result-output",
-        help="Ceļš uz datni, kur saglabāt algoritma rezultātus spēlē. Ja netiks norādīts, tie netiks saglabāti.")
+        "-r", "--result-output",
+        help="Ceļš uz datni, kur saglabāt algoritma rezultātus spēlē. Ja netiks norādīts, tie netiks saglabāti")
     arg_parser.add_argument(
         "-g", "--graph-output",
         help="Ceļš uz direktoriju, kur saglabāt Matplotlib grafikus par rezultātiem spēlē. Ja netiks norādīts, grafiki netiks izveidoti")
