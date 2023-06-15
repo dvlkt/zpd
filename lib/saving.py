@@ -1,28 +1,38 @@
 import os, json
 import data, algorithm
 
-statistics = None
-load_data = None
+results = None
+loaded_state = None
 
-def save(file_path):
-    if not os.path.exists(os.path.join(data.directory, "saves")):
-        os.makedirs(os.path.join(data.directory, "saves"))
-    
-    data_file = open(os.path.join(data.directory, "saves", file_path), "w")
-    data_file.write(json.dumps(algorithm.get_save_data()))
-    data_file.close()
+def load_state(file_path):
+    try:
+        global loaded_state
 
-    statistics_file = open(os.path.join(data.directory, "saves", f"{file_path}_statistics"), "w")
-    statistics_file.write("\n".join(statistics))
-    statistics_file.close()
+        algorithm.set_algorithm(algorithm.current_name)
 
-def load(file_path):
-    global load_data
+        state_file = open(os.path.join(data.directory, "../", file_path), "r")
+        loaded_state = json.loads(str(state_file.read()))
 
-    algorithm.set_algorithm(algorithm.current_name)
+        return True
+    except:
+        return False
 
-    data_file = open(os.path.join(data.directory, "saves", file_path), "r")
-    load_data = json.loads(str(data_file.read()))
+def save_state(file_path):
+    try:
+        state_file = open(os.path.join(data.directory, "../", file_path), "w")
+        state_file.write(json.dumps(algorithm.get_save_data()))
+        state_file.close()
 
-    statistics_file = open(os.path.join(data.directory, "saves", f"{file_path}_statistics"), "r")
-    statistics = statistics_file.read().split("\n")
+        return True
+    except:
+        return False
+
+def save_results(file_path):
+    try:
+        result_file = open(os.path.join(data.directory, "../", file_path), "w")
+        result_file.write(json.dumps(results))
+        result_file.close()
+
+        return True
+    except:
+        return False

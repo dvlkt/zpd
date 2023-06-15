@@ -24,7 +24,7 @@ def set_algorithm(value, default_value=None):
     current_name = value
     current = __import__(f"algorithms.{current_name}", fromlist=["init", "update", "save"])
     is_initialized = False
-    saving.statistics = None
+    saving.results = None
 
 def get_save_data():
     if current != None:

@@ -6,7 +6,7 @@ PORT = 1789
 
 class Server(BaseHTTPRequestHandler):
     def do_POST(self):
-        body_bin = self.rfile.read(int(self.headers['Content-Length']))
+        body_bin = self.rfile.read(int(self.headers["Content-Length"]))
 
         body = json.loads(body_bin.decode("utf-8"))
 
@@ -17,7 +17,7 @@ class Server(BaseHTTPRequestHandler):
             data.game_action_count = None
             data.game_state = None
             algorithm.is_initialized = False
-            saving.statistics = None
+            saving.results = None
 
         if body.get("stateSize") != None:
             if data.game_state_size == None:
@@ -35,7 +35,7 @@ class Server(BaseHTTPRequestHandler):
                 algorithm.current.init({
                     "action_count": data.game_action_count,
                     "state_size": data.game_state_size
-                }, saving.load_data)
+                }, saving.loaded_state)
                 algorithm.is_initialized = True
 
             if body.get("state") != None:
@@ -45,10 +45,10 @@ class Server(BaseHTTPRequestHandler):
             if body.get("lost") != None and body["lost"]:
                 has_lost = True
         
-        if saving.statistics == None:
-            saving.statistics = []
+        if saving.results == None:
+            saving.results = []
         if has_lost:
-            saving.statistics.append(str(data.game_score))
+            saving.results.append(str(data.game_score))
 
         ## Return data ##
         self.send_response(200)
