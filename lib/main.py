@@ -7,6 +7,7 @@ import saving
 import data
 
 DEFAULT_ALGORITHM = "random"
+DEFAULT_EPH = 100
 
 state_save_path = None
 result_save_path = None
@@ -35,6 +36,10 @@ def main():
     arg_parser.add_argument(
         "-g", "--graph-output",
         help="Ceļš uz direktoriju, kur saglabāt Matplotlib grafikus par rezultātiem spēlē. Ja netiks norādīts, grafiki netiks izveidoti")
+    arg_parser.add_argument(
+        "-eph", "--episodes-per-hyperparameter",
+        type=int,
+        help="Epizožu skaits spēlē, ik pa kurai tiek nomainīti hiperparametri (EPH)")
     arg_parser.add_argument(
         "-nv", "--no-visualization",
         action="store_true",
@@ -78,6 +83,15 @@ def main():
         print(f"💾 Spēles rezultāti tiks saglabāti datnē {os.path.join(data.directory, args.result_output)}")
     else:
         print("💾 Spēles rezultāti netiks saglabāti")
+    print()
+
+    # Episodes per hyperparameter
+    if args.episodes_per_hyperparameter != None:
+        data.episodes_per_hyperparameter = args.episodes_per_hyperparameter
+        print(f"🤖 Tiek izmantota EPH vērtība: {args.episodes_per_hyperparameter}")
+    else:
+        data.episodes_per_hyperparameter = DEFAULT_EPH
+        print(f"🤖 Tiek izmantota noklusējuma EPH vērtība: {DEFAULT_EPH}")
     print()
 
     # Start the server and control panel in separate threads

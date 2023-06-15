@@ -10,8 +10,11 @@ def init(data,load):
     if load!=None:
         Q_table=load
     acount=data["action_count"]
-def update(data):
-    global Q_table,PQtable,Paction
+    return [("alpha",0,1),("gamma",0,1)]
+def update(data,hyperparameters):
+    global Q_table,PQtable,Paction,alpha,gamma
+    alpha=hyperparameters[0]
+    gamma=hyperparameters[1]
     if str(data['state']) in Q_table:
         sQtable=Q_table[str(data["state"])]
         #handles the previous data table

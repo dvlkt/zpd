@@ -1,10 +1,13 @@
-import os
-import data, saving
+import os, random
+
+import data
+import saving
 
 current_name = None
 current = None
 
-is_initialized = False # True if the init() function has been called for the current algorithm
+hyperparameters = None
+hyperparameter_values = None
 
 available = []
 for a in os.listdir(os.path.join(data.directory, "algorithms")):
@@ -12,7 +15,7 @@ for a in os.listdir(os.path.join(data.directory, "algorithms")):
         available.append(a[:-3])
 
 def set_algorithm(value, default_value=None):
-    global current_name, current, is_current_init, available
+    global current_name, current, is_current_init, available, hyperparameters
 
     if not value in available:
         if current_name == None:
@@ -23,7 +26,7 @@ def set_algorithm(value, default_value=None):
 
     current_name = value
     current = __import__(f"algorithms.{current_name}", fromlist=["init", "update", "save"])
-    is_initialized = False
+    hyperparameters = None
     saving.results = None
 
 def get_save_data():
@@ -31,3 +34,10 @@ def get_save_data():
         return current.save()
     else:
         return None
+
+def adjust_hyperparameters():
+    global hyperparameter_values
+
+    hyperparameter_values = []
+    for i in hyperparameters:
+        hyperparameter_values.append(random.randrange(i[1], i[2]))

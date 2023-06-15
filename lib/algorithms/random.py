@@ -1,9 +1,9 @@
 import random
 
 def init(data, load):
-    pass
+    return []
 
-def update(data):
+def update(data, hyperparameters):
     return max(random.randint(-20, data["action_count"] - 1), -1)
 
 def save():

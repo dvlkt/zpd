@@ -10,13 +10,14 @@ Vadošā programma izmanto Python 3 un ceļš uz galveno skriptu ir ```lib/main.
 | ```--state-output``` | ```-o``` | Ceļš uz datni, kur tiks saglabāts algoritma iekšējais stāvoklis. Ja netiks norādīts, tas netiks saglabāts. |
 | ```--result-output``` | ```-r``` | Ceļš uz datni, kur saglabāt algoritma rezultātus spēlē. Ja netiks norādīts, tie netiks saglabāti. |
 | ```--graph-output``` | ```-g``` | Ceļš uz direktoriju, kur saglabāt Matplotlib grafikus par rezultātiem spēlē. Ja netiks norādīts, grafiki netiks izveidoti. |
+| ```--episodes-per-hyperparameter``` | ```-eph``` | Epizožu skaits spēlē, ik pa kurai tiek nomainīti hiperparametri (EPH jeb *Episodes per hyperparameter*) |
 | ```--no-visualization``` | ```-nv``` | Izslēgt vizualizāciju atsevišķā logā |
 
 # Jaunu algoritmu pievienošana
 
 Jaunu algoritmu var izveidot, pievienojot ```{algoritma nosaukums}.py``` failu iekšā ```/lib/algorithms```.
 
-Šajā failā jābūt vismaz 3 funkcijām - ```init(data, load)```, ```update(data)``` un ```save()```. Šīs funkcijas vislaik tiks ārēji izsauktas.
+Šajā failā jābūt vismaz 3 funkcijām - ```init(data, load)```, ```update(data, hyperparameters)``` un ```save()```. Šīs funkcijas vislaik tiks ārēji izsauktas.
 
 ```init(data, load)``` tiek izsaukta tad, kad klients (spēle) savienojas ar serveri (AI) un nosūta svarīgāko informāciju. Līdz ar to šo funkciju var izmantot, lai uzstādītu visu algoritmu. Pirmais funkcijas arguments, ```data```, ir ```dict```, kas izskatās šādi:
 
@@ -27,15 +28,23 @@ Jaunu algoritmu var izveidot, pievienojot ```{algoritma nosaukums}.py``` failu i
 }
 ```
 
-Otrais funkcijas arguments, ```load```, pašlaik neko nedara, bet vēlāk tiks izmantots, lai saglabātu algoritma stāvokli. Šajai funkcijai nekas nav jāatgriež.
+Otrais funkcijas arguments, ```load```, tiek izmantots, lai ielādētu algoritma iekšējo stāvokli no kāda faila. Tā vērtība ir vai nu ```None```, ja nekāds stāvoklis netika ielādēts un algoritmam vajag sākt mācīties no sākuma, vai arī satur stāvokļa datus, kas iepriekš tika saglabāti, un tagad tos vajag atkal ielādēt.
 
-```update(data)``` tiek izsaukta tad, kad klients nosūta jaunu informāciju serverim. Šī funkcija tiek izsaukta visvairāk. Funkcijas arguments, ```data```, ir ```dict```, kas izskatās šādi:
+Šajai funkcijai ir jāatgriež saraksts, kas satur trīsvietīgus kortežus. Korteža pirmais elements ir virkne, kas satur hiperparametra nosaukumu, otrais elements ir hiperparametra zemākā iespējamā vērtība un trešais elmeents ir augstākā iespējamā vērtība. Ieteicams nepārspīlēt ar minimālo un maksimālo vērtību, citādāk hiperparametru noteikšanas algoritms nestrādās ļoti labi. Piemērs:
+
+```
+[("Hiperparametrs #1", -1, 1), ("Hiperparametrs #2", 0, 5)] # Divi hiperparametri; pirmajam vērtības var būt starp -1 un 1, otrajam vērtības var būt starp 0 un 5.
+```
+
+Šim hiperparametru sarakstam var būt tehniski jebkāds garums, taču programma ņems vērā ne vairāk kā pirmos divus hiperparametrus. Līdz ar to šeit var būtībā būt norādīti 0-2 hiperparametri.
+
+```update(data, hyperparameters)``` tiek izsaukta tad, kad klients nosūta jaunu informāciju serverim. Šī funkcija tiek izsaukta visvairāk. Funkcijas pirmais arguments, ```data```, ir ```dict```, kas izskatās šādi:
 
 ```
 {
     "action_count": 0, // Skaits darbībām, ko spēlē var izdarīt
     "state_size": 0 // Spēles stāvokļa parametru daudzums
-    "state": [] // Masīvs, kas satur spēles stāvokļa parametrus kā skaitļus
+    "state": [] // Saraksts, kas satur spēles stāvokļa parametrus kā skaitļus
     "score": 0 // Pašreizējais rezultāts spēlē
     "lost": False // Vai spēle tikko tika zaudēta? (spēle gan parasti tiek nekavējoties restartēta automātiski)
 }
@@ -43,7 +52,9 @@ Otrais funkcijas arguments, ```load```, pašlaik neko nedara, bet vēlāk tiks i
 
 ```action_count``` un ```state_size``` ir pieejami ne tikai ```init``` funkcijā, bet arī šeit, taču pēc ```init``` funkcijas tie nekad nemainīsies. Tās ir būtībā konstantes. Šajai funkcijai ir jāatgriež skaitlis no -1 līdz ```action_count``` - 1, kas apzīmē darbību, kas jāizpilda spēlē.
 
-Trešā funkcija, ```save()```, pašlaik neko nedara, taču vēlāk tiks izmantota datu saglabāšanai.
+Funkcijas otrais arguments, ```hyperparameters```, ir saraksts ar skaitļiem, uz kādiem jānomaina hiperparametri, ko ```init``` funkcijā atgrieza algoritms. Tie ir doti tādā pašā secībā, ```init``` funkcijā tika atgriezti. Ja algoritms nepielāgo savus hiperparametrus uz šīm vērtībām, programma nestrādās pareizi.
+
+Trešā funkcija, ```save()```, tiek izsaukta tad, kad vajag saglabāt algoritma iekšējo stāvokli. Tai nav argumentu, bet ir jāatgriež jebkāds mainīgais (parasti ```dict``` vai saraksts), kas attēlo algoritma iekšējo stāvokli.
 
 Šeit ir piemērs vienkāršam algoritmam, kas nemācās, bet darbībām lieto skaitļus pēc nejaušas izvēles:
 
@@ -52,8 +63,9 @@ import random
 
 def init(data, load):
 	print("Šeit var iesākt darīt kaut ko...")
+    return [] # Algoritmam nav hiperparametru
 
-def update(data):
+def update(data, hyperparameters):
 	print("Atjaunojas!")
 	return max(random.randint(-20, data["action_count"] - 1), -1)
 
@@ -70,7 +82,7 @@ Klients (spēle) un serveris (AI) komunicē caur HTTP POST pieprasījumiem. Serv
 | ```title``` | ```string``` | Šī īpašība ir obligāti pirmoreiz jānosūta; pēc tam to vairs nevar nomainīt. Tas ir vienkārši spēles nosaukums. |
 | ```stateSize``` | ```number``` | Šī īpašība ir obligāti pirmoreiz jānosūta. Tas ir daudzums stāvokļu parametriem, kas pēc tam tiks sūtīti |
 | ```actionCount``` | ```number``` | Šī īpašība ir obligāti pirmoreiz jānosūta. Tas ir skaits darbībām, ko var spēlē izdarīt. |
-| ```state``` | ```[number]``` | Skaitļu masīvs, kur katrs skaitlis ir savs parametrs stāvoklim. |
+| ```state``` | ```[number]``` | Skaitļu saraksts, kur katrs skaitlis ir savs parametrs stāvoklim. |
 | ```score``` | ```number``` | Rezultāts spēlē. |
 | ```lost``` | ```boolean``` | Apraksta, vai spēle šajā mirklī tika zaudēta. |
 | ```reset``` | ```boolean``` | Ja šāda īpašība eksistē (vērtība nav svarīga), tad serverim ir jārestartē pilnīgi viss algoritms. Šo var izmantot tad, kad spēle tiek aizvērta, lai pēc tam varētu atvērt kādu jaunu spēli. |

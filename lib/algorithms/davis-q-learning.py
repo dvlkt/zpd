@@ -11,14 +11,19 @@ q_table = {}
 last_action = None
 last_state = None
 
-def init(data,load):
+def init(data, load):
     global q_table
 
     if load != None:
         q_table = load
+    
+    return [("Learning rate", 0, 1), ("Discount factor", 0, 1)]
 
-def update(data):
-    global q_table, last_action, last_state
+def update(data, hyperparameters):
+    global learning_rate, discount_factor, q_table, last_action, last_state
+
+    learning_rate = hyperparameters[0]
+    discount_factor = hyperparameters[1]
 
     state = str(data["state"])
 
