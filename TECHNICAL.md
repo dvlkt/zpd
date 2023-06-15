@@ -6,11 +6,10 @@ Vadošā programma izmanto Python 3 un ceļš uz galveno skriptu ir ```lib/main.
 |---|---|---|
 | ```--help``` | ```-h``` | Parādīt *help* informāciju |
 | ```--algorithm``` | ```-a``` | Izmantojamais algoritms (no ```/lib/algorithms``` direktorija). |
-| ```--state-input``` | ```-i``` | Ceļš uz datni, no kura ielādēt algoritma iekšējo stāvokli. Ja netiks norādīts, algoritms sāks mācīties no jauna. |
-| ```--state-output``` | ```-o``` | Ceļš uz datni, kur tiks saglabāts algoritma iekšējais stāvoklis. Ja netiks norādīts, tas netiks saglabāts. |
-| ```--result-output``` | ```-r``` | Ceļš uz datni, kur saglabāt algoritma rezultātus spēlē. Ja netiks norādīts, tie netiks saglabāti. |
-| ```--graph-output``` | ```-g``` | Ceļš uz direktoriju, kur saglabāt Matplotlib grafikus par rezultātiem spēlē. Ja netiks norādīts, grafiki netiks izveidoti. |
+| ```--input``` | ```-i``` | Nosaukums datnēm, no kurām ielādēt datus. Ja netiks norādīts, algoritms sāks mācīties no jauna |
+| ```--output``` | ```-o``` | Nosaukums datnēm, kurās tiks saglabāti dati. Ja netiks norādīts, tie netiks saglabāti |
 | ```--episodes-per-hyperparameter``` | ```-eph``` | Epizožu skaits spēlē, ik pa kurai tiek nomainīti hiperparametri (EPH jeb *Episodes per hyperparameter*) |
+| ```--no-graphs``` | ```-ng``` | Nesaglabāt grafikus |
 | ```--no-visualization``` | ```-nv``` | Izslēgt vizualizāciju atsevišķā logā |
 
 # Jaunu algoritmu pievienošana

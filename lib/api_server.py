@@ -56,9 +56,8 @@ class Server(BaseHTTPRequestHandler):
             saving.add_result(data.game_score)
 
         ## Adjust hyperparameters ##
-        if algorithm.hyperparameters != None:
-            if data.episodes_played % data.episodes_per_hyperparameter == 0:
-                algorithm.adjust_hyperparameters()
+        if algorithm.hyperparameters != None and algorithm.hyperparameter_values == None or data.episodes_played % data.episodes_per_hyperparameter == 0:
+            algorithm.adjust_hyperparameters()
 
         ## Return data ##
         self.send_response(200)
