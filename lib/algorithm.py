@@ -40,4 +40,4 @@ def adjust_hyperparameters():
 
     hyperparameter_values = []
     for i in hyperparameters:
-        hyperparameter_values.append(random.randrange(i[1], i[2]))
+        hyperparameter_values.append(random.uniform(i[1], i[2]))

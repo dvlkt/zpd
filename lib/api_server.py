@@ -7,12 +7,8 @@ import saving
 
 PORT = 1789
 
-current_episode = 0
-
 class Server(BaseHTTPRequestHandler):
     def do_POST(self):
-        global current_episode
-
         body_bin = self.rfile.read(int(self.headers["Content-Length"]))
 
         body = json.loads(body_bin.decode("utf-8"))
@@ -24,8 +20,9 @@ class Server(BaseHTTPRequestHandler):
             data.game_action_count = None
             data.game_state = None
             algorithm.hyperparameters = None
+            algorithm.hyperparameter_values = None
             saving.results = None
-            current_episode = 0
+            data.episodes_played = 0
 
         if body.get("stateSize") != None:
             if data.game_state_size == None:
@@ -51,16 +48,16 @@ class Server(BaseHTTPRequestHandler):
                 data.game_score = body["score"]
             if body.get("lost") != None and body["lost"]:
                 has_lost = True
-                current_episode += 1
         
         if saving.results == None:
             saving.results = []
         if has_lost:
-            saving.results.append(str(data.game_score))
+            data.episodes_played += 1
+            saving.add_result(data.game_score)
 
-        ## Adjust hyperparameters
+        ## Adjust hyperparameters ##
         if algorithm.hyperparameters != None:
-            if current_episode % data.episodes_per_hyperparameter == 0:
+            if data.episodes_played % data.episodes_per_hyperparameter == 0:
                 algorithm.adjust_hyperparameters()
 
         ## Return data ##

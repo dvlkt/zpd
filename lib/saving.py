@@ -27,6 +27,16 @@ def save_state(file_path):
     except:
         return False
 
+def add_result(score):
+    hyperparameter_obj = {}
+    for i in range(len(algorithm.hyperparameters)):
+        hyperparameter_obj[algorithm.hyperparameters[i][0]] = algorithm.hyperparameter_values[i]
+
+    results.append({
+        "hyperparameters": hyperparameter_obj,
+        "score": str(data.game_score)
+    })
+
 def save_results(file_path):
     try:
         result_file = open(os.path.join(data.directory, "../", file_path), "w")

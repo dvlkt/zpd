@@ -9,6 +9,8 @@ game_state_size = None
 
 game_action_count = None
 
+episodes_played = 0
+
 episodes_per_hyperparameter = None
 
 directory = os.path.join(os.path.dirname(os.path.realpath(__file__)))
