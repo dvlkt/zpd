@@ -11,7 +11,7 @@
 
 ## Algoritms (```/lib/```)
 
-Lai jebkura no šajā projektā pieejamajām spēlēm strādātu, fonā ir jābūt palaistam mašīnmācīšanās skriptam. Lai to paveiktu, atveriet ```/lib/main.py```, izmantojot Python 3 interpretētāju. Visus argumentus var apskatīt ```TECHNICAL.md```.
+Lai jebkura no šajā projektā pieejamajām spēlēm strādātu, fonā ir jābūt palaistam mašīnmācīšanās skriptam. Lai to paveiktu, atveriet ```/lib/main.py```, izmantojot Python 3 interpretētāju. Visus argumentus var apskatīt ```TECHNICAL.md```. Pārliecinieties, ka jums ir ielādētas visas pakotnes, kas ievietotas ```requirements.txt```.
 
 Pieejamie algoritmi ir:
 
