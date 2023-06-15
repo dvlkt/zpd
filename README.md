@@ -5,7 +5,7 @@
 
 **Darba autori:** Dāvis Lektauers, Kazimirs Kārlis Brakovskis
 
-**Darba vadītāja:** Mg.sr.soc. Agnese Kramēna-Juzova
+**Darba vadītāja:** Mg. sr. soc. Agnese Kramēna-Juzova
 
 ***
 

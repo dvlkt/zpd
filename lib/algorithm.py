@@ -1,7 +1,7 @@
 import os
 import data, saving
 
-current_name = ""
+current_name = None
 current = None
 
 is_initialized = False # True if the init() function has been called for the current algorithm
@@ -11,18 +11,20 @@ for a in os.listdir(os.path.join(data.directory, "algorithms")):
     if a[-3:] == ".py" and a != "__init__.py":
         available.append(a[:-3])
 
-def set_algorithm(value):
+def set_algorithm(value, default_value=None):
     global current_name, current, is_current_init, available
 
     if not value in available:
-        print(f"⚠️  Nezināms algoritms \"{value}\". Tiks izmantots \"{current_name}\".")
+        if current_name == None:
+            set_algorithm(default_value)
+        
+        print(f"⚠️  Nezināms algoritms: \"{value}\". Tiks izmantots \"{current_name}\".")
         return
 
     current_name = value
     current = __import__(f"algorithms.{current_name}", fromlist=["init", "update", "save"])
     is_initialized = False
     saving.statistics = None
-set_algorithm("random")
 
 def get_save_data():
     if current != None:
