@@ -1570,12 +1570,4 @@ setInterval(() => {
 		}
 	});
 }, 10);
-window.onbeforeunload = () => {
-	fetch("http://localhost:1789", {
-		method: "POST",
-		body: JSON.stringify({
-			reset: true
-		})
-	});
-}
 /* <<<< */

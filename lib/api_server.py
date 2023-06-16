@@ -14,16 +14,6 @@ class Server(BaseHTTPRequestHandler):
         body = json.loads(body_bin.decode("utf-8"))
 
         ## Parse received data ##
-        if body.get("reset") != None:
-            data.game_state_size = None
-            data.game_title = None
-            data.game_action_count = None
-            data.game_state = None
-            algorithm.hyperparameters = None
-            algorithm.hyperparameter_values = None
-            saving.results = None
-            data.episodes_played = 0
-
         if body.get("stateSize") != None:
             if data.game_state_size == None:
                 data.game_state_size = body["stateSize"]

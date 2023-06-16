@@ -84,7 +84,6 @@ Klients (spēle) un serveris (AI) komunicē caur HTTP POST pieprasījumiem. Serv
 | ```state``` | ```[number]``` | Skaitļu saraksts, kur katrs skaitlis ir savs parametrs stāvoklim. |
 | ```score``` | ```number``` | Rezultāts spēlē. |
 | ```lost``` | ```boolean``` | Apraksta, vai spēle šajā mirklī tika zaudēta. |
-| ```reset``` | ```boolean``` | Ja šāda īpašība eksistē (vērtība nav svarīga), tad serverim ir jārestartē pilnīgi viss algoritms. Šo var izmantot tad, kad spēle tiek aizvērta, lai pēc tam varētu atvērt kādu jaunu spēli. |
 
 Jebkuru no šīm īpašībām var pieprasījumā izlaist, ja vien aprakstā nav norādīts citādāk. Serveris pēc tam atgriež atpakaļ šādu JSON objektu:
 
