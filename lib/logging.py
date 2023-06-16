@@ -3,15 +3,15 @@ from colorama import Fore, Style
 
 import config
 
-__file_log = ""
+file_log = ""
 
 def __get_timestamp() -> str:
     now = datetime.datetime.now()
     return now.time()
 
 def __add_to_file(msg: str):
-    global __file_log
-    __file_log += f"[{__get_timestamp()}] {msg}"
+    global file_log
+    file_log += f"[{__get_timestamp()}] {msg}\n"
 
 def __add_to_terminal(msg: str) -> None:
     print(f"{Style.DIM}[{__get_timestamp()}]{Style.RESET_ALL} {msg}{Style.RESET_ALL}")
@@ -33,7 +33,3 @@ def warn(msg: str) -> None:
 def error(msg: str) -> None:
     __add_to_file(f"KĻŪDA: {msg}")
     __add_to_terminal(f"{Fore.RED}KĻŪDA: {msg}")
-
-
-def save_log(filename: str) -> None:
-    return

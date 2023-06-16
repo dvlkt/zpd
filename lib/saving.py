@@ -14,15 +14,21 @@ def load():
     try:
         global loaded_state
 
-        state_file = open(os.path.join(config.directory, "../data/", file_name + ".state.json"), "r")
+        state_file = open(os.path.join(config.directory, "../data/", config.input_file_name + ".state.json"), "r")
         loaded_state = json.loads(str(state_file.read()))
 
-        result_file = open(os.path.join(config.directory, "../data/", file_name + ".results.json"), "r")
+        result_file = open(os.path.join(config.directory, "../data/", config.input_file_name + ".results.json"), "r")
         game_handler.data.results = json.loads(str(result_file.read()))
+
+        log_file = open(os.path.join(config.directory, "../data/", config.input_file_name + ".log"), "r")
+        logging.file_log = str(log_file.read())
+
+        hp_file = open(os.path.join(config.directory, "../data/", config.input_file_name + ".hp.json"), "r")
+        algo_handler.hp.hyperparameters = json.loads(str(hp_file.read()))
 
         game_handler.data.played_episodes = len(game_handler.data.results)
 
-        logging.log(f"Dati ielādēti no {config.input_file_name}")
+        logging.log(f"Dati ielādēti no \"{config.input_file_name}\"")
     except Exception as e:
         logging.error(f"Nevarēja ielādēt datus (Vai visi nepieciešamie faili eksistē?): {e}")
 
@@ -44,6 +50,14 @@ def save():
         result_file.write(json.dumps(game_handler.data.results))
         result_file.close()
 
-        logging.log(f"Dati saglabāti ar nosaukumu {config.output_file_name}")
+        log_file = open(os.path.join(config.directory, "../data/", config.output_file_name + ".log"), "w")
+        log_file.write(logging.file_log)
+        log_file.close()
+
+        hp_file = open(os.path.join(config.directory, "../data/", config.output_file_name + ".hp.json"), "w")
+        hp_file.write(json.dumps(algo_handler.hp.hyperparameters))
+        hp_file.close()
+
+        logging.log(f"Dati saglabāti ar nosaukumu \"{config.output_file_name}\"")
     except Exception as e:
         logging.error(f"Nevarēja saglabāt datus: {e}")
