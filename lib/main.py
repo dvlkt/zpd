@@ -38,10 +38,6 @@ def main():
         "-ng", "--no-graphs",
         action="store_true",
         help="Nesaglabāt grafikus")
-    arg_parser.add_argument(
-        "-nv", "--no-visualization",
-        action="store_true",
-        help="Izslēgt vizualizāciju atsevišķā logā")
     args = arg_parser.parse_args()
 
     if not args.no_graphs:
@@ -81,17 +77,12 @@ def main():
         logging.log(f"Tiek izmantota noklusējuma EPH vērtība: {DEFAULT_EPH}")
 
     # Start the server and control panel in separate threads
-    server_thread = threading.Thread(target=run_server_thread)
-    server_thread.start()
-
-    if not args.no_visualization:
-        vis_thread = threading.Thread(target=run_vis_thread)
-        vis_thread.start()
+    run_server()
     
     atexit.register(on_exit)
 
 
-def run_server_thread():
+def run_server():
     server = HTTPServer(("localhost", api_server.PORT), api_server.Server)
     logging.log(f"API serveris pieejams šeit: http://localhost:{api_server.PORT}")
 
@@ -103,9 +94,6 @@ def run_server_thread():
 
     server.server_close()
     logging.log("API serveris apturēts")
-
-def run_vis_thread():
-    logging.warn("Vizualizācija pašlaik nestrādā")
 
 
 def on_exit():
