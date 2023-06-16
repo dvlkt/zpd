@@ -1,6 +1,6 @@
 import os, json
 
-import algorithm
+import algo_handler
 import config
 import logging
 import game_handler.data
@@ -14,7 +14,6 @@ def load():
     try:
         global loaded_state
 
-        algorithm.set_algorithm(algorithm.current_name)
         state_file = open(os.path.join(config.directory, "../data/", file_name + ".state.json"), "r")
         loaded_state = json.loads(str(state_file.read()))
 
@@ -38,7 +37,7 @@ def save():
             os.makedirs(os.path.join(config.directory, "../data"))
         
         state_file = open(os.path.join(config.directory, "../data/", config.output_file_name + ".state.json"), "w")
-        state_file.write(json.dumps(algorithm.get_save_data()))
+        state_file.write(json.dumps(algo_handler.get_save_data()))
         state_file.close()
 
         result_file = open(os.path.join(config.directory, "../data/", config.output_file_name + ".results.json"), "w")

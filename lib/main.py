@@ -1,18 +1,11 @@
-from http.server import HTTPServer
-import threading, sys, argparse, atexit, os
+import atexit
 
-import algorithm
 import saving
-import config
 import logging
 import game_handler
 import args
 
-save_file_name = None
-
 def main():
-    global save_file_name
-
     args.parse()
     saving.load()
     game_handler.run()

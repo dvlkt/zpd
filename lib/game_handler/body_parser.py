@@ -3,7 +3,13 @@ from typing import List
 import game_handler.data as data
 import logging
 
-def parse(title: str | None, state_size: int | None, action_count: int | None, state: List[int] | None, score: int | None, lost: bool | None) -> bool:
+def is_ready() -> bool:
+    if data.title == None or data.state_size == None or data.action_count == None:
+        return False
+    else:
+        return True
+
+def parse(title: str | None, state_size: int | None, action_count: int | None, state: List[int] | None, score: int | None, lost: bool | None) -> None:
     ## Initial settings ##
     if data.title == None and title != None:
         data.title = title
@@ -18,7 +24,7 @@ def parse(title: str | None, state_size: int | None, action_count: int | None, s
         logging.verbose(f"Spēles darbību skaits iestatīts: {data.action_count}")
     
     if data.title == None or data.state_size == None or data.action_count == None:
-        return False
+        return
     
     ## Updated fields ##
     if state != None:
@@ -29,5 +35,3 @@ def parse(title: str | None, state_size: int | None, action_count: int | None, s
     
     if lost != None:
         data.has_lost = lost
-    
-    return True

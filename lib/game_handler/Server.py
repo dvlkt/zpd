@@ -4,13 +4,13 @@ import json
 import game_handler.data as data
 import game_handler.body_parser as bp
 import game_handler.results as results
-import algorithm
+import algo_handler
+import algo_handler.hp
 import saving
 import logging
+import config
 
 class Server(BaseHTTPRequestHandler):
-    port = 1789
-
     def do_POST(self) -> None:
         body_bin = self.rfile.read(int(self.headers["Content-Length"]))
 
@@ -20,11 +20,13 @@ class Server(BaseHTTPRequestHandler):
         self.send_header("Access-Control-Allow-Origin", "*")
         self.end_headers()
 
-        if body.get("lost"):
+        is_ready = bp.is_ready()
+
+        if is_ready and body.get("lost"):
             results.add(data.curr_score)
             data.played_episodes += 1
         
-        is_ready = bp.parse(
+        bp.parse(
             body.get("title"),
             body.get("stateSize"),
             body.get("actionCount"),
@@ -35,12 +37,13 @@ class Server(BaseHTTPRequestHandler):
 
         if is_ready:
             # Initialize if the algorithm hasn't been initialized yet
-            if algorithm.hyperparameters == None:
+            if algo_handler.hp.hyperparameters == None:
                 try:
-                    algorithm.hyperparameters = algorithm.current.init({
+                    hyperparameters = algo_handler.current.init({
                         "action_count": data.action_count,
                         "state_size": data.state_size
                     }, saving.loaded_state)
+                    algo_handler.hp.init(hyperparameters)
                 except Exception as e:
                     logging.error(f"Nevarēja uzsākt algoritmu: {e}")
                 
@@ -48,17 +51,18 @@ class Server(BaseHTTPRequestHandler):
                 logging.log(f"Savienots ar spēli: {data.title}")
 
             # Update the hyperparameters
-            algorithm.adjust_hyperparameters()
+            if data.played_episodes % config.episodes_per_hyperparameter == 0:
+                algo_handler.hp.adjust()
             
             action = -1
             try:
-                action = algorithm.current.update({ # This is where the magic happens
+                action = algo_handler.current.update({ # This is where the magic happens
                     "action_count": data.action_count,
                     "state_size": data.state_size,
                     "state": data.curr_state,
                     "score": data.curr_score,
                     "lost": data.has_lost
-                }, algorithm.hyperparameter_values)
+                }, algo_handler.hp.get_values())
             except Exception as e:
                 logging.error(f"Nevarēja atjaunot algoritmu: {e}")
             

@@ -2,9 +2,7 @@ import argparse
 
 import config
 import logging
-import algorithm
-
-DEFAULT_ALGORITHM = "random"
+import algo_handler
 
 def parse():
     arg_parser = argparse.ArgumentParser(
@@ -40,11 +38,11 @@ def parse():
     
     # Algorithm selection
     if args.algorithm != None:
-        algorithm.set_algorithm(args.algorithm, DEFAULT_ALGORITHM)
+        config.algorithm = args.algorithm
+        algo_handler.set_current()
     else:
-        algorithm.set_algorithm(DEFAULT_ALGORITHM)
-        logging.warn(f"Netika norādīts algoritms; tiks izmantots noklusējums: \"{DEFAULT_ALGORITHM}\"")
-    logging.log(f"Tiek izmantots algoritms: \"{algorithm.current_name}\"")
+        logging.warn(f"Netika norādīts algoritms; tiks izmantots noklusējums: \"{config.algorithm}\"")
+    logging.log(f"Tiek izmantots algoritms: \"{config.algorithm}\"")
     
     # Loading
     if args.input != None:
