@@ -1,11 +1,11 @@
 from http.server import HTTPServer
 import threading, sys, argparse, atexit, os
 
-import api_server
 import algorithm
 import saving
-import data
+import config
 import logging
+import game_handler
 
 DEFAULT_ALGORITHM = "random"
 DEFAULT_EPH = 100
@@ -38,6 +38,10 @@ def main():
         "-ng", "--no-graphs",
         action="store_true",
         help="Nesaglabāt grafikus")
+    arg_parser.add_argument(
+        "-v", "--verbose",
+        action="store_true",
+        help="Rādīt pilnīgi visu izvadi terminālī")
     args = arg_parser.parse_args()
 
     if not args.no_graphs:
@@ -49,7 +53,7 @@ def main():
     else:
         algorithm.set_algorithm(DEFAULT_ALGORITHM)
         logging.warn(f"Netika norādīts algoritms; tiks izmantots noklusējums: \"{DEFAULT_ALGORITHM}\"")
-    logging.log(f"Tiek izmantots algoritms: {algorithm.current_name}")
+    logging.log(f"Tiek izmantots algoritms: \"{algorithm.current_name}\"")
     
     # Loading
     if args.input != None:
@@ -70,31 +74,20 @@ def main():
 
     # Episodes per hyperparameter
     if args.episodes_per_hyperparameter != None:
-        data.episodes_per_hyperparameter = args.episodes_per_hyperparameter
+        config.episodes_per_hyperparameter = args.episodes_per_hyperparameter
         logging.log(f"Tiek izmantota EPH vērtība: {args.episodes_per_hyperparameter}")
     else:
-        data.episodes_per_hyperparameter = DEFAULT_EPH
+        config.episodes_per_hyperparameter = DEFAULT_EPH
         logging.log(f"Tiek izmantota noklusējuma EPH vērtība: {DEFAULT_EPH}")
+    
+    # Verbose mode
+    if args.verbose:
+        config.is_verbose = True
 
     # Start the server and control panel in separate threads
-    run_server()
+    game_handler.run()
     
     atexit.register(on_exit)
-
-
-def run_server():
-    server = HTTPServer(("localhost", api_server.PORT), api_server.Server)
-    logging.log(f"API serveris pieejams šeit: http://localhost:{api_server.PORT}")
-
-    try:
-        while True:
-            server.handle_request()
-    except KeyboardInterrupt:
-        pass
-
-    server.server_close()
-    logging.log("API serveris apturēts")
-
 
 def on_exit():
     if save_file_name != None:
@@ -105,7 +98,6 @@ def on_exit():
             logging.error("Nevarēja saglabāt datus!")
     
     logging.log("حَرَام Programma pārtraukta.")
-
 
 if __name__ == "__main__":
     main()

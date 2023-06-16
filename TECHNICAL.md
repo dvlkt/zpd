@@ -10,6 +10,7 @@ Vadošā programma izmanto Python 3 un ceļš uz galveno skriptu ir ```lib/main.
 | ```--output``` | ```-o``` | Nosaukums datnēm, kurās tiks saglabāti dati. Ja netiks norādīts, tie netiks saglabāti |
 | ```--episodes-per-hyperparameter``` | ```-eph``` | Epizožu skaits spēlē, ik pa kurai tiek nomainīti hiperparametri (EPH jeb *Episodes per hyperparameter*) |
 | ```--no-graphs``` | ```-ng``` | Nesaglabāt grafikus |
+| ```--verbose``` | ```-v``` | Rādīt pilnīgi visu izvadi terminālī |
 
 # Jaunu algoritmu pievienošana
 

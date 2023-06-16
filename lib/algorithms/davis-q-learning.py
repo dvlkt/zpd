@@ -17,7 +17,7 @@ def init(data, load):
     if load != None:
         q_table = load
     
-    return [("Learning rate", 0, 1), ("Discount factor", 0, 1)]
+    return [("Mācīšanās ātrums", 0, 1), ("Atlaides faktors", 0, 1)]
 
 def update(data, hyperparameters):
     global learning_rate, discount_factor, q_table, last_action, last_state

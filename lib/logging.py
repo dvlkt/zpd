@@ -1,6 +1,8 @@
 import datetime
 from colorama import Fore, Style
 
+import config
+
 __file_log = ""
 
 def __get_timestamp() -> str:

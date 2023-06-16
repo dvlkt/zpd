@@ -1,6 +1,6 @@
 import os, random
 
-import data
+import config
 import saving
 
 current_name = None
@@ -10,7 +10,7 @@ hyperparameters = None
 hyperparameter_values = None
 
 available = []
-for a in os.listdir(os.path.join(data.directory, "algorithms")):
+for a in os.listdir(os.path.join(config.directory, "algorithms")):
     if a[-3:] == ".py" and a != "__init__.py":
         available.append(a[:-3])
 
