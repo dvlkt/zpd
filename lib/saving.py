@@ -1,12 +1,16 @@
 import os, json
 
 import algorithm
+import config
+import logging
 import game_handler.data
 
-results = None
 loaded_state = None
 
-def load(file_name):
+def load():
+    if config.input_file_name == None:
+        return
+
     try:
         global loaded_state
 
@@ -15,37 +19,32 @@ def load(file_name):
         loaded_state = json.loads(str(state_file.read()))
 
         result_file = open(os.path.join(config.directory, "../data/", file_name + ".results.json"), "r")
-        results = json.loads(str(result_file.read()))
+        game_handler.data.results = json.loads(str(result_file.read()))
 
-        game_handler.data.played_episodes = len(results)
+        game_handler.data.played_episodes = len(game_handler.data.results)
 
-        return True
-    except:
-        return False
+        logging.log(f"Dati ielādēti no {config.input_file_name}")
+    except Exception as e:
+        logging.error(f"Nevarēja ielādēt datus (Vai visi nepieciešamie faili eksistē?): {e}")
 
-def save(file_name):
+def save():
+    if config.output_file_name == None:
+        return
+
+    logging.log("Saglabā datus...")
+
     try:
         if not os.path.exists(os.path.join(config.directory, "../data")):
             os.makedirs(os.path.join(config.directory, "../data"))
         
-        state_file = open(os.path.join(config.directory, "../data/", file_name + ".state.json"), "w")
+        state_file = open(os.path.join(config.directory, "../data/", config.output_file_name + ".state.json"), "w")
         state_file.write(json.dumps(algorithm.get_save_data()))
         state_file.close()
 
-        result_file = open(os.path.join(config.directory, "../data/", file_name + ".results.json"), "w")
-        result_file.write(json.dumps(results))
+        result_file = open(os.path.join(config.directory, "../data/", config.output_file_name + ".results.json"), "w")
+        result_file.write(json.dumps(game_handler.data.results))
         result_file.close()
 
-        return True
-    except:
-        return False
-
-def add_result(score):
-    hyperparameter_obj = {}
-    for i in range(len(algorithm.hyperparameters)):
-        hyperparameter_obj[algorithm.hyperparameters[i][0]] = algorithm.hyperparameter_values[i]
-
-    results.append({
-        "hyperparameters": hyperparameter_obj,
-        "score": str(config.game_score)
-    })
+        logging.log(f"Dati saglabāti ar nosaukumu {config.output_file_name}")
+    except Exception as e:
+        logging.error(f"Nevarēja saglabāt datus: {e}")

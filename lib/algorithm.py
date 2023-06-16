@@ -2,6 +2,7 @@ import os, random
 
 import config
 import saving
+import logging
 
 current_name = None
 current = None
@@ -21,13 +22,11 @@ def set_algorithm(value, default_value=None):
         if current_name == None:
             set_algorithm(default_value)
         
-        print(f"⚠️  Nezināms algoritms: \"{value}\". Tiks izmantots \"{current_name}\".")
+        logging.warn(f"Nezināms algoritms: \"{value}\". Tiks izmantots \"{current_name}\".")
         return
 
     current_name = value
     current = __import__(f"algorithms.{current_name}", fromlist=["init", "update", "save"])
-    hyperparameters = None
-    saving.results = None
 
 def get_save_data():
     if current != None:
