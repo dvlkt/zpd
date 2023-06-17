@@ -4,7 +4,8 @@ Vadošā programma izmanto Python 3 un ceļš uz galveno skriptu ir ```lib/main.
 
 | Arguments | Īsināts arguments | Apraksts |
 |---|---|---|
-| ```--help``` | ```-h``` | Parādīt *help* informāciju |
+| ```--help``` | ```-h``` | Parādīt pieejamos argumentus |
+| ```--port``` | ```-p``` | Ports, ko izmantot (atkarīgs no spēles) |
 | ```--algorithm``` | ```-a``` | Izmantojamais algoritms (no ```/lib/algorithms``` direktorija). |
 | ```--input``` | ```-i``` | Nosaukums datnēm, no kurām ielādēt datus. Ja netiks norādīts, algoritms sāks mācīties no jauna |
 | ```--output``` | ```-o``` | Nosaukums datnēm, kurās tiks saglabāti dati. Ja netiks norādīts, tie netiks saglabāti |

@@ -11,6 +11,10 @@ def parse():
         epilog="Darba autori: Dāvis Lektauers un Kazimirs Kārlis Brakovskis. Darba vadītāja: Mg. sr. soc. Agnese Kramēna-Juzova")
     
     arg_parser.add_argument(
+        "-p", "--port",
+        type=int,
+        help="Ports, ko izmantot (atkarīgs no spēles)")
+    arg_parser.add_argument(
         "-a", "--algorithm",
         help="Izmantojamais algoritms (no /lib/algorithms direktorija)")
     arg_parser.add_argument(
@@ -33,6 +37,14 @@ def parse():
         help="Rādīt pilnīgi visu izvadi terminālī")
     args = arg_parser.parse_args()
     
+    # Port selection
+    if args.port != None:
+        config.port = args.port
+    else:
+        config.port = config.DEFAULT_PORT
+        log.warn(f"Netika norādīts ports; tiks izmantots noklusējums: {config.port}")
+    log.log(f"Tiek izmantots ports: {config.port}")
+
     # Algorithm selection
     if args.algorithm != None:
         config.algorithm = args.algorithm

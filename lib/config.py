@@ -2,7 +2,8 @@ import os
 
 directory: str = os.path.join(os.path.dirname(os.path.realpath(__file__)))
 
-port: int = 1789
+DEFAULT_PORT = 1789
+port: int = None
 
 DEFAULT_ALGORITHM = "random"
 algorithm: str = None
