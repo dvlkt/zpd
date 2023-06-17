@@ -29,7 +29,3 @@ def get_named_values() -> Dict[str, float]:
     for h in hyperparameters:
         results[h["name"]] = h["value"]
     return results
-
-def adjust() -> None:
-    for h in hyperparameters:
-        h["value"] = random.uniform(h["min"], h["max"])

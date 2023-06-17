@@ -28,6 +28,9 @@ def parse():
         type=int,
         help="Epizožu skaits spēlē, ik pa kurai tiek nomainīti hiperparametri un restartēts algoritms (EPH)")
     arg_parser.add_argument(
+        "-has", "--hp-adjustment-strategy",
+        help="Stratēģija, kā izvēlēties hiperparametrus. Vērtības var būt \"default\", \"random\" vai \"bayesian\".")
+    arg_parser.add_argument(
         "-ng", "--no-graphs",
         action="store_true",
         help="Nesaglabāt grafikus")
@@ -37,7 +40,7 @@ def parse():
         help="Rādīt pilnīgi visu izvadi terminālī")
     args = arg_parser.parse_args()
     
-    # Port selection
+    # Port
     if args.port != None:
         config.port = args.port
     else:
@@ -45,7 +48,7 @@ def parse():
         log.warn(f"Netika norādīts ports; tiks izmantots noklusējums: {config.port}")
     log.log(f"Tiek izmantots ports: {config.port}")
 
-    # Algorithm selection
+    # Algorithm
     if args.algorithm != None:
         config.algorithm = args.algorithm
     else:
@@ -73,6 +76,20 @@ def parse():
         log.log(f"Tiek izmantota EPH vērtība: {args.episodes_per_hyperparameter}")
     else:
         log.log(f"Tiek izmantota noklusējuma EPH vērtība: {config.episodes_per_hyperparameter}")
+    
+    # Hyperparameter adjustment strategy
+    if args.hp_adjustment_strategy != None:
+        if args.hp_adjustment_strategy in config.VALID_HP_ADJUSTMENT_STRATEGIES:
+            config.hp_adjustment_strategy = args.hp_adjustment_strategy
+            log.log(f"Tiks izmantota HP izvēles stratēģija: \"{config.hp_adjustment_strategy}\"")
+        else:
+            config.hp_adjustment_strategy = config.DEFAULT_HP_ADJUSTMENT_STRATEGY
+            log.warn(f"Nezināma HP izvēles stratēģija \"{args.hp_adjustment_strategy}\", tiks izmantota noklusējuma vērtība: \"{config.hp_adjustment_strategy}\"")
+    else:
+        config.hp_adjustment_strategy = config.DEFAULT_HP_ADJUSTMENT_STRATEGY
+        log.warn(f"Netika norādīta HP izvēles stratēģija, tiks izmantota noklusējuma vērtība: \"{config.hp_adjustment_strategy}\"")
+    if args.hp_adjustment_strategy == "bayesian":
+        log.warn("\"bayesian\" hiperparametru izvēles stratēģija vēl nestrādā; hiperparametri tiks izvēlēti nejauši")
     
     # Graphs
     if args.no_graphs:

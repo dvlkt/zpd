@@ -1,8 +1,8 @@
 from random import *
 from math import *
 
-learning_rate = 0.2
-discount_factor = 0.9
+learning_rate = 0.5
+discount_factor = 1
 q0 = 10
 epsilon = 0.05
 

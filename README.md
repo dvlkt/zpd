@@ -23,7 +23,7 @@ Pieejamie algoritmi ir:
 
 ## *Google Chrome* dinozaura spēle (```/chrome-dino/```)
 
-Lai to spēlētu, atveriet ```/chrome-dino/index.html``` interneta pārlūkprogrammā.
+Lai to spēlētu, atveriet ```/chrome-dino/index.html``` interneta pārlūkprogrammā. Neaizmirstiet pievienot ```--port 1781``` argumentu, kad atverat mašīnmācīšanās skriptu.
 
 ## *Minesweeper*
 
