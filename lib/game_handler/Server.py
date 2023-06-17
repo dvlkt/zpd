@@ -44,6 +44,7 @@ class Server(BaseHTTPRequestHandler):
                         "state_size": data.state_size
                     }, saving.loaded_state)
                     algo_handler.hp.init(hyperparameters)
+                    algo_handler.hp.adjust()
                 except Exception as e:
                     log.error(f"Nevarēja uzsākt algoritmu: {e}")
                 
