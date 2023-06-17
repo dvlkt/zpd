@@ -1,7 +1,7 @@
 import os
 from typing import List
 
-import logging
+import log
 import config
 
 current = None # The script for the current algorithm
@@ -25,7 +25,7 @@ def set_current() -> bool:
     global current
 
     if current != None:
-        logging.error("Mēģinājums nomainīt algoritmu kamēr tas jau ir iestatīts")
+        log.error("Mēģinājums nomainīt algoritmu kamēr tas jau ir iestatīts")
         return
     
     if not config.algorithm in get_available_algorithms():

@@ -9,6 +9,8 @@ algorithm: str = None
 
 episodes_per_hyperparameter: int = 100
 
+create_graphs: bool = True
+
 is_verbose: bool = False
 
 input_file_name: str | None = None

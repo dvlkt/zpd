@@ -7,7 +7,7 @@ import game_handler.results as results
 import algo_handler
 import algo_handler.hp
 import saving
-import logging
+import log
 import config
 
 class Server(BaseHTTPRequestHandler):
@@ -45,10 +45,10 @@ class Server(BaseHTTPRequestHandler):
                     }, saving.loaded_state)
                     algo_handler.hp.init(hyperparameters)
                 except Exception as e:
-                    logging.error(f"Nevarēja uzsākt algoritmu: {e}")
+                    log.error(f"Nevarēja uzsākt algoritmu: {e}")
                 
-                logging.log("Algoritms ir uzsākts!")
-                logging.log(f"Savienots ar spēli: {data.title}")
+                log.log("Algoritms ir uzsākts!")
+                log.log(f"Savienots ar spēli: {data.title}")
 
             # Update the hyperparameters
             if data.played_episodes % config.episodes_per_hyperparameter == 0:
@@ -64,21 +64,21 @@ class Server(BaseHTTPRequestHandler):
                     "lost": data.has_lost
                 }, algo_handler.hp.get_values())
             except Exception as e:
-                logging.error(f"Nevarēja atjaunot algoritmu: {e}")
+                log.error(f"Nevarēja atjaunot algoritmu: {e}")
             
             try:
                 self.wfile.write(bytes(json.dumps({
                     "action": action
                 }), "utf-8"))
             except Exception as e:
-                logging.error(f"Nevarēja atgriezt datus spēlei: {e}")
+                log.error(f"Nevarēja atgriezt datus spēlei: {e}")
         else:
             try:
                 self.wfile.write(bytes(json.dumps({
                     "action": -1
                 }), "utf-8"))
             except Exception as e:
-                logging.error(f"Nevarēja atgriezt datus spēlei: {e}")
+                log.error(f"Nevarēja atgriezt datus spēlei: {e}")
 
 
     def log_message(self, format, *args) -> None:

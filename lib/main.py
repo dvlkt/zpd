@@ -1,7 +1,7 @@
 import atexit
 
 import saving
-import logging
+import log
 import game_handler
 import args
 
@@ -15,7 +15,7 @@ def main():
 def on_exit():
     saving.save()
     
-    logging.log("حَرَام Programma pārtraukta.")
+    log.log("حَرَام Programma pārtraukta.")
 
 if __name__ == "__main__":
     main()

@@ -14,6 +14,9 @@ def init(values) -> None:
             "min": v[1],
             "max": v[2]
         })
+    
+    if len(hyperparameters) > 2: # Cap the hyperparameter count at 2
+        hyperparameters = hyperparameters[:1]
 
 def get_values() -> List[float]:
     results = []
