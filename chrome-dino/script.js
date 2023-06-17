@@ -1,4 +1,9 @@
+/* >>>> */
+const timeSpeedUp = 5;
+/* >>>> */
 (function() {
+	/* >>>> */
+	/*
 	var lastTime = 0;
 	var vendors = ['ms', 'moz', 'webkit', 'o'];
 	for (var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
@@ -19,6 +24,23 @@
 		window.cancelAnimationFrame = function(id) {
 			clearTimeout(id);
 		};
+	*/
+	let lastTime = 0;
+	window.requestAnimationFrame = (callback, element) => {
+		let currTime = new Date().getTime() * timeSpeedUp;
+		let timeToCall = Math.max(0, 16 - (currTime - lastTime))
+
+		let id = window.setTimeout(() => {
+			callback(currTime + timeToCall)
+		}, 50 / timeToCall)
+
+		lastTime = currTime + timeToCall
+		return id;
+	}
+	window.cancelAnimationFrame = (id) => {
+		clearTimeout(id);
+	}
+	/* >>>> */
 }());
 (function() {
 	'use strict';
@@ -674,7 +696,7 @@
 
 	function getTimeStamp() {
 		/* >>>> */
-		return new Date().getTime() * 5;
+		return new Date().getTime() * timeSpeedUp;
 		/* >>>> */
 	}
 
@@ -1565,9 +1587,7 @@ setInterval(() => {
 
 			statusElement.innerText = "Nav savienojuma ar serveri.";
 			statusElement.className = "red";
-
-			console.error(err);
 		}
 	});
-}, 10);
+}, 50 / timeSpeedUp);
 /* <<<< */
