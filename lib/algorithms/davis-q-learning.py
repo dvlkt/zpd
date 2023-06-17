@@ -22,8 +22,13 @@ def init(data, load):
 def update(data, hyperparameters):
     global learning_rate, discount_factor, q_table, last_action, last_state
 
-    learning_rate = hyperparameters[0]
-    discount_factor = hyperparameters[1]
+    if hyperparameters != None:
+        q_table = {}
+        last_action = None
+        last_state = None
+
+        learning_rate = hyperparameters[0]
+        discount_factor = hyperparameters[1]
 
     state = str(data["state"])
 

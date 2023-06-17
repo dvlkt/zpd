@@ -8,7 +8,7 @@ Vadošā programma izmanto Python 3 un ceļš uz galveno skriptu ir ```lib/main.
 | ```--algorithm``` | ```-a``` | Izmantojamais algoritms (no ```/lib/algorithms``` direktorija). |
 | ```--input``` | ```-i``` | Nosaukums datnēm, no kurām ielādēt datus. Ja netiks norādīts, algoritms sāks mācīties no jauna |
 | ```--output``` | ```-o``` | Nosaukums datnēm, kurās tiks saglabāti dati. Ja netiks norādīts, tie netiks saglabāti |
-| ```--episodes-per-hyperparameter``` | ```-eph``` | Epizožu skaits spēlē, ik pa kurai tiek nomainīti hiperparametri (EPH jeb *Episodes per hyperparameter*) |
+| ```--episodes-per-hyperparameter``` | ```-eph``` | Epizožu skaits spēlē, ik pa kurai tiek nomainīti hiperparametri un restartēts algoritms (EPH jeb *Episodes per hyperparameter*) |
 | ```--no-graphs``` | ```-ng``` | Nesaglabāt grafikus |
 | ```--verbose``` | ```-v``` | Rādīt pilnīgi visu izvadi terminālī |
 
@@ -51,7 +51,7 @@ Otrais funkcijas arguments, ```load```, tiek izmantots, lai ielādētu algoritma
 
 ```action_count``` un ```state_size``` ir pieejami ne tikai ```init``` funkcijā, bet arī šeit, taču pēc ```init``` funkcijas tie nekad nemainīsies. Tās ir būtībā konstantes. Šajai funkcijai ir jāatgriež skaitlis no -1 līdz ```action_count``` - 1, kas apzīmē darbību, kas jāizpilda spēlē.
 
-Funkcijas otrais arguments, ```hyperparameters```, ir saraksts ar skaitļiem, uz kādiem jānomaina hiperparametri, ko ```init``` funkcijā atgrieza algoritms. Tie ir doti tādā pašā secībā, ```init``` funkcijā tika atgriezti. Ja algoritms nepielāgo savus hiperparametrus uz šīm vērtībām, programma nestrādās pareizi.
+Funkcijas otrais arguments, ```hyperparameters```, ir vai nu None, vai nu saraksts ar skaitļiem. Ja vērtība ir None, nekas īpašs nav jādara, taču ja tā nav, tad šis saraksts ir skaitļi, uz kādiem jānomaina hiperparametri, ko ```init``` funkcijā atgrieza algoritms. Tie ir doti tādā pašā secībā, kādā ```init``` funkcijā tika atgriezti. Turklāt ja ```hyperparameters``` vērtība nav None, algoritma iekšējais stāvoklis ir jārestartē. Ja algoritms nepielāgo savus hiperparametrus uz šīm vērtībām un attiecīgi arī nerestartēs savu iekšējo stāvokli, programma nestrādās pareizi.
 
 Trešā funkcija, ```save()```, tiek izsaukta tad, kad vajag saglabāt algoritma iekšējo stāvokli. Tai nav argumentu, bet ir jāatgriež jebkāds mainīgais (parasti ```dict``` vai saraksts), kas attēlo algoritma iekšējo stāvokli.
 

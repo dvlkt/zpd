@@ -13,8 +13,12 @@ def init(data,load):
     return [("alpha",0,1),("gamma",0,1)]
 def update(data,hyperparameters):
     global Q_table,PQtable,Paction,alpha,gamma
-    alpha=hyperparameters[0]
-    gamma=hyperparameters[1]
+    if hyperparameters!=None:
+        alpha=hyperparameters[0]
+        gamma=hyperparameters[1]
+        Q_table={}
+        PQtable=None
+        Paction=None
     if str(data['state']) in Q_table:
         sQtable=Q_table[str(data["state"])]
         #handles the previous data table

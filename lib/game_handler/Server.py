@@ -38,13 +38,17 @@ class Server(BaseHTTPRequestHandler):
         if is_ready:
             # Initialize if the algorithm hasn't been initialized yet
             if algo_handler.hp.hyperparameters == None:
+
                 try:
                     hyperparameters = algo_handler.current.init({
                         "action_count": data.action_count,
                         "state_size": data.state_size
                     }, saving.loaded_state)
+
                     algo_handler.hp.init(hyperparameters)
+
                     algo_handler.hp.adjust()
+
                 except Exception as e:
                     log.error(f"Nevarēja uzsākt algoritmu: {e}")
                 
@@ -52,21 +56,23 @@ class Server(BaseHTTPRequestHandler):
                 log.log(f"Savienots ar spēli: {data.title}")
 
             # Update the hyperparameters
+            updated_hyperparameters = None
             if data.played_episodes % config.episodes_per_hyperparameter == 0 and body.get("lost"):
                 algo_handler.hp.adjust()
+                updated_hyperparameters = algo_handler.hp.get_values()
                 log.verbose(f"Changed the hyperparameters; episode #{data.played_episodes} was just played")
             
             action = -1
-            try:
-                action = algo_handler.current.update({ # This is where the magic happens
-                    "action_count": data.action_count,
-                    "state_size": data.state_size,
-                    "state": data.curr_state,
-                    "score": data.curr_score,
-                    "lost": data.has_lost
-                }, algo_handler.hp.get_values())
-            except Exception as e:
-                log.error(f"Nevarēja atjaunot algoritmu: {e}")
+            #try:
+            action = algo_handler.current.update({ # This is where the magic happens
+                "action_count": data.action_count,
+                "state_size": data.state_size,
+                "state": data.curr_state,
+                "score": data.curr_score,
+                "lost": data.has_lost
+            }, updated_hyperparameters)
+            #except Exception as e:
+            #    log.error(f"Nevarēja atjaunot algoritmu: {e}")
             
             try:
                 self.wfile.write(bytes(json.dumps({

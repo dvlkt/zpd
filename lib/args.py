@@ -22,7 +22,7 @@ def parse():
     arg_parser.add_argument(
         "-eph", "--episodes-per-hyperparameter",
         type=int,
-        help="Epizožu skaits spēlē, ik pa kurai tiek nomainīti hiperparametri (EPH)")
+        help="Epizožu skaits spēlē, ik pa kurai tiek nomainīti hiperparametri un restartēts algoritms (EPH)")
     arg_parser.add_argument(
         "-ng", "--no-graphs",
         action="store_true",
