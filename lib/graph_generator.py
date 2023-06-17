@@ -12,23 +12,17 @@ def __gen_2hp_graph():
     # Process the data
     hp1_values = []
     hp2_values = []
-    score_values = []
+    avg_scores = []
 
-    prev_hp = None
     for r in game_handler.data.results:
         curr_hp = list(r["hyperparameters"].values())
-        if curr_hp != prev_hp:
-            hp1_values.append(curr_hp[0])
-            hp2_values.append(curr_hp[1])
-            score_values.append([])
-        
-        score_values[-1].append(r["score"])
-        
-        prev_hp = curr_hp
+        hp1_values.append(curr_hp[0])
+        hp2_values.append(curr_hp[1])
+        avg_scores.append(r["avg_score"])
     
-    avg_scores = []
-    for s in score_values:
-        avg_scores.append(np.average(s))
+    if len(avg_scores) < 3:
+        log.warn("Netiks izveidots grafiks, jo tam ir nepieciešami vismaz 3 datu punkti")
+        return
     
     log.verbose(f"Grafikā iekļauti {len(avg_scores)} punkti")
     
@@ -37,13 +31,17 @@ def __gen_2hp_graph():
 
     fig, ax = plt.subplots()
 
-    ax.plot(hp1_values, hp2_values, "o", markersize=1, color="lightgrey")
+    ax.plot(hp1_values, hp2_values, "o", markersize=1, color="grey")
     ax.tricontour(hp1_values, hp2_values, avg_scores, levels=levels)
 
-    plt.show()
+    return fig
 
 
 def generate_graph():
+    if algo_handler.hp.hyperparameters == None:
+        log.verbose("Netiks ģenerēts grafiks")
+        return
+
     hp_count = len(algo_handler.hp.hyperparameters)
     
     if hp_count > 0:

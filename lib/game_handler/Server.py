@@ -51,8 +51,9 @@ class Server(BaseHTTPRequestHandler):
                 log.log(f"Savienots ar spēli: {data.title}")
 
             # Update the hyperparameters
-            if data.played_episodes % config.episodes_per_hyperparameter == 0:
+            if data.played_episodes % config.episodes_per_hyperparameter == 0 and body.get("lost"):
                 algo_handler.hp.adjust()
+                log.verbose(f"Changed the hyperparameters; episode #{data.played_episodes} was just played")
             
             action = -1
             try:

@@ -59,7 +59,9 @@ def save():
         hp_file.write(json.dumps(algo_handler.hp.hyperparameters))
         hp_file.close()
 
-        graph_generator.generate_graph()
+        generated_graph = graph_generator.generate_graph()
+        if generated_graph != None:
+            generated_graph.savefig(os.path.join(config.directory, "../data/", config.output_file_name + ".png"))
 
         log.log(f"Dati saglabāti ar nosaukumu \"{config.output_file_name}\"")
     except Exception as e:
