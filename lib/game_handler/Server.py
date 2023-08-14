@@ -26,6 +26,7 @@ class Server(BaseHTTPRequestHandler):
         if is_ready and body.get("lost"):
             results.add(data.curr_score)
             data.played_episodes += 1
+            saving.autosave()
         
         bp.parse(
             body.get("title"),

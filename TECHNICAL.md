@@ -11,6 +11,7 @@ Vadošā programma izmanto Python 3 un ceļš uz galveno skriptu ir ```lib/main.
 | ```--output``` | ```-o``` | Nosaukums datnēm, kurās tiks saglabāti dati. Ja netiks norādīts, tie netiks saglabāti |
 | ```--episodes-per-hyperparameter``` | ```-eph``` | Epizožu skaits spēlē, ik pa kurai tiek nomainīti hiperparametri un restartēts algoritms (EPH jeb *Episodes per hyperparameter*) |
 | ```--hp-adjustment-strategy``` | ```-has``` | Stratēģija, kā izvēlēties hiperparametrus. Var būt ```default``` (vērtības netiks mainītas; tiks izmantotas tās, kas ir iekļautas algoritma skriptā), ```random``` (vērtības tiks izvēlētas nejauši) vai ```bayesian``` (vērtības tiks izvēlētas, izmantojot Beiesa optimizāciju). |
+| ```--autosave-interval``` | ```-as``` | Epizožu skaits, ik pēc kurām tiek saglabāti dati. Ja netiks norādīts, dati tiks saglabāti tikai procesa apturēšanas mirklī. |
 | ```--no-graphs``` | ```-ng``` | Nesaglabāt grafikus |
 | ```--verbose``` | ```-v``` | Rādīt pilnīgi visu izvadi terminālī |
 

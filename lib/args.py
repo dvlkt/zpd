@@ -31,6 +31,11 @@ def parse():
         "-has", "--hp-adjustment-strategy",
         help="Stratēģija, kā izvēlēties hiperparametrus. Vērtības var būt \"default\", \"random\" vai \"bayesian\".")
     arg_parser.add_argument(
+        "-as", "--autosave-interval",
+        type=int,
+        help="Epizožu skaits, ik pēc kurām tiek saglabāti dati. Ja netiks norādīts, dati tiks saglabāti tikai procesa apturēšanas mirklī"
+    )
+    arg_parser.add_argument(
         "-ng", "--no-graphs",
         action="store_true",
         help="Nesaglabāt grafikus")
@@ -90,6 +95,17 @@ def parse():
         log.warn(f"Netika norādīta HP izvēles stratēģija, tiks izmantota noklusējuma vērtība: \"{config.hp_adjustment_strategy}\"")
     if args.hp_adjustment_strategy == "bayesian":
         log.warn("\"bayesian\" hiperparametru izvēles stratēģija vēl nestrādā; hiperparametri tiks izvēlēti nejauši")
+
+    # Autosave interval
+    if args.autosave_interval != None:
+        if args.output == None:
+            log.warn(f"Ir norādīts datu saglabāšanas intervāls, bet ne izvadnes ceļš. Nekas netiks saglabāts.")
+        else:
+            config.autosave_interval = args.autosave_interval
+            log.log(f"Dati tiks saglabāti katras {args.autosave_interval} epizodes")
+    else:
+        if args.output != None:
+            log.warn(f"Dati tiks saglabāti tikai procesa apturēšanas mirklī!")
     
     # Graphs
     if args.no_graphs:

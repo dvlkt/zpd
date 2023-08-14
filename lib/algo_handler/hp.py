@@ -19,12 +19,18 @@ def init(values) -> None:
         hyperparameters = hyperparameters[:1]
 
 def get_values() -> List[float]:
+    if len(hyperparameters) == 0:
+        return []
+
     results = []
     for h in hyperparameters:
         results.append(h["value"])
     return results
 
 def get_named_values() -> Dict[str, float]:
+    if len(hyperparameters) == 0:
+        return {}
+
     results = {}
     for h in hyperparameters:
         results[h["name"]] = h["value"]

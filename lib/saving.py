@@ -33,11 +33,12 @@ def load():
     except Exception as e:
         log.error(f"Nevarēja ielādēt datus (Vai visi nepieciešamie faili eksistē?): {e}")
 
-def save():
+def save(is_autosave=False):
     if config.output_file_name == None:
         return
 
-    log.log("Saglabā datus...")
+    if not is_autosave:
+        log.log("Saglabā datus...")
 
     try:
         if not os.path.exists(os.path.join(config.directory, "../data")):
@@ -59,10 +60,18 @@ def save():
         hp_file.write(json.dumps(algo_handler.hp.hyperparameters))
         hp_file.close()
 
-        generated_graph = graph_generator.generate_graph()
-        if generated_graph != None:
-            generated_graph.savefig(os.path.join(config.directory, "../data/", config.output_file_name + ".png"))
+        if not is_autosave:
+            generated_graph = graph_generator.generate_graph()
+            if generated_graph != None:
+                generated_graph.savefig(os.path.join(config.directory, "../data/", config.output_file_name + ".png"))
 
-        log.log(f"Dati saglabāti ar nosaukumu \"{config.output_file_name}\"")
+        if not is_autosave:
+            log.log(f"Dati saglabāti ar nosaukumu \"{config.output_file_name}\"")
+        else:
+            log.verbose(f"Dati saglabāti")
     except Exception as e:
         log.error(f"Nevarēja saglabāt datus: {e}")
+
+def autosave():
+    if game_handler.data.played_episodes % config.autosave_interval == 0:
+        save(is_autosave=True)

@@ -21,3 +21,5 @@ is_verbose: bool = False
 input_file_name: str | None = None
 
 output_file_name: str | None = None
+
+autosave_interval: int | None = None
