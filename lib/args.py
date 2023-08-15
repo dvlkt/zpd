@@ -29,7 +29,7 @@ def parse():
         help="Epizožu skaits spēlē, ik pa kurai tiek nomainīti hiperparametri un restartēts algoritms (EPH)")
     arg_parser.add_argument(
         "-has", "--hp-adjustment-strategy",
-        help="Stratēģija, kā izvēlēties hiperparametrus. Vērtības var būt \"default\", \"random\" vai \"bayesian\".")
+        help="Stratēģija, kā izvēlēties hiperparametrus. Vērtības var būt \"default\", \"random\" vai \"grid\".")
     arg_parser.add_argument(
         "-as", "--autosave-interval",
         type=int,
@@ -93,8 +93,6 @@ def parse():
     else:
         config.hp_adjustment_strategy = config.DEFAULT_HP_ADJUSTMENT_STRATEGY
         log.warn(f"Netika norādīta HP izvēles stratēģija, tiks izmantota noklusējuma vērtība: \"{config.hp_adjustment_strategy}\"")
-    if args.hp_adjustment_strategy == "bayesian":
-        log.warn("\"bayesian\" hiperparametru izvēles stratēģija vēl nestrādā; hiperparametri tiks izvēlēti nejauši")
 
     # Autosave interval
     if args.autosave_interval != None:

@@ -11,7 +11,7 @@ algorithm: str = None
 episodes_per_hyperparameter: int = 100
 
 DEFAULT_HP_ADJUSTMENT_STRATEGY = "default"
-VALID_HP_ADJUSTMENT_STRATEGIES = ["default", "random", "bayesian"]
+VALID_HP_ADJUSTMENT_STRATEGIES = ["default", "random", "grid"]
 hp_adjustment_strategy: str = None
 
 create_graphs: bool = True
