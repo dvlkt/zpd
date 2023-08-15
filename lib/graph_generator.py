@@ -5,10 +5,11 @@ import algo_handler
 import game_handler
 import log
 
-def __gen_1hp_graph():
-    log.error("Pašlaik programma vēl neatbalsta grafikus ar 1 hiperparametru!")
+def __gen_1hp_graph(is_silent):
+    if not is_silent:
+        log.error("Pašlaik programma vēl neatbalsta grafikus ar 1 hiperparametru!")
 
-def __gen_2hp_graph():
+def __gen_2hp_graph(is_silent):
     # Process the data
     hp1_values = []
     hp2_values = []
@@ -21,10 +22,12 @@ def __gen_2hp_graph():
         avg_scores.append(r["avg_score"])
     
     if len(avg_scores) < 3:
-        log.warn("Netiks izveidots grafiks, jo tam ir nepieciešami vismaz 3 datu punkti")
+        if not is_silent:
+            log.warn("Netiks izveidots grafiks, jo tam ir nepieciešami vismaz 3 datu punkti")
         return
     
-    log.verbose(f"Grafikā iekļauti {len(avg_scores)} punkti")
+    if not is_silent:
+        log.verbose(f"Grafikā iekļauti {len(avg_scores)} punkti")
     
     # Create the plot
     levels = np.linspace(np.min(avg_scores), np.max(avg_scores), 7)
@@ -36,8 +39,12 @@ def __gen_2hp_graph():
 
     return fig
 
+def __gen_3hp_graph(is_silent):
+    if not is_silent:
+        log.error("Pašlaik programma vēl neatbalsta grafikus ar 3 hiperparametriem!")
 
-def generate_graph():
+
+def generate_graph(is_silent=False):
     if algo_handler.hp.hyperparameters == None:
         log.verbose("Netiks ģenerēts grafiks")
         return
@@ -45,14 +52,22 @@ def generate_graph():
     hp_count = len(algo_handler.hp.hyperparameters)
     
     if hp_count > 0:
-        log.log("Ģenerē grafiku...")
+        if not is_silent:
+            log.log("Ģenerē grafiku...")
 
     if hp_count == 1:
-        log.verbose("Tiks ģenerēts grafiks ar 1 hiperparametru")
-        return __gen_1hp_graph()
+        if not is_silent:
+            log.verbose("Tiks ģenerēts grafiks ar 1 hiperparametru")
+        return __gen_1hp_graph(is_silent)
     elif hp_count == 2:
-        log.verbose("Tiks ģenerēts grafiks ar 2 hiperparametriem")
-        return __gen_2hp_graph()
+        if not is_silent:
+            log.verbose("Tiks ģenerēts grafiks ar 2 hiperparametriem")
+        return __gen_2hp_graph(is_silent)
+    elif hp_count == 3:
+        if not is_silent:
+            log.verbose("Tiks ģenerēts grafiks ar 3 hiperparametriem")
+        return __gen_3hp_graph(is_silent)
     else:
-        log.verbose("Netiks ģenerēts grafiks")
+        if not is_silent:
+            log.verbose("Netiks ģenerēts grafiks")
         return

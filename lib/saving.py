@@ -62,10 +62,9 @@ def save(is_autosave=False):
         hp_file.write(json.dumps(algo_handler.hp.hyperparameters))
         hp_file.close()
 
-        if not is_autosave:
-            generated_graph = graph_generator.generate_graph()
-            if generated_graph != None:
-                generated_graph.savefig(os.path.join(config.directory, "../data/", config.output_file_name + ".png"))
+        generated_graph = graph_generator.generate_graph(is_silent=is_autosave)
+        if generated_graph != None:
+            generated_graph.savefig(os.path.join(config.directory, "../data/", config.output_file_name + ".png"))
 
         if not is_autosave:
             log.log(f"Dati saglabāti ar nosaukumu \"{config.output_file_name}\"")
