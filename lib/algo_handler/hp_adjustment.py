@@ -23,21 +23,25 @@ def __grid_adjust() -> None:
         min_v = hp.hyperparameters[h]["min"]
         max_v = hp.hyperparameters[h]["max"]
         hp.hyperparameters[h]["value"] = grid_pos[h] * (max_v - min_v) + min_v
-    used_positions.append(grid_pos)
+    used_positions.append(tuple(grid_pos))
 
-    i = 0
-    while i < len(hp.hyperparameters):
-        if grid_pos[i] >= 1:
-            grid_pos[i] = 0
-            i += 1
-            continue
-        
-        grid_pos[i] += 1 / 2 ** grid_step
-        break
-    else:
-        # If all HPs == 1, enter the next step
-        grid_step += 1
-        grid_pos = [0 for o in range(len(hp.hyperparameters))]
+    while True:
+        i = 0
+        while i < len(hp.hyperparameters):
+            if grid_pos[i] >= 1:
+                grid_pos[i] = 0
+                i += 1
+                continue
+            
+            grid_pos[i] += 1 / 2 ** grid_step
+            break
+        else:
+            # If all HPs == 1, enter the next step
+            grid_step += 1
+            grid_pos = [0 for o in range(len(hp.hyperparameters))]
+
+        if not tuple(grid_pos) in used_positions:
+            break
 
 
 def adjust() -> None:
