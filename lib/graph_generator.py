@@ -54,6 +54,7 @@ def generate_graph(is_silent=False):
     if hp_count > 0:
         if not is_silent:
             log.log("Ģenerē grafiku...")
+        plt.close()
 
     if hp_count == 1:
         if not is_silent:
