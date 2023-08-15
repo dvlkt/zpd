@@ -27,7 +27,9 @@ def load():
         hp_file = open(os.path.join(config.directory, "../data/", config.input_file_name + ".hp.json"), "r")
         algo_handler.hp.hyperparameters = json.loads(str(hp_file.read()))
 
-        game_handler.data.played_episodes = len(game_handler.data.results)
+        game_handler.data.played_episodes = 0
+        for i in game_handler.data.results:
+            game_handler.data.played_episodes += len(i["scores"])
 
         log.log(f"Dati ielādēti no \"{config.input_file_name}\"")
     except Exception as e:
