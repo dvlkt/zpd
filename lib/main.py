@@ -15,7 +15,7 @@ def main():
 def on_exit():
     saving.save()
     
-    log.log("حَرَام Programma pārtraukta.")
+    log.log("Programma pārtraukta.")
 
 if __name__ == "__main__":
     main()

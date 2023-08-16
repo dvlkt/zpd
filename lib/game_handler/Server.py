@@ -62,7 +62,9 @@ class Server(BaseHTTPRequestHandler):
             if data.played_episodes % config.episodes_per_hyperparameter == 0 and body.get("lost") and config.hp_adjustment_strategy != "default":
                 algo_handler.hp_adjustment.adjust()
                 updated_hyperparameters = algo_handler.hp.get_values()
-                log.verbose(f"Changed the hyperparameters; episode #{data.played_episodes} was just played")
+                
+                hyperparameter_value_string = ", ".join([f"{i['name']}: {i['value']}" for i in algo_handler.hp.hyperparameters])
+                log.verbose(f"Hiperparametri tika nomainīti ({hyperparameter_value_string}); {data.played_episodes}. epizode pabeigta")
             
             action = -1
             try:
