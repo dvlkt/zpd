@@ -17,21 +17,21 @@ Pieejamie algoritmi ir:
 
 - ```random``` - veic darbības pēc nejaušības principa. Domāts tikai testēšanai; tas neko nemācās.
 
-- ```kazimirs-q-learning``` - Kazimira veidots Q mācīšanās algoritms.
+- ```kazimirs-q-learning``` - Kazimira veidots Q mācīšanās algoritms (apšaubāms).
 
-- ```davis-q-learning``` - Dāvja veidots Q mācīšanās algoritms.
+- ```davis-q-learning``` - Dāvja veidots Q mācīšanās algoritms (ieteicams).
 
 ## *Google Chrome* dinozaura spēle (```/chrome-dino/```)
 
 Lai to spēlētu, atveriet ```/chrome-dino/index.html``` interneta pārlūkprogrammā. Neaizmirstiet pievienot ```--port 1781``` argumentu, kad atverat mašīnmācīšanās skriptu.
 
-## *Minesweeper*
+## *Tetris*
 
 Šī spēle vēl nav iekļauta šajā repozitorijā.
 
-## Trešā spēle
+## *Pong*
 
-Vēl tiks izlemta.
+Šī spēle vēl nav iekļauta šajā repozitorijā.
 
 ***
 
