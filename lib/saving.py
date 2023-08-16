@@ -27,6 +27,9 @@ def load():
         hp_file = open(os.path.join(config.directory, "../data/", config.input_file_name + ".hp.json"), "r")
         algo_handler.hp.hyperparameters = json.loads(str(hp_file.read()))
 
+        has_file = open(os.path.join(config.directory, "../data/", config.input_file_name + ".has.json"), "r")
+        algo_handler.hp_adjustment.load(json.loads(str(has_file.read())))
+
         game_handler.data.played_episodes = 0
         for i in game_handler.data.results:
             game_handler.data.played_episodes += len(i["scores"])
@@ -61,6 +64,10 @@ def save(is_autosave=False):
         hp_file = open(os.path.join(config.directory, "../data/", config.output_file_name + ".hp.json"), "w")
         hp_file.write(json.dumps(algo_handler.hp.hyperparameters))
         hp_file.close()
+        
+        has_file = open(os.path.join(config.directory, "../data/", config.output_file_name + ".has.json"), "w")
+        has_file.write(json.dumps(algo_handler.hp_adjustment.save()))
+        has_file.close()
 
         generated_graph = graph_generator.generate_graph(is_silent=is_autosave)
         if generated_graph != None:

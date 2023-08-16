@@ -7,6 +7,12 @@ def __random_adjust() -> None:
     for h in hp.hyperparameters:
         h["value"] = random.uniform(h["min"], h["max"])
 
+def __random_load(data) -> None:
+    return
+
+def __random_save() -> dict:
+    return {}
+
 
 grid_step = 0
 grid_pos = None
@@ -43,9 +49,35 @@ def __grid_adjust() -> None:
         if not tuple(grid_pos) in used_positions:
             break
 
+def __grid_load(data) -> None:
+    global grid_step, grid_pos, used_positions
+
+    grid_step = int(data["step"])
+    grid_pos = data["pos"]
+    used_positions = data["used"]
+
+def __grid_save() -> dict:
+    global grid_step, grid_pos, used_positions
+
+    return {
+        "step": grid_step,
+        "pos": grid_pos,
+        "used": used_positions
+    }
+
 
 def adjust() -> None:
     if config.hp_adjustment_strategy == "grid":
         __grid_adjust()
     elif config.hp_adjustment_strategy == "random":
         __random_adjust()
+
+def save() -> dict:
+    return {
+        "random": __random_save(),
+        "grid": __grid_save()
+    }
+
+def load(data) -> None:
+    __random_load(data["random"])
+    __grid_load(data["grid"])
