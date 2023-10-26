@@ -10,20 +10,16 @@ used_positions = []
 def adjust() -> None:
     global step, pos, used_positions
 
-    if hp.hyperparameters == None:
-        return
     if pos == None:
-        pos = [0 for i in range(len(hp.hyperparameters))]
+        pos = [0, 0]
 
-    for h in range(len(hp.hyperparameters)):
-        min_v = hp.hyperparameters[h]["min"]
-        max_v = hp.hyperparameters[h]["max"]
-        hp.hyperparameters[h]["value"] = pos[h] * (max_v - min_v) + min_v
+    hp.learning_rate = pos[0]
+    hp.discount_factor = pos[1]
     used_positions.append(tuple(pos))
 
     while True:
         i = 0
-        while i < len(hp.hyperparameters):
+        while i < 2:
             if pos[i] >= 1:
                 pos[i] = 0
                 i += 1
@@ -34,7 +30,7 @@ def adjust() -> None:
         else:
             # If all HPs == 1, enter the next step
             step += 1
-            pos = [0 for o in range(len(hp.hyperparameters))]
+            pos = [0, 0]
 
         if not tuple(pos) in used_positions:
             break

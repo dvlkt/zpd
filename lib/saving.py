@@ -25,7 +25,9 @@ def load():
         log.file_log = str(log_file.read())
 
         hp_file = open(os.path.join(config.directory, "../data/", config.input_file_name + ".hp.json"), "r")
-        algorithm.hp.hyperparameters = json.loads(str(hp_file.read()))
+        hyperparameters = json.loads(str(hp_file.read()))
+        algorithm.hp.learning_rate = hyperparameters["learning_rate"]
+        algorithm.hp.discount_factor = hyperparameters["discount_factor"]
 
         has_file = open(os.path.join(config.directory, "../data/", config.input_file_name + ".grid.json"), "r")
         algorithm.hp_adjustment.load(json.loads(str(has_file.read())))
@@ -62,7 +64,10 @@ def save(is_autosave=False):
         log_file.close()
 
         hp_file = open(os.path.join(config.directory, "../data/", config.output_file_name + ".hp.json"), "w")
-        hp_file.write(json.dumps(algorithm.hp.hyperparameters))
+        hp_file.write(json.dumps({
+            "learning_rate": algorithm.hp.learning_rate,
+            "discount_factor": algorithm.hp.discount_factor
+        }))
         hp_file.close()
         
         has_file = open(os.path.join(config.directory, "../data/", config.output_file_name + ".grid.json"), "w")

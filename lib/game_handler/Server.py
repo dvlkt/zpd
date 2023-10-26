@@ -38,16 +38,13 @@ class Server(BaseHTTPRequestHandler):
 
         if is_ready:
             # Initialize if the algorithm hasn't been initialized yet
-            if algorithm.hp.hyperparameters == None:
-
+            if algorithm.hp.learning_rate == None or algorithm.hp.discount_factor == None:
                 try:
-                    hyperparameters = algorithm.current.init({
+                    algorithm.current.init({
                         "action_count": data.action_count,
                         "state_size": data.state_size
                     }, saving.loaded_state)
-
-                    algorithm.hp.init(hyperparameters)
-
+                    
                     algorithm.hp_adjustment.adjust()
 
                 except Exception as e:
@@ -56,12 +53,10 @@ class Server(BaseHTTPRequestHandler):
                 log.log("Algoritms ir uzsākts un savienots ar spēli!")
 
             # Update the hyperparameters
-            updated_hyperparameters = None
             if data.played_episodes % config.episodes_per_hyperparameter == 0 and body.get("lost"):
                 algorithm.hp_adjustment.adjust()
-                updated_hyperparameters = algorithm.hp.get_values()
                 
-                hyperparameter_value_string = ", ".join([f"{i['name']}: {i['value']}" for i in algorithm.hp.hyperparameters])
+                hyperparameter_value_string = f"mācīšanās ātrums: {algorithm.hp.learning_rate}, atlaides faktors: {algorithm.hp.discount_factor}"
                 log.verbose(f"Hiperparametri tika nomainīti ({hyperparameter_value_string}); {data.played_episodes}. epizode pabeigta")
             
             action = -1
@@ -72,7 +67,7 @@ class Server(BaseHTTPRequestHandler):
                     "state": data.curr_state,
                     "score": data.curr_score,
                     "lost": data.has_lost
-                }, updated_hyperparameters)
+                }, [algorithm.hp.learning_rate, algorithm.hp.discount_factor])
             except Exception as e:
                 log.error(f"Nevarēja atjaunot algoritmu: {e}")
             

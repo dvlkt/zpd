@@ -4,7 +4,10 @@ import game_handler.data as data
 import algorithm.hp
 
 def add(score: int) -> None:
-    hp_values = algorithm.hp.get_named_values()
+    hp_values = {
+        "learning_rate": algorithm.hp.learning_rate,
+        "discount_factor": algorithm.hp.discount_factor
+    }
 
     new_hyperparameters: bool = False
     if len(data.results) == 0:
