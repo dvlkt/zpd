@@ -27,7 +27,7 @@ def load():
         hp_file = open(os.path.join(config.directory, "../data/", config.input_file_name + ".hp.json"), "r")
         algo_handler.hp.hyperparameters = json.loads(str(hp_file.read()))
 
-        has_file = open(os.path.join(config.directory, "../data/", config.input_file_name + ".has.json"), "r")
+        has_file = open(os.path.join(config.directory, "../data/", config.input_file_name + ".grid.json"), "r")
         algo_handler.hp_adjustment.load(json.loads(str(has_file.read())))
 
         game_handler.data.played_episodes = 0
@@ -65,7 +65,7 @@ def save(is_autosave=False):
         hp_file.write(json.dumps(algo_handler.hp.hyperparameters))
         hp_file.close()
         
-        has_file = open(os.path.join(config.directory, "../data/", config.output_file_name + ".has.json"), "w")
+        has_file = open(os.path.join(config.directory, "../data/", config.output_file_name + ".grid.json"), "w")
         has_file.write(json.dumps(algo_handler.hp_adjustment.save()))
         has_file.close()
 
@@ -81,5 +81,5 @@ def save(is_autosave=False):
         log.error(f"Nevarēja saglabāt datus: {e}")
 
 def autosave():
-    if game_handler.data.played_episodes % config.autosave_interval == 0:
+    if config.autosave_interval != None and game_handler.data.played_episodes % config.autosave_interval == 0:
         save(is_autosave=True)
