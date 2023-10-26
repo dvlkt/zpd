@@ -1,3 +1,5 @@
+# Liela daļa šajā failā iekļautās informācijas var būt novecojusi!
+
 # Komandas argumenti
 
 Vadošā programma izmanto Python 3 un ceļš uz galveno skriptu ir ```lib/main.py```.

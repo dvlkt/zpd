@@ -59,7 +59,7 @@ class Server(BaseHTTPRequestHandler):
 
             # Update the hyperparameters
             updated_hyperparameters = None
-            if data.played_episodes % config.episodes_per_hyperparameter == 0 and body.get("lost") and config.hp_adjustment_strategy != "default":
+            if data.played_episodes % config.episodes_per_hyperparameter == 0 and body.get("lost"):
                 algo_handler.hp_adjustment.adjust()
                 updated_hyperparameters = algo_handler.hp.get_values()
                 
