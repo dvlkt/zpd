@@ -1,4 +1,3 @@
-title = None
 state_size = None
 action_count = None
 

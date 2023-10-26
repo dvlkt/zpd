@@ -1539,7 +1539,6 @@ setInterval(() => {
 
 	// Send the dimensions and title for the first request
 	if (!isInitRequestSent) {
-		request.title = "Google Chrome Dino"
 		request.stateSize = STATE_SIZE;
 		request.actionCount = 2;
 		isInitRequestSent = true;

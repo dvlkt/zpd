@@ -29,7 +29,6 @@ class Server(BaseHTTPRequestHandler):
             saving.autosave()
         
         bp.parse(
-            body.get("title"),
             body.get("stateSize"),
             body.get("actionCount"),
             body.get("state"),
@@ -54,8 +53,7 @@ class Server(BaseHTTPRequestHandler):
                 except Exception as e:
                     log.error(f"Nevarēja uzsākt algoritmu: {e}")
                 
-                log.log("Algoritms ir uzsākts!")
-                log.log(f"Savienots ar spēli: {data.title}")
+                log.log("Algoritms ir uzsākts un savienots ar spēli!")
 
             # Update the hyperparameters
             updated_hyperparameters = None

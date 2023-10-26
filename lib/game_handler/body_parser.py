@@ -4,17 +4,12 @@ import game_handler.data as data
 import log
 
 def is_ready() -> bool:
-    if data.title == None or data.state_size == None or data.action_count == None:
+    if data.state_size == None or data.action_count == None:
         return False
     else:
         return True
 
-def parse(title: str | None, state_size: int | None, action_count: int | None, state: List[int] | None, score: int | None, lost: bool | None) -> None:
-    ## Initial settings ##
-    if data.title == None and title != None:
-        data.title = title
-        log.verbose(f"Spēles nosaukums iestatīts: {data.title}")
-    
+def parse(state_size: int | None, action_count: int | None, state: List[int] | None, score: int | None, lost: bool | None) -> None:
     if data.state_size == None and state_size != None:
         data.state_size = state_size
         log.verbose(f"Spēles stāvokļa izmērs iestatīts: {data.state_size}")
@@ -23,10 +18,10 @@ def parse(title: str | None, state_size: int | None, action_count: int | None, s
         data.action_count = action_count
         log.verbose(f"Spēles darbību skaits iestatīts: {data.action_count}")
     
-    if data.title == None or data.state_size == None or data.action_count == None:
+    if data.state_size == None or data.action_count == None:
         return
     
-    ## Updated fields ##
+    # Updated fields
     if state != None:
         data.curr_state = state
     
