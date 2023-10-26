@@ -4,9 +4,9 @@ import json
 import game_handler.data as data
 import game_handler.body_parser as bp
 import game_handler.results as results
-import algo_handler
-import algo_handler.hp
-import algo_handler.hp_adjustment
+import algorithm
+import algorithm.hp
+import algorithm.hp_adjustment
 import saving
 import log
 import config
@@ -38,17 +38,17 @@ class Server(BaseHTTPRequestHandler):
 
         if is_ready:
             # Initialize if the algorithm hasn't been initialized yet
-            if algo_handler.hp.hyperparameters == None:
+            if algorithm.hp.hyperparameters == None:
 
                 try:
-                    hyperparameters = algo_handler.current.init({
+                    hyperparameters = algorithm.current.init({
                         "action_count": data.action_count,
                         "state_size": data.state_size
                     }, saving.loaded_state)
 
-                    algo_handler.hp.init(hyperparameters)
+                    algorithm.hp.init(hyperparameters)
 
-                    algo_handler.hp_adjustment.adjust()
+                    algorithm.hp_adjustment.adjust()
 
                 except Exception as e:
                     log.error(f"Nevarēja uzsākt algoritmu: {e}")
@@ -58,15 +58,15 @@ class Server(BaseHTTPRequestHandler):
             # Update the hyperparameters
             updated_hyperparameters = None
             if data.played_episodes % config.episodes_per_hyperparameter == 0 and body.get("lost"):
-                algo_handler.hp_adjustment.adjust()
-                updated_hyperparameters = algo_handler.hp.get_values()
+                algorithm.hp_adjustment.adjust()
+                updated_hyperparameters = algorithm.hp.get_values()
                 
-                hyperparameter_value_string = ", ".join([f"{i['name']}: {i['value']}" for i in algo_handler.hp.hyperparameters])
+                hyperparameter_value_string = ", ".join([f"{i['name']}: {i['value']}" for i in algorithm.hp.hyperparameters])
                 log.verbose(f"Hiperparametri tika nomainīti ({hyperparameter_value_string}); {data.played_episodes}. epizode pabeigta")
             
             action = -1
             try:
-                action = algo_handler.current.update({ # This is where the magic happens
+                action = algorithm.current.update({ # This is where the magic happens
                     "action_count": data.action_count,
                     "state_size": data.state_size,
                     "state": data.curr_state,

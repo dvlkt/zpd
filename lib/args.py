@@ -2,7 +2,7 @@ import argparse
 
 import config
 import log
-import algo_handler
+import algorithm
 
 def parse():
     arg_parser = argparse.ArgumentParser(

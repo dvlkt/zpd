@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-import algo_handler
+import algorithm
 import game_handler
 import log
 

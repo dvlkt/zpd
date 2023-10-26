@@ -1,10 +1,10 @@
 import numpy as np
 
 import game_handler.data as data
-import algo_handler.hp
+import algorithm.hp
 
 def add(score: int) -> None:
-    hp_values = algo_handler.hp.get_named_values()
+    hp_values = algorithm.hp.get_named_values()
 
     new_hyperparameters: bool = False
     if len(data.results) == 0:

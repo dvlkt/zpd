@@ -1,6 +1,6 @@
 import os, json
 
-import algo_handler
+import algorithm
 import config
 import log
 import game_handler.data
@@ -25,10 +25,10 @@ def load():
         log.file_log = str(log_file.read())
 
         hp_file = open(os.path.join(config.directory, "../data/", config.input_file_name + ".hp.json"), "r")
-        algo_handler.hp.hyperparameters = json.loads(str(hp_file.read()))
+        algorithm.hp.hyperparameters = json.loads(str(hp_file.read()))
 
         has_file = open(os.path.join(config.directory, "../data/", config.input_file_name + ".grid.json"), "r")
-        algo_handler.hp_adjustment.load(json.loads(str(has_file.read())))
+        algorithm.hp_adjustment.load(json.loads(str(has_file.read())))
 
         game_handler.data.played_episodes = 0
         for i in game_handler.data.results:
@@ -50,7 +50,7 @@ def save(is_autosave=False):
             os.makedirs(os.path.join(config.directory, "../data"))
         
         state_file = open(os.path.join(config.directory, "../data/", config.output_file_name + ".state.json"), "w")
-        state_file.write(json.dumps(algo_handler.get_save_data()))
+        state_file.write(json.dumps(algorithm.save()))
         state_file.close()
 
         result_file = open(os.path.join(config.directory, "../data/", config.output_file_name + ".results.json"), "w")
@@ -62,11 +62,11 @@ def save(is_autosave=False):
         log_file.close()
 
         hp_file = open(os.path.join(config.directory, "../data/", config.output_file_name + ".hp.json"), "w")
-        hp_file.write(json.dumps(algo_handler.hp.hyperparameters))
+        hp_file.write(json.dumps(algorithm.hp.hyperparameters))
         hp_file.close()
         
         has_file = open(os.path.join(config.directory, "../data/", config.output_file_name + ".grid.json"), "w")
-        has_file.write(json.dumps(algo_handler.hp_adjustment.save()))
+        has_file.write(json.dumps(algorithm.hp_adjustment.save()))
         has_file.close()
 
         generated_graph = graph_generator.generate_graph(is_silent=is_autosave)

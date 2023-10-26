@@ -1,7 +1,7 @@
 import random
 
 import config
-import algo_handler.hp as hp
+import algorithm.hp as hp
 
 step = 0
 pos = None
