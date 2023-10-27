@@ -7,37 +7,28 @@ import log
 import server.data
 import graph_generator
 
-loaded_state = {}
-
 def load():
     if config.input_file_name == None:
         return
 
     try:
-        global loaded_state
+        data_file = open(os.path.join(config.directory, "../data/", config.input_file_name + ".json"), "r")
+        load_data = json.loads(str(data_file.read()))
 
-        state_file = open(os.path.join(config.directory, "../data/", config.input_file_name + ".q_table.json"), "r")
-        loaded_state = json.loads(str(state_file.read()))
+        algorithm.q_table = load_data["q_table"]
 
-        result_file = open(os.path.join(config.directory, "../data/", config.input_file_name + ".results.json"), "r")
-        server.data.results = json.loads(str(result_file.read()))
-        server.data.played_episodes = 0
-        for i in server.data.results:
-            server.data.played_episodes += len(i["scores"])
+        algorithm.learning_rate = load_data["hyperparameters"]["learning_rate"]
+        algorithm.discount_factor = load_data["hyperparameters"]["discount_factor"]
+
+        algorithm.hp_adjustment.step = load_data["hyperparameters"]["grid"]["step"]
+        algorithm.hp_adjustment.pos = load_data["hyperparameters"]["grid"]["pos"]
+        algorithm.hp_adjustment.used = load_data["hyperparameters"]["grid"]["used"]
+
+        server.data.played_episodes = load_data["game_data"]["played_episodes"]
+        server.data.results = load_data["game_data"]["results"]
 
         log_file = open(os.path.join(config.directory, "../data/", config.input_file_name + ".log"), "r")
         log.file_log = str(log_file.read())
-
-        hp_file = open(os.path.join(config.directory, "../data/", config.input_file_name + ".hp.json"), "r")
-        hyperparameters = json.loads(str(hp_file.read()))
-        algorithm.learning_rate = hyperparameters["learning_rate"]
-        algorithm.discount_factor = hyperparameters["discount_factor"]
-
-        has_file = open(os.path.join(config.directory, "../data/", config.input_file_name + ".grid.json"), "r")
-        has_data = json.loads(str(has_file.read()))
-        step = int(has_data["step"])
-        pos = has_data["pos"]
-        used_positions = has_data["used"]
 
         log.log(f"Dati ielādēti no \"{config.input_file_name}\"")
     except Exception as e:
@@ -46,40 +37,37 @@ def load():
 def save(is_autosave=False):
     if config.output_file_name == None:
         return
-
+    
     if not is_autosave:
         log.log("Saglabā datus...")
-
+    
     try:
         if not os.path.exists(os.path.join(config.directory, "../data")):
             os.makedirs(os.path.join(config.directory, "../data"))
         
-        state_file = open(os.path.join(config.directory, "../data/", config.output_file_name + ".q_table.json"), "w")
-        state_file.write(json.dumps(algorithm.q_table))
-        state_file.close()
-
-        result_file = open(os.path.join(config.directory, "../data/", config.output_file_name + ".results.json"), "w")
-        result_file.write(json.dumps(server.data.results))
-        result_file.close()
+        save_data = {
+            "q_table": algorithm.q_table,
+            "hyperparameters": {
+                "learning_rate": algorithm.learning_rate,
+                "discount_factor": algorithm.discount_factor,
+                "grid": {
+                    "step": algorithm.hp_adjustment.step,
+                    "pos": algorithm.hp_adjustment.pos,
+                    "used": algorithm.hp_adjustment.used_positions
+                }
+            },
+            "game_data": {
+                "played_episodes": server.data.played_episodes,
+                "results": server.data.results
+            }
+        }
+        data_file = open(os.path.join(config.directory, "../data/", config.output_file_name + ".json"), "w")
+        data_file.write(json.dumps(save_data))
+        data_file.close()
 
         log_file = open(os.path.join(config.directory, "../data/", config.output_file_name + ".log"), "w")
         log_file.write(log.file_log)
         log_file.close()
-
-        hp_file = open(os.path.join(config.directory, "../data/", config.output_file_name + ".hp.json"), "w")
-        hp_file.write(json.dumps({
-            "learning_rate": algorithm.learning_rate,
-            "discount_factor": algorithm.discount_factor
-        }))
-        hp_file.close()
-        
-        has_file = open(os.path.join(config.directory, "../data/", config.output_file_name + ".grid.json"), "w")
-        has_file.write(json.dumps({
-            "step": algorithm.hp_adjustment.step,
-            "pos": algorithm.hp_adjustment.pos,
-            "used": algorithm.hp_adjustment.used_positions
-        }))
-        has_file.close()
 
         generated_graph = graph_generator.generate_graph(is_silent=is_autosave)
         if generated_graph != None:

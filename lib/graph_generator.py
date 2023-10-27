@@ -16,9 +16,8 @@ def generate_graph(is_silent=False):
     avg_scores = []
     
     for r in server.data.results:
-        curr_hp = list(r["hyperparameters"].values())
-        learning_rate_values.append(curr_hp[0])
-        discount_factor_values.append(curr_hp[1])
+        learning_rate_values.append(r["hyperparameters"][0])
+        discount_factor_values.append(r["hyperparameters"][1])
         avg_scores.append(r["avg_score"])
     
     if len(avg_scores) < 3:

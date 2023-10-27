@@ -45,7 +45,6 @@ class Server(BaseHTTPRequestHandler):
         
         # Initialize if the algorithm hasn't been initialized yet
         if algorithm.learning_rate == None or algorithm.discount_factor == None:
-            algorithm.q_table = saving.loaded_state
             algorithm.hp_adjustment.adjust()
             
             log.log("Algoritms ir uzsākts un savienots ar spēli!")
