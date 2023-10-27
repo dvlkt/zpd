@@ -1514,7 +1514,6 @@ let runnerInstance = new Runner('#runner');
 /* >>>> */
 
 /* >>>> */
-const STATE_SIZE = 1
 let isConnectedToServer = false;
 let statusElement = document.querySelector("#status");
 let isInitRequestSent = false;
@@ -1531,15 +1530,15 @@ const simulateKeyPress = (isJump, isKeyDown) => {
 }
 
 setInterval(() => {
+	let state = []
+
 	let request = {
 		score: runnerInstance.distanceRan ? Math.round(runnerInstance.distanceRan * 0.025) : 0, // Apparently this is how the score is calculated
-		state: [],
 		lost: runnerInstance.crashed
 	};
 
-	// Send the dimensions and title for the first request
+	// Send the action count for the first request
 	if (!isInitRequestSent) {
-		request.stateSize = STATE_SIZE;
 		request.actionCount = 2;
 		isInitRequestSent = true;
 	}
@@ -1548,11 +1547,12 @@ setInterval(() => {
 	let runnerObstacles = runnerInstance.horizon.obstacles;
 	for (let i = 0; i < 3; i++) {
 		if (i >= runnerObstacles.length) {
-			request.state.push(1000);
+			state.push(1000);
 		} else {
-			request.state.push(Math.round(runnerObstacles[i].xPos / 20));
+			state.push(Math.round(runnerObstacles[i].xPos / 20));
 		}
 	}
+	request.state = state.toString();
 
 	// Make the request
 	fetch("http://localhost:1781", {

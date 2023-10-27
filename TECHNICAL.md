@@ -83,9 +83,8 @@ Klients (spēle) un serveris (AI) komunicē caur HTTP POST pieprasījumiem. Serv
 
 | Nosaukums | Mainīgā veids | Apraksts |
 |---|---|---|
-| ```stateSize``` | ```number``` | Šī īpašība ir obligāti pirmoreiz jānosūta. Tas ir daudzums stāvokļu parametriem, kas pēc tam tiks sūtīti |
 | ```actionCount``` | ```number``` | Šī īpašība ir obligāti pirmoreiz jānosūta. Tas ir skaits darbībām, ko var spēlē izdarīt. |
-| ```state``` | ```[number]``` | Skaitļu saraksts, kur katrs skaitlis ir savs parametrs stāvoklim. |
+| ```state``` | ```string``` | Virkne, kas ataino stāvokli spēlē. |
 | ```score``` | ```number``` | Rezultāts spēlē. |
 | ```lost``` | ```boolean``` | Apraksta, vai spēle šajā mirklī tika zaudēta. |
 

@@ -15,11 +15,9 @@ last_state = None
 
 def update(data) -> int:
     global learning_rate, discount_factor, q_table, last_action, last_state
-
-    state = str(data["state"])
     
-    if not state in q_table:
-        q_table[state] = [q0 for i in range(data["action_count"]+1)]
+    if not data["state"] in q_table:
+        q_table[data["state"]] = [q0 for i in range(data["action_count"]+1)]
     
     # Update previous state/action Q values
     if last_action != None or last_state != None:
@@ -28,17 +26,17 @@ def update(data) -> int:
         else:
             reward = good_reward
         
-        q_table[last_state][last_action] = q_table[last_state][last_action] - learning_rate * (q_table[last_state][last_action] - (reward + discount_factor * max(q_table[state])))
+        q_table[last_state][last_action] = q_table[last_state][last_action] - learning_rate * (q_table[last_state][last_action] - (reward + discount_factor * max(q_table[data["state"]])))
     
     # Execute an action
     n = random()
     if n >= epsilon:
-        action = q_table[state].index(max(q_table[state]))
+        action = q_table[data["state"]].index(max(q_table[data["state"]]))
     else:
         action = randint(0, data["action_count"]-1)
     
     last_action = action
-    last_state = state
+    last_state = data["state"]
 
     return action - 1
 
