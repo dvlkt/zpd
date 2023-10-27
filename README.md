@@ -9,25 +9,13 @@
 
 ***
 
-## Algoritms (```/lib/```)
+## Mašīnmācīšanās programma (```/lib/```)
 
-Lai jebkura no šajā projektā pieejamajām spēlēm strādātu, fonā ir jābūt palaistam mašīnmācīšanās skriptam. Lai to paveiktu, atveriet ```/lib/main.py```, izmantojot Python 3 interpretētāju. Visus argumentus var apskatīt ```TECHNICAL.md```. Pārliecinieties, ka jums ir ielādētas visas pakotnes, kas ievietotas ```requirements.txt```.
-
-Pieejamie algoritmi ir:
-
-- ```random``` - veic darbības pēc nejaušības principa. Domāts tikai testēšanai; tas neko nemācās.
-
-- ```kazimirs-q-learning``` - Kazimira veidots Q mācīšanās algoritms (apšaubāms).
-
-- ```davis-q-learning``` - Dāvja veidots Q mācīšanās algoritms (ieteicams).
+Lai jebkura no šajā projektā pieejamajām spēlēm strādātu, fonā ir jābūt aktīvai mašīnmācīšanās programmai. Lai to paveiktu, atveriet ```lib```, izmantojot Python  interpretētāju (vismaz Python 3.10). Visus argumentus var apskatīt ```TECHNICAL.md``` vai ar ```--help``` argumentu. Pārliecinieties, ka jums ir ielādētas visas pakotnes, kas ievietotas ```requirements.txt```.
 
 ## *Google Chrome* dinozaura spēle (```/chrome-dino/```)
 
-Lai to spēlētu, atveriet ```/chrome-dino/index.html``` interneta pārlūkprogrammā. Neaizmirstiet pievienot ```--port 1781``` argumentu, kad atverat mašīnmācīšanās skriptu.
-
-## *Tetris*
-
-Šī spēle vēl nav iekļauta šajā repozitorijā.
+Lai to spēlētu, atveriet ```/chrome-dino/index.html``` interneta pārlūkprogrammā. Izmantojamais ports: ```1781```.
 
 ## *Pong*
 
