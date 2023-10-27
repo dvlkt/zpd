@@ -1,4 +1,3 @@
-state_size = None
 action_count = None
 
 curr_score = 0

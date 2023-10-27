@@ -1,12 +1,13 @@
 import os, json
 
 import algorithm
+import algorithm.hp_adjustment
 import config
 import log
-import game_handler.data
+import server.data
 import graph_generator
 
-loaded_state = None
+loaded_state = {}
 
 def load():
     if config.input_file_name == None:
@@ -19,7 +20,10 @@ def load():
         loaded_state = json.loads(str(state_file.read()))
 
         result_file = open(os.path.join(config.directory, "../data/", config.input_file_name + ".results.json"), "r")
-        game_handler.data.results = json.loads(str(result_file.read()))
+        server.data.results = json.loads(str(result_file.read()))
+        server.data.played_episodes = 0
+        for i in server.data.results:
+            server.data.played_episodes += len(i["scores"])
 
         log_file = open(os.path.join(config.directory, "../data/", config.input_file_name + ".log"), "r")
         log.file_log = str(log_file.read())
@@ -30,11 +34,10 @@ def load():
         algorithm.discount_factor = hyperparameters["discount_factor"]
 
         has_file = open(os.path.join(config.directory, "../data/", config.input_file_name + ".grid.json"), "r")
-        algorithm.hp_adjustment.load(json.loads(str(has_file.read())))
-
-        game_handler.data.played_episodes = 0
-        for i in game_handler.data.results:
-            game_handler.data.played_episodes += len(i["scores"])
+        has_data = json.loads(str(has_file.read()))
+        step = int(has_data["step"])
+        pos = has_data["pos"]
+        used_positions = has_data["used"]
 
         log.log(f"Dati ielādēti no \"{config.input_file_name}\"")
     except Exception as e:
@@ -56,7 +59,7 @@ def save(is_autosave=False):
         state_file.close()
 
         result_file = open(os.path.join(config.directory, "../data/", config.output_file_name + ".results.json"), "w")
-        result_file.write(json.dumps(game_handler.data.results))
+        result_file.write(json.dumps(server.data.results))
         result_file.close()
 
         log_file = open(os.path.join(config.directory, "../data/", config.output_file_name + ".log"), "w")
@@ -71,7 +74,11 @@ def save(is_autosave=False):
         hp_file.close()
         
         has_file = open(os.path.join(config.directory, "../data/", config.output_file_name + ".grid.json"), "w")
-        has_file.write(json.dumps(algorithm.hp_adjustment.save()))
+        has_file.write(json.dumps({
+            "step": algorithm.hp_adjustment.step,
+            "pos": algorithm.hp_adjustment.pos,
+            "used": algorithm.hp_adjustment.used_positions
+        }))
         has_file.close()
 
         generated_graph = graph_generator.generate_graph(is_silent=is_autosave)
@@ -86,5 +93,5 @@ def save(is_autosave=False):
         log.error(f"Nevarēja saglabāt datus: {e}")
 
 def autosave():
-    if config.autosave_interval != None and game_handler.data.played_episodes % config.autosave_interval == 0:
+    if config.autosave_interval != None and server.data.played_episodes % config.autosave_interval == 0:
         save(is_autosave=True)

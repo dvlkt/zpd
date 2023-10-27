@@ -1,4 +1,4 @@
-# Grafiku formatētājs (tikai 2 hiperparametru grafikiem)
+# Grafiku formatētājs
 
 import matplotlib.pyplot as plt
 import numpy as np

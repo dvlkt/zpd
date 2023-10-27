@@ -1,5 +1,4 @@
-from random import *
-from math import *
+from random import random, randint
 
 learning_rate = None
 discount_factor = None
@@ -18,7 +17,7 @@ def update(data) -> int:
     global learning_rate, discount_factor, q_table, last_action, last_state
 
     state = str(data["state"])
-
+    
     if not state in q_table:
         q_table[state] = [q0 for i in range(data["action_count"]+1)]
     

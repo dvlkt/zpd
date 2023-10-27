@@ -34,19 +34,3 @@ def adjust() -> None:
 
         if not tuple(pos) in used_positions:
             break
-
-def load(data) -> None:
-    global step, pos, used_positions
-
-    step = int(data["step"])
-    pos = data["pos"]
-    used_positions = data["used"]
-
-def save() -> dict:
-    global step, pos, used_positions
-
-    return {
-        "step": step,
-        "pos": pos,
-        "used": used_positions
-    }

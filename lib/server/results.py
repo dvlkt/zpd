@@ -1,6 +1,6 @@
 import numpy as np
 
-import game_handler.data as data
+import server.data as data
 import algorithm
 
 def add(score: int) -> None:

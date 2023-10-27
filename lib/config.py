@@ -2,8 +2,7 @@ import os
 
 directory: str = os.path.join(os.path.dirname(os.path.realpath(__file__)))
 
-DEFAULT_PORT = 1789
-port: int = None
+port: int | None = None
 
 episodes_per_hyperparameter: int = 100
 

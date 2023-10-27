@@ -1,10 +1,12 @@
+import atexit
 import argparse
 
-import config
+import saving
 import log
-import algorithm
+import server
+import config
 
-def parse():
+def main():
     arg_parser = argparse.ArgumentParser(
         prog="ZPD",
         description="Hiperparametru ietekme uz Q mācīšanos videospēļu vidē. Zinātniskās pētniecības darbs informātikas/programmēšanas sekcijā.",
@@ -14,37 +16,44 @@ def parse():
         "-p", "--port",
         type=int,
         help="Ports, ko izmantot (atkarīgs no spēles)")
+    
     arg_parser.add_argument(
         "-i", "--input",
         help="Nosaukums datnēm, no kurām ielādēt datus. Ja netiks norādīts, algoritms sāks mācīties no jauna")
+    
     arg_parser.add_argument(
         "-o", "--output",
         help="Nosaukums datnēm, kurās tiks saglabāti dati. Ja netiks norādīts, tie netiks saglabāti")
+    
     arg_parser.add_argument(
         "-eph", "--episodes-per-hyperparameter",
         type=int,
         help="Epizožu skaits spēlē, ik pa kurai tiek nomainīti hiperparametri un restartēts algoritms (EPH)")
+    
     arg_parser.add_argument(
         "-as", "--autosave-interval",
         type=int,
         help="Epizožu skaits, ik pēc kurām tiek saglabāti dati. Ja netiks norādīts, dati tiks saglabāti tikai procesa apturēšanas mirklī")
+    
     arg_parser.add_argument(
         "-ng", "--no-graphs",
         action="store_true",
         help="Nesaglabāt grafikus")
+    
     arg_parser.add_argument(
         "-v", "--verbose",
         action="store_true",
         help="Rādīt pilnīgi visu izvadi terminālī")
+    
     args = arg_parser.parse_args()
     
     # Port
     if args.port != None:
         config.port = args.port
+        log.log(f"Tiek izmantots ports: {config.port}")
     else:
-        config.port = config.DEFAULT_PORT
-        log.warn(f"Netika norādīts ports; tiks izmantots noklusējums: {config.port}")
-    log.log(f"Tiek izmantots ports: {config.port}")
+        log.error(f"Netika norādīts ports!")
+        return
     
     # Loading
     if args.input != None:
@@ -84,3 +93,16 @@ def parse():
     # Verbose mode
     if args.verbose:
         config.is_verbose = True
+    
+    saving.load()
+    server.run()
+    
+    atexit.register(on_exit)
+
+def on_exit():
+    saving.save()
+    
+    log.log("Programma pārtraukta.")
+
+if __name__ == "__main__":
+    main()

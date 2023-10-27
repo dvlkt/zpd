@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 import algorithm
-import game_handler
+import server.data
 import log
 
 def generate_graph(is_silent=False):
@@ -11,11 +11,11 @@ def generate_graph(is_silent=False):
     
     plt.close() # Close all of the previous plots to save memory
 
-    # Process the data
     learning_rate_values = []
     discount_factor_values = []
     avg_scores = []
-    for r in game_handler.data.results:
+    
+    for r in server.data.results:
         curr_hp = list(r["hyperparameters"].values())
         learning_rate_values.append(curr_hp[0])
         discount_factor_values.append(curr_hp[1])
@@ -25,6 +25,7 @@ def generate_graph(is_silent=False):
         if not is_silent:
             log.warn("Netiks izveidots grafiks, jo tam ir nepieciešami vismaz 3 datu punkti")
         return
+    
     if not is_silent:
         log.verbose(f"Grafikā iekļauti {len(avg_scores)} punkti")
     
@@ -33,4 +34,5 @@ def generate_graph(is_silent=False):
     fig, ax = plt.subplots()
     ax.plot(learning_rate_values, discount_factor_values, "o", markersize=1, color="grey")
     ax.tricontour(learning_rate_values, discount_factor_values, avg_scores, levels=levels)
+
     return fig
