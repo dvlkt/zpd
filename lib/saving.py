@@ -15,7 +15,7 @@ def load():
     try:
         global loaded_state
 
-        state_file = open(os.path.join(config.directory, "../data/", config.input_file_name + ".state.json"), "r")
+        state_file = open(os.path.join(config.directory, "../data/", config.input_file_name + ".q_table.json"), "r")
         loaded_state = json.loads(str(state_file.read()))
 
         result_file = open(os.path.join(config.directory, "../data/", config.input_file_name + ".results.json"), "r")
@@ -26,8 +26,8 @@ def load():
 
         hp_file = open(os.path.join(config.directory, "../data/", config.input_file_name + ".hp.json"), "r")
         hyperparameters = json.loads(str(hp_file.read()))
-        algorithm.hp.learning_rate = hyperparameters["learning_rate"]
-        algorithm.hp.discount_factor = hyperparameters["discount_factor"]
+        algorithm.learning_rate = hyperparameters["learning_rate"]
+        algorithm.discount_factor = hyperparameters["discount_factor"]
 
         has_file = open(os.path.join(config.directory, "../data/", config.input_file_name + ".grid.json"), "r")
         algorithm.hp_adjustment.load(json.loads(str(has_file.read())))
@@ -51,8 +51,8 @@ def save(is_autosave=False):
         if not os.path.exists(os.path.join(config.directory, "../data")):
             os.makedirs(os.path.join(config.directory, "../data"))
         
-        state_file = open(os.path.join(config.directory, "../data/", config.output_file_name + ".state.json"), "w")
-        state_file.write(json.dumps(algorithm.save()))
+        state_file = open(os.path.join(config.directory, "../data/", config.output_file_name + ".q_table.json"), "w")
+        state_file.write(json.dumps(algorithm.q_table))
         state_file.close()
 
         result_file = open(os.path.join(config.directory, "../data/", config.output_file_name + ".results.json"), "w")
@@ -65,8 +65,8 @@ def save(is_autosave=False):
 
         hp_file = open(os.path.join(config.directory, "../data/", config.output_file_name + ".hp.json"), "w")
         hp_file.write(json.dumps({
-            "learning_rate": algorithm.hp.learning_rate,
-            "discount_factor": algorithm.hp.discount_factor
+            "learning_rate": algorithm.learning_rate,
+            "discount_factor": algorithm.discount_factor
         }))
         hp_file.close()
         

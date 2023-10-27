@@ -1,7 +1,7 @@
 import random
 
 import config
-import algorithm.hp as hp
+import algorithm
 
 step = 0
 pos = None
@@ -13,8 +13,8 @@ def adjust() -> None:
     if pos == None:
         pos = [0, 0]
 
-    hp.learning_rate = pos[0]
-    hp.discount_factor = pos[1]
+    algorithm.learning_rate = pos[0]
+    algorithm.discount_factor = pos[1]
     used_positions.append(tuple(pos))
 
     while True:

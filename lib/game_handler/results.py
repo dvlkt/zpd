@@ -1,12 +1,12 @@
 import numpy as np
 
 import game_handler.data as data
-import algorithm.hp
+import algorithm
 
 def add(score: int) -> None:
     hp_values = {
-        "learning_rate": algorithm.hp.learning_rate,
-        "discount_factor": algorithm.hp.discount_factor
+        "learning_rate": algorithm.learning_rate,
+        "discount_factor": algorithm.discount_factor
     }
 
     new_hyperparameters: bool = False
