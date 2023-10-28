@@ -17,9 +17,9 @@ Lai jebkura no šajā projektā pieejamajām spēlēm strādātu, fonā ir jāb�
 
 Lai to spēlētu, atveriet ```/chrome-dino/index.html``` interneta pārlūkprogrammā. Izmantojamais ports: ```1781```.
 
-## *Pong*
+## *Pong* spēles pārtaisījums (```/pong/```)
 
-Šī spēle vēl nav iekļauta šajā repozitorijā.
+Lai to spēlētu, atveriet ```/pong/main.py``` ar Python 3 interpretētāju. Izmantojamais ports: ```1782```.
 
 ***
 

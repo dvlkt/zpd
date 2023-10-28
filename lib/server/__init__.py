@@ -31,7 +31,8 @@ class Server(BaseHTTPRequestHandler):
         if data.action_count == None: # Can't do anything before the action count is set
             try:
                 self.wfile.write(bytes(json.dumps({
-                    "action": -1
+                    "action": -1,
+                    "reset": False
                 }), "utf-8"))
             except Exception as e:
                 log.error(f"Nevarēja atgriezt datus spēlei: {e}")
@@ -44,12 +45,15 @@ class Server(BaseHTTPRequestHandler):
             data.curr_score = body.get("score")
         if body.get("lost") != None:
             data.has_lost = body.get("lost")
-
-        ### Update the hyperparameters ###
-        if algorithm.learning_rate == None or algorithm.discount_factor == None:
-            algorithm.hp_adjustment.adjust()
         
+        ### Update the hyperparameters ###
+        needs_reset = False
+        if algorithm.learning_rate == None or algorithm.discount_factor == None:
+            needs_reset = True
         if data.played_episodes % config.episodes_per_hyperparameter == 0 and body.get("lost"):
+            needs_reset = True
+        
+        if needs_reset:
             algorithm.reset()
             algorithm.hp_adjustment.adjust()
             
@@ -60,7 +64,8 @@ class Server(BaseHTTPRequestHandler):
         action = algorithm.update(data.action_count, data.curr_state, data.has_lost)
         try:
             self.wfile.write(bytes(json.dumps({
-                "action": action
+                "action": 1,
+                "reset": needs_reset
             }), "utf-8"))
         except Exception as e:
             log.error(f"Nevarēja atgriezt datus spēlei: {e}")

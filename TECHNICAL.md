@@ -27,3 +27,4 @@ Jebkuru no šīm īpašībām var pieprasījumā izlaist, ja vien aprakstā nav 
 | Nosaukums | Mainīgā veids | Apraksts |
 |---|---|---|
 | ```action``` | ```number``` | Skaitlis no ```-1``` līdz ```actionCount - 1```, kas apzīmē darbību, kas jāizpilda spēlē. |
+| ```reset``` | ```boolean``` | Apraksta, vai spēle ir pilnībā jārestartē (tas notiek tad, kad algoritms nomaina hiperparametrus)
