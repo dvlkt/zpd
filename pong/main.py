@@ -129,7 +129,7 @@ class Pong:
 
         self.screen.blit(pygame.transform.scale(self.s, self.screen_size), (0, 0))
         pygame.display.update()
-        pygame.display.get()
+        pygame.event.get()
 
 clock = pygame.time.Clock()
 p = Pong()
