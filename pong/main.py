@@ -5,6 +5,8 @@ import json
 import pygame
 import requests
 
+session = requests.Session()
+
 print("Mašīnmācīšanās programmai izmantojiet portu 1782!")
 
 class Pong:
@@ -64,7 +66,7 @@ class Pong:
             is_lost = True
         
         ## Send server request ##
-        req = requests.post("http://localhost:1782", json={
+        req = session.post("http://localhost:1782", json={
             "state": json.dumps((self.ball["x_pos"], self.ball["y_pos"])),
             "score": self.score,
             "lost": is_lost
@@ -104,7 +106,7 @@ class Pong:
         self.s = pygame.Surface((500, 500))
         
         ## Initial server request ##
-        requests.post("http://localhost:1782", json={
+        session.post("http://localhost:1782", json={
             "actionCount": 4,
             "state": json.dumps((self.ball["x_pos"], self.ball["y_pos"])),
             "score": self.score,
@@ -127,6 +129,7 @@ class Pong:
 
         self.screen.blit(pygame.transform.scale(self.s, self.screen_size), (0, 0))
         pygame.display.update()
+        pygame.display.get()
 
 clock = pygame.time.Clock()
 p = Pong()
