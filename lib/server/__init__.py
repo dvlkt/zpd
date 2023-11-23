@@ -64,7 +64,7 @@ class Server(BaseHTTPRequestHandler):
         action = algorithm.update(data.action_count, data.curr_state, data.has_lost)
         try:
             self.wfile.write(bytes(json.dumps({
-                "action": 1,
+                "action": action,
                 "reset": needs_reset
             }), "utf-8"))
         except Exception as e:
