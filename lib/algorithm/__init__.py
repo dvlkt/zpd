@@ -33,7 +33,7 @@ def update(action_count, state, has_lost) -> int:
     if n >= epsilon:
         action = q_table[state].index(max(q_table[state]))
     else:
-        action = randint(0, action_count-1)
+        action = randint(0, action_count)
     
     last_action = action
     last_state = state
