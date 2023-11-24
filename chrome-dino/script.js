@@ -1580,6 +1580,11 @@ setInterval(() => {
 			simulateKeyPress(data.action === 0, true);
 			setTimeout(() => simulateKeyPress(data.action === 0, false), 100);
 		}
+
+		// Reset if necessary
+		if (data.reset) {
+			window.location.reload();
+		}
 	}).catch((err) => {
 		if (isConnectedToServer) {
 			isConnectedToServer = false;

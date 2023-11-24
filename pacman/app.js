@@ -301,13 +301,13 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("game-over-screen").style.display = "flex";
       setTimeout(function () {
         window.location.reload();
-      }, 3000);
+      }, 0);
     }
   }
 
   //check for a win - more is when this score is reached
   function checkForWin() {
-    if (score === 274) {
+    if (score >= 274) {
       ghosts.forEach((ghost) => clearInterval(ghost.timerId));
       document.removeEventListener("keyup", movePacman);
       pacmanVelocity.x = 0;
@@ -321,18 +321,85 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   //start the game when enter is pressed
-  function startGame(event) {
-    if (event.keyCode === 13) {
-      document.removeEventListener("keydown", startGame);
-      //remove start screen
-      document.getElementById("start-screen").style.display = "none";
-      //set pacman velocity and enable movement
-      document.addEventListener("keyup", setPacmanVelocity);
-      movePacman();
-      // move the Ghosts randomly
-      ghosts.forEach((ghost) => moveGhost(ghost));
-    }
+  function startGame() {
+    document.removeEventListener("keydown", startGame);
+    //remove start screen
+    document.getElementById("start-screen").style.display = "none";
+    //set pacman velocity and enable movement
+    document.addEventListener("keyup", setPacmanVelocity);
+    movePacman();
+    // move the Ghosts randomly
+    ghosts.forEach((ghost) => moveGhost(ghost));
   }
 
-  document.addEventListener("keydown", startGame);
+  startGame();
+
+  let isFirstRequest = true;
+  let isConnectedToServer = false;
+  let isInitRequestSent = false;
+
+  function getSquare(x, y) {
+    let square = squares[pacmanCurrentIndex + width * y + x];
+    if (square === undefined) return 4;
+    if (square === 2) return 4;
+    if (square === 3) return 0;
+    return square;
+  }
+
+  setInterval(() => {
+    let request = {
+      state: `${getSquare(1, 1)}${getSquare(1, 0)}${getSquare(1, -1)}${getSquare(0, 1)}${getSquare(0, 0)}${getSquare(0, -1)}${getSquare(-1, 1)}${getSquare(-1, 0)}${getSquare(-1, -1)}`,
+      score,
+      lost: isFirstRequest
+    };
+
+    // Send the action count for the first request
+    if (!isInitRequestSent) {
+      request.actionCount = 4;
+      isInitRequestSent = true;
+    }
+  
+    // Make the request
+    fetch("http://localhost:1784", {
+      method: "POST",
+      body: JSON.stringify(request)
+    }).then(async (req) => {
+      // Display the connection status
+      if (!isConnectedToServer) {
+        isConnectedToServer = true;
+        isInitRequestSent = false;
+      }
+
+      isFirstRequest = false;
+  
+      // Execute the actions
+      let data = await req.json();
+      switch (data.action) {
+        case 0:
+          pacmanVelocity.x = 0;
+          pacmanVelocity.y = 1;
+          break;
+        case 1:
+          pacmanVelocity.x = 0;
+          pacmanVelocity.y = -1;
+        case 2:
+          pacmanVelocity.x = 1;
+          pacmanVelocity.y = 0;
+          break;
+        case 3:
+          pacmanVelocity.x = -1;
+          pacmanVelocity.y = 0;
+          break;
+      }
+
+      // Reset if necessary
+      if (data.reset) {
+        window.location.reload();
+      }
+    }).catch((err) => {
+      if (isConnectedToServer) {
+        isConnectedToServer = false;
+      }
+    });
+  }, 10);
 });
