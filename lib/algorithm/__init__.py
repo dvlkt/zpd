@@ -18,7 +18,7 @@ def update(action_count, state, has_lost) -> int:
     
     if not state in q_table:
         q_table[state] = [q0 for i in range(action_count+1)]
-    
+        
     # Update previous state/action Q values
     if last_action != None or last_state != None:
         if has_lost:

@@ -25,11 +25,11 @@ def main():
         help="Grafika virsraksts"
     )
     arg_parser.add_argument(
-        "-x", "--x-label",
+        "-x", "--xlabel",
         help="Horizontālās ass teksts"
     )
     arg_parser.add_argument(
-        "-y", "--y-label",
+        "-y", "--ylabel",
         help="Vertikālās ass teksts"
     )
     arg_parser.add_argument(
@@ -48,7 +48,7 @@ def main():
         help="Parādīt datu punktus grafikā"
     )
     arg_parser.add_argument(
-        "-h", "--hypothesis",
+        "-hyp", "--hypothesis",
         action="store_true",
         help="Parādīt hipotēzē veikto paredzējumu kā sarkanu punktu"
     )
@@ -59,12 +59,11 @@ def main():
     scores = []
 
     result_file = open(args.input, "r")
-    results = json.loads(result_file.read())
+    results = json.loads(result_file.read())["game_data"]["results"]
 
     for r in results:
-        curr_hp = list(r["hyperparameters"].values())
-        hp1_values.append(curr_hp[0])
-        hp2_values.append(curr_hp[1])
+        hp1_values.append(r["hyperparameters"][0])
+        hp2_values.append(r["hyperparameters"][1])
 
         if args.type == "avg":
             scores.append(r["avg_score"])
@@ -82,7 +81,7 @@ def main():
 
     if args.hypothesis:
         ax.plot(0.2, 1, "ro")
-        
+    
     levels = np.linspace(np.min(scores), np.max(scores), args.levels)
 
     if not args.fill:
@@ -90,12 +89,12 @@ def main():
     else:
         ax.tricontourf(hp1_values, hp2_values, scores, levels=levels)
 
-    hp_names = list(r["hyperparameters"].keys())
-    if args.x-label != None:
+    hp_names = ["Mācīšanās ātrums", "Atlaides faktors"]
+    if args.xlabel != None:
         ax.set_xlabel(args.x-label)
     else:
         ax.set_xlabel(hp_names[0])
-    if args.y-label != None:
+    if args.ylabel != None:
         ax.set_ylabel(args.y-label)
     else:
         ax.set_ylabel(hp_names[1])

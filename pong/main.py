@@ -153,6 +153,6 @@ clock = pygame.time.Clock()
 p = Pong()
 p.first_frame()
 while True:
-    clock.tick(10)
+    clock.tick(100)
     p.next_frame()
     p.draw_frame()
