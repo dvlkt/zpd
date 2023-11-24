@@ -7,7 +7,7 @@ import requests
 
 session = requests.Session()
 
-print("Mašīnmācīšanās programmai izmantojiet portu 1782!")
+print("Mašīnmācīšanās programmai izmantojiet portu 1782!\n")
 
 class Pong:
     def __init__(self):
@@ -35,6 +35,18 @@ class Pong:
 
         self.ball["x_speed"] = cos(angle) * self.ball_speed
         self.ball["y_speed"] = sin(angle) * self.ball_speed
+    
+    def straight_ball_direction(self, direction=0):
+        if direction < 0.5:
+            self.ball["x_speed"] = -self.ball_speed
+        else:
+            self.ball["x_speed"] = self.ball_speed
+        
+        self.ball["y_speed"] = 0
+    
+    def opposite_ball_direction(self):
+        self.ball["x_speed"] = -self.ball["x_speed"]
+        self.ball["y_speed"] = -self.ball["y_speed"]
 
     def next_frame(self):
         self.score += 1
@@ -52,37 +64,43 @@ class Pong:
             self.ball["y_speed"] *= -1
         
         ## Pad collision ##
-        if self.ball["x_pos"] < -0.95 + self.relative_ball_size and abs(self.ball["y_pos"] - self.pad_position[0]) < self.relative_pad_size:
-            self.random_ball_direction(1)
+        if self.ball["x_pos"] < -0.9 + self.relative_ball_size and abs(self.ball["y_pos"] - self.pad_position[0]) < self.relative_pad_size:
+            self.opposite_ball_direction()
         
-        if self.ball["x_pos"] > 0.95 - self.relative_ball_size and abs(self.ball["y_pos"] - self.pad_position[1]) < self.relative_pad_size:
-            self.random_ball_direction(0)
+        if self.ball["x_pos"] > 0.9 - self.relative_ball_size and abs(self.ball["y_pos"] - self.pad_position[1]) < self.relative_pad_size:
+            self.opposite_ball_direction()
 
         ## Wall collision ##
         is_lost = False
-        if (self.ball["x_pos"] < -1 + self.relative_ball_size) or \
-            (self.ball["x_pos"] > 1 - self.relative_ball_size):
+        if (self.ball["x_pos"] < -1.15 + self.relative_ball_size) or \
+            (self.ball["x_pos"] > 1.15 - self.relative_ball_size):
 
             is_lost = True
         
         ## Send server request ##
+        if self.ball["x_speed"] > 0:
+            state = (abs(round(1 - self.ball["x_pos"], 1)), abs(round(self.ball["y_pos"] - self.pad_position[1], 1)))
+        else:
+            state = (abs(round(1 + self.ball["x_pos"], 1)), abs(round(self.ball["y_pos"] - self.pad_position[0], 1)))
+        print(state)
         req = session.post("http://localhost:1782", json={
-            "state": json.dumps((self.ball["x_pos"], self.ball["y_pos"])),
+            "state": json.dumps(state),
             "score": self.score,
             "lost": is_lost
         })
 
         if req.json().get("action") == None: return
         action = req.json()["action"]
-
-        if action == 0 and self.pad_position[0] < 1:  # Left pad up
-            self.pad_position[0] += self.pad_speed
-        elif action == 1 and self.pad_position[0] > -1: # Left pad down
-            self.pad_position[0] -= self.pad_speed
-        elif action == 2 and self.pad_position[1] < 1: # Right pad up
-            self.pad_position[1] += self.pad_speed
-        elif action == 3 and self.pad_position[1] > -1: # Right pad down
-            self.pad_position[1] -= self.pad_speed
+        if self.ball["x_speed"] < 0:
+            if action == 0 and self.pad_position[0] < 1:  # Left pad up
+                self.pad_position[0] += self.pad_speed
+            elif action == 1 and self.pad_position[0] > -1: # Left pad down
+                self.pad_position[0] -= self.pad_speed
+        else:
+            if action == 0 and self.pad_position[1] < 1: # Right pad up
+                self.pad_position[1] += self.pad_speed
+            elif action == 1 and self.pad_position[1] > -1: # Right pad down
+                self.pad_position[1] -= self.pad_speed
         
         if req.json().get("reset") == None: return
         if req.json()["reset"]:
@@ -107,8 +125,8 @@ class Pong:
         
         ## Initial server request ##
         session.post("http://localhost:1782", json={
-            "actionCount": 4,
-            "state": json.dumps((self.ball["x_pos"], self.ball["y_pos"])),
+            "actionCount": 2,
+            "state": "[0, 0]",
             "score": self.score,
             "lost": False
         })
@@ -135,6 +153,6 @@ clock = pygame.time.Clock()
 p = Pong()
 p.first_frame()
 while True:
-    clock.tick(100)
+    clock.tick(10)
     p.next_frame()
     p.draw_frame()
