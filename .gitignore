@@ -1,3 +1,4 @@
 **/__pycache__/
 /data/
 /tetris/tetris.gb.ram
+/pacman/node_modules/

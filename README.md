@@ -17,15 +17,21 @@ Lai jebkura no šajā projektā pieejamajām spēlēm strādātu, fonā ir jāb�
 
 Lai to spēlētu, atveriet ```/chrome-dino/index.html``` interneta pārlūkprogrammā. Izmantojamais ports: ```1781```.
 
-## *Pong* spēles pārtaisījums (```/pong/```)
+## *Pong* spēles atdarinājums (```/pong/```)
 
 Lai to spēlētu, atveriet ```/pong/main.py``` ar Python 3 interpretētāju. Izmantojamais ports: ```1782```.
 
-## *Tetris* spēles *GameBoy* versija (```/tetris/```)
+## *Tetris* spēles *GameBoy* versija (```/tetris/```) - pagaidām nestrādā
 
-Lai to spēlētu, atveriet ```/tetris/main.py``` ar Python 3 interpretētāju. Izmantojamais ports: ```1784```.
+Lai to spēlētu, atveriet ```/tetris/main.py``` ar Python 3 interpretētāju. Izmantojamais ports: ```1783```.
 
 Ja emulators nestrādā uz Linux platformām, var mēģināt ielādēt ```libosmesa6``` pakotni uz Debian balstītām sistēmām vai ```lib32-mesa``` / ```mesa``` uz Arch balstītām sistēmām, tad palaist komandu ```export PYOPENGL_PLATFORM=osmesa```. Ja vēl joprojām nestrādā, tad 🤷.
+
+## *Pacman* spēles atdarinājums (```/pacman/```) - pagaidām nestrādā
+
+Balstīts uz [raybishal/PAC-MAN](https://github.com/raybishal/PAC-MAN/tree/main) projektu.
+
+Lai to spēlētu, atveriet ```/pacman/index.html``` interneta pārlūkprogrammā. Izmantojamais ports: ```1784```.
 
 ***
 
