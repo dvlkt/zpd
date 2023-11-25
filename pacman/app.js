@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
+  const speedUp = 0.05;
   const scoreDisplay = document.getElementById("score");
   const width = 28;
   let score = 0;
@@ -183,7 +184,7 @@ document.addEventListener("DOMContentLoaded", () => {
       squares[pacmanCurrentIndex].classList.add("pac-man");
       pacDotEaten();
       powerPelletEaten();
-    }, pacmanSpeed);
+    }, pacmanSpeed * speedUp);
   }
 
   // what happens when you eat a pac-dot
@@ -208,7 +209,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (squares[pacmanCurrentIndex].classList.contains("power-pellet")) {
       score += 10;
       ghosts.forEach((ghost) => (ghost.isScared = true));
-      setTimeout(unScareGhosts, 10000);
+      setTimeout(unScareGhosts, 10000 * speedUp);
       squares[pacmanCurrentIndex].classList.remove("power-pellet");
       checkForWin();
     }
@@ -284,7 +285,7 @@ document.addEventListener("DOMContentLoaded", () => {
         squares[ghost.currentIndex].classList.add(ghost.className, "ghost");
       }
       checkForGameOver();
-    }, ghost.speed);
+    }, ghost.speed * speedUp);
   }
 
   //check for a game over
@@ -316,7 +317,7 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("you-won-screen").style.display = "flex";
       setTimeout(function () {
         window.location.reload();
-      }, 3000);
+      }, 0);
     }
   }
 
