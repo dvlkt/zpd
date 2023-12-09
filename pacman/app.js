@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const speedUp = 0.05;
+  const speedUp = 0.01;
   const scoreDisplay = document.getElementById("score");
   const width = 28;
   let score = 0;

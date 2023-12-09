@@ -1,9 +1,8 @@
-# Grafiku formatētājs
+# Hiperparametru grafiku ģenerators
 
 import matplotlib.pyplot as plt
 import numpy as np
 import json
-import os
 import argparse
 
 def main():
@@ -91,11 +90,11 @@ def main():
 
     hp_names = ["Mācīšanās ātrums", "Atlaides faktors"]
     if args.xlabel != None:
-        ax.set_xlabel(args.x-label)
+        ax.set_xlabel(args.xlabel)
     else:
         ax.set_xlabel(hp_names[0])
     if args.ylabel != None:
-        ax.set_ylabel(args.y-label)
+        ax.set_ylabel(args.ylabel)
     else:
         ax.set_ylabel(hp_names[1])
 
