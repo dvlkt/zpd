@@ -31,4 +31,4 @@ Lai to spēlētu, atveriet ```/pacman/index.html``` interneta pārlūkprogrammā
 
 Vairāk koda paskaidrojumiem un pamācībām skatīt ```TECHNICAL.md```.
 
-© 2022-2023, Dāvis Lektauers un Kazimirs Kārlis Brakovskis
+© 2022-2024, Dāvis Lektauers un Kazimirs Kārlis Brakovskis
