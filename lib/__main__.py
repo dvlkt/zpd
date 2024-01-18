@@ -10,7 +10,7 @@ def main():
     arg_parser = argparse.ArgumentParser(
         prog="ZPD",
         description="Hiperparametru ietekme uz Q mācīšanos videospēļu vidē. Zinātniskās pētniecības darbs informātikas/programmēšanas sekcijā.",
-        epilog="Darba autori: Dāvis Lektauers un Kazimirs Kārlis Brakovskis. Darba vadītāja: Mg. sr. soc. Agnese Kramēna-Juzova")
+        epilog="Darba autori: Dāvis Lektauers un Kazimirs Kārlis Brakovskis. Darba vadītāja: Mg.sr.soc. Agnese Kramēna-Juzova")
     
     arg_parser.add_argument(
         "-p", "--port",

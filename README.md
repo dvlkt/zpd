@@ -3,9 +3,9 @@
     <h3>Zinātniskās pētniecības darbs informātikas/programmēšanas sekcijā</h3>
 </div>
 
-**Darba autori:** Dāvis Lektauers, Kazimirs Kārlis Brakovskis
+**Darba autori:** Kazimirs Kārlis Brakovskis, Dāvis Lektauers
 
-**Darba vadītāja:** Mg. sr. soc. Agnese Kramēna-Juzova
+**Darba vadītāja:** Mg.sr.soc. Agnese Kramēna-Juzova
 
 ***
 
@@ -27,8 +27,12 @@ Balstīts uz [raybishal/PAC-MAN](https://github.com/raybishal/PAC-MAN/tree/main)
 
 Lai to spēlētu, atveriet ```/pacman/index.html``` interneta pārlūkprogrammā. Izmantojamais ports: ```1784```.
 
+## Rīki (```/tools/```)
+
+Direktorijā ```/tools/``` ir pieejami dažādi Python skripti, kas var noderēt. Lai noskaidrotu, kā katru izmantot, tas ir jāpalaiž kopā ar argumentu ```--help```.
+
 ***
 
 Vairāk koda paskaidrojumiem un pamācībām skatīt ```TECHNICAL.md```.
 
-© 2022-2024, Dāvis Lektauers un Kazimirs Kārlis Brakovskis
+© 2022-2024, Kazimirs Kārlis Brakovskis un Dāvis Lektauers

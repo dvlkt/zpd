@@ -51,6 +51,11 @@ def main():
         action="store_true",
         help="Parādīt hipotēzē veikto paredzējumu kā sarkanu punktu"
     )
+    arg_parser.add_argument(
+        "-va", "--values",
+        action="store_true",
+        help="Parādīt blakus punktu vērtības"
+    )
     args = arg_parser.parse_args()
 
     hp1_values = []
@@ -73,31 +78,56 @@ def main():
         elif args.type == "diff":
             scores.append(r["scores"][-1] - r["scores"][0])
 
-    fig, ax = plt.subplots()
+    fig, axs = plt.subplots(1, 2 if args.values else 1, figsize=(10, 5))
+
+    cax = axs
+    if args.values:
+        cax = axs[0]
+        vax = axs[1]
+
+    cax.set_aspect("equal", "box")
+    if args.values:
+        vax.set_aspect("equal", "box")
+        vax.set_xlim(-0.05, 1.05)
+        vax.set_ylim(-0.05, 1.05)
 
     if args.points:
-        ax.plot(hp1_values, hp2_values, "x", markersize=1, color="grey")
+        cax.plot(hp1_values, hp2_values, "x", markersize=1, color="grey")
 
     if args.hypothesis:
-        ax.plot(0.2, 1, "ro")
+        cax.plot(0.2, 1, "ro")
     
     levels = np.linspace(np.min(scores), np.max(scores), args.levels)
 
     if not args.fill:
-        ax.tricontour(hp1_values, hp2_values, scores, levels=levels)
+        cax.tricontour(hp1_values, hp2_values, scores, levels=levels)
     else:
-        ax.tricontourf(hp1_values, hp2_values, scores, levels=levels)
+        cax.tricontourf(hp1_values, hp2_values, scores, levels=levels)
+    
+    if args.values:
+        for i in range(len(scores)):
+            vax.annotate(str(round(scores[i], 1)), xy=(hp1_values[i], hp2_values[i]), fontsize=8, xytext=(hp1_values[i]-0.03, hp2_values[i]-0.02))
 
     hp_names = ["Mācīšanās ātrums", "Atlaides faktors"]
     if args.xlabel != None:
-        ax.set_xlabel(args.xlabel)
+        cax.set_xlabel(args.xlabel)
+        if args.values:
+            vax.set_xlabel(args.xlabel)
     else:
-        ax.set_xlabel(hp_names[0])
+        cax.set_xlabel(hp_names[0])
+        if args.values:
+            vax.set_xlabel(hp_names[0])
     if args.ylabel != None:
-        ax.set_ylabel(args.ylabel)
+        cax.set_ylabel(args.ylabel)
+        if args.values:
+            vax.set_ylabel(args.ylabel)
     else:
-        ax.set_ylabel(hp_names[1])
+        cax.set_ylabel(hp_names[1])
+        if args.values:
+            vax.set_ylabel(hp_names[1])
 
+    plt.subplots_adjust(wspace=0.3)
+    
     plt.title(args.name)
 
     fig.savefig(args.output)
