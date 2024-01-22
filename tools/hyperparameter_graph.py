@@ -52,7 +52,7 @@ def main():
         help="Parādīt hipotēzē veikto paredzējumu kā sarkanu punktu"
     )
     arg_parser.add_argument(
-        "-va", "--values",
+        "-val", "--values",
         action="store_true",
         help="Parādīt blakus punktu vērtības"
     )
@@ -95,7 +95,7 @@ def main():
         cax.plot(hp1_values, hp2_values, "x", markersize=1, color="grey")
 
     if args.hypothesis:
-        cax.plot(0.2, 1, "ro")
+        cax.plot(0.3, 1, "ro")
     
     levels = np.linspace(np.min(scores), np.max(scores), args.levels)
 
