@@ -11,7 +11,7 @@
 
 ## Mašīnmācīšanās programma (```/lib/```)
 
-Lai jebkura no šajā projektā pieejamajām spēlēm strādātu, fonā ir jābūt aktīvai mašīnmācīšanās programmai. Lai to paveiktu, atveriet ```lib```, izmantojot Python  interpretētāju (vismaz Python 3.10). Visus argumentus var apskatīt ```TECHNICAL.md``` vai ar ```--help``` argumentu. Pārliecinieties, ka jums ir ielādētas visas pakotnes, kas ievietotas ```requirements.txt```.
+Lai jebkura no šajā projektā pieejamajām spēlēm strādātu, fonā ir jābūt aktīvai mašīnmācīšanās programmai. Lai to paveiktu, atveriet ```lib```, izmantojot Python interpretētāju (vismaz Python 3.10). Visus argumentus var apskatīt ```TECHNICAL.md``` vai ar ```--help``` argumentu. Pārliecinieties, ka jums ir ielādētas visas pakotnes, kas ievietotas ```requirements.txt```.
 
 ## *Google Chrome* dinozaura spēle (```/chrome-dino/```)
 
@@ -23,9 +23,7 @@ Lai to spēlētu, atveriet ```/pong/main.py``` ar Python 3 interpretētāju. Izm
 
 ## *Pacman* spēles atdarinājums (```/pacman/```)
 
-Balstīts uz [raybishal/PAC-MAN](https://github.com/raybishal/PAC-MAN/tree/main) projektu.
-
-Lai to spēlētu, atveriet ```/pacman/index.html``` interneta pārlūkprogrammā. Izmantojamais ports: ```1784```.
+Lai to spēlētu, atveriet ```pacman``` ar Python 3 interpretētāju. Izmantojamais ports: ```1785```.
 
 ## Rīki (```/tools/```)
 
