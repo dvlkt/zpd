@@ -19,6 +19,7 @@ Klients (spēle) un serveris (MI) komunicē caur HTTP POST pieprasījumiem. Serv
 |---|---|---|
 | ```actionCount``` | ```number``` | Šī īpašība ir obligāti pirmoreiz jānosūta. Tas ir skaits darbībām, ko var spēlē izdarīt. Pēc pirmās reizes, kad tiek atsūtīta, to vairs nevar izmainīt. |
 | ```state``` | ```string``` | Virkne, kas ataino stāvokli spēlē. |
+| ```reward``` | ```number``` | Atalgojums par iepriekšējo darbību. |
 | ```score``` | ```number``` | Rezultāts spēlē. |
 | ```lost``` | ```boolean``` | Apraksta, vai spēle šajā mirklī tika zaudēta. |
 

@@ -43,6 +43,8 @@ class Server(BaseHTTPRequestHandler):
             data.curr_state = body.get("state")
         if body.get("score") != None:
             data.curr_score = body.get("score")
+        if body.get("reward") != None:
+            data.reward = body.get("reward")
         if body.get("lost") != None:
             data.has_lost = body.get("lost")
         
@@ -61,7 +63,7 @@ class Server(BaseHTTPRequestHandler):
             log.verbose(f"Hiperparametri tika nomainīti ({hyperparameter_value_string}); {data.played_episodes}. epizode pabeigta")
         
         ### Return the action from the algorithm ###
-        action = algorithm.update(data.action_count, data.curr_state, data.has_lost)
+        action = algorithm.update(data.action_count, data.curr_state, data.reward)
         try:
             self.wfile.write(bytes(json.dumps({
                 "action": action,

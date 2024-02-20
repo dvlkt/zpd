@@ -154,6 +154,7 @@ class Game:
             req = session.post(f"http://localhost:{PORT}", json={
                 "state": self.get_state(),
                 "score": self.score,
+                "reward": 1,
                 "lost": has_lost
             })
             self.dir = req.json()["action"]
@@ -175,6 +176,7 @@ class Game:
             "actionCount": 4,
             "state": self.get_state(),
             "score": self.score,
+            "reward": 0,
             "lost": False
         })
 

@@ -5,27 +5,20 @@ discount_factor = None
 
 q0 = 10
 epsilon = 0.05
-good_reward = 1
-bad_reward = -10
 
 q_table = {}
 
 last_action = None
 last_state = None
 
-def update(action_count, state, has_lost) -> int:
+def update(action_count, state, reward) -> int:
     global learning_rate, discount_factor, q_table, last_action, last_state
     
     if not state in q_table:
         q_table[state] = [q0 for i in range(action_count+1)]
         
     # Update previous state/action Q values
-    if last_action != None or last_state != None:
-        if has_lost:
-            reward = bad_reward
-        else:
-            reward = good_reward
-        
+    if last_action != None or last_state != None:        
         q_table[last_state][last_action] = q_table[last_state][last_action] - learning_rate * (q_table[last_state][last_action] - (reward + discount_factor * max(q_table[state])))
     
     # Execute an action

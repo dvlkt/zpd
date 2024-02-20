@@ -86,6 +86,7 @@ class Pong:
         req = session.post("http://localhost:1782", json={
             "state": json.dumps(state),
             "score": self.score,
+            "reward": -10 if is_lost else 1,
             "lost": is_lost
         })
 
@@ -128,6 +129,7 @@ class Pong:
             "actionCount": 2,
             "state": "[0, 0]",
             "score": self.score,
+            "reward": 0,
             "lost": False
         })
 

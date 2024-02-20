@@ -5,6 +5,7 @@ action_count = None
 
 curr_score = 0
 curr_state = []
+reward = 0
 has_lost = False
 
 played_episodes = 0

@@ -1534,6 +1534,7 @@ setInterval(() => {
 
 	let request = {
 		score: runnerInstance.distanceRan ? Math.round(runnerInstance.distanceRan * 0.025) : 0, // Apparently this is how the score is calculated
+		reward: runnerInstance.crashed ? -10 : 1,
 		lost: runnerInstance.crashed
 	};
 
