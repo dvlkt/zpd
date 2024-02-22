@@ -1,4 +1,4 @@
-import os, random
+import os, random, math
 import pygame
 import requests
 
@@ -71,70 +71,78 @@ class Game:
     def next_frame(self):
         # Ghost movement
         for g in self.ghosts:
-            possible_directions = []
-            if self.is_pos_empty(g.x-1, g.y):
-                possible_directions.append("left")
-            if self.is_pos_empty(g.x, g.y-1):
-                possible_directions.append("up")
-            if self.is_pos_empty(g.x+1, g.y):
-                possible_directions.append("right")
-            if self.is_pos_empty(g.x, g.y+1):
-                possible_directions.append("down")
-            
-            if len(possible_directions) == 0:
-                continue
-            direction = random.choice(possible_directions)
-            if direction == "left":
-                g.x -= 1
-            elif direction == "up":
-                g.y -= 1
-            elif direction == "right":
-                g.x += 1
-            elif direction == "down":
-                g.y += 1
-            
+            if random.random() > 0.5: # 50% chance of just going closer to Pacman
+                dist_left = None
+                dist_up = None
+                dist_right = None
+                dist_down = None
+
+                if self.is_pos_empty(g.x-1, g.y):
+                    dist_left = math.sqrt((g.x-1 - self.pos[0])**2 + (g.y - self.pos[1])**2)
+                if self.is_pos_empty(g.x, g.y-1):
+                    dist_up = math.sqrt((g.x - self.pos[0])**2 + (g.y - self.pos[1])**2)
+                if self.is_pos_empty(g.x+1, g.y):
+                    dist_right = math.sqrt((g.x+1 - self.pos[0])**2 + (g.y - self.pos[1])**2)
+                if self.is_pos_empty(g.x, g.y+1):
+                    dist_down = math.sqrt((g.x - self.pos[0])**2 + (g.y - self.pos[1]+1)**2)
+                
+                smallest_dist = None
+                for i in enumerate([dist_left, dist_up, dist_right, dist_down]):
+                    if i[1] == None:
+                        continue
+                    if smallest_dist == None or i[1] < smallest_dist[1]:
+                        smallest_dist = i
+                
+                if smallest_dist == None:
+                    continue
+                
+                if smallest_dist[0] == 0:
+                    g.x -= 1
+                elif smallest_dist[0] == 1:
+                    g.y -= 1
+                elif smallest_dist[0] == 2:
+                    g.x += 1
+                elif smallest_dist[0] == 3:
+                    g.y += 1
+            else: # 50% chance of just going randomly
+                possible_directions = []
+                if self.is_pos_empty(g.x-1, g.y):
+                    possible_directions.append("left")
+                if self.is_pos_empty(g.x, g.y-1):
+                    possible_directions.append("up")
+                if self.is_pos_empty(g.x+1, g.y):
+                    possible_directions.append("right")
+                if self.is_pos_empty(g.x, g.y+1):
+                    possible_directions.append("down")
+                
+                if len(possible_directions) == 0:
+                    continue
+                
+                direction = random.choice(possible_directions)
+                if direction == "left":
+                    g.x -= 1
+                elif direction == "up":
+                    g.y -= 1
+                elif direction == "right":
+                    g.x += 1
+                elif direction == "down":
+                    g.y += 1
+                
             # Looping around
             if g.x < 0:
                 g.x = len(self.layout) - 2
             if g.x > len(self.layout) - 2:
                 g.x = 0
         
-        # Orb eating
-        if self.layout[self.pos[0]][self.pos[1]] == 2:
-            self.score += 1
-            self.layout[self.pos[0]][self.pos[1]] = 1
-        elif self.layout[self.pos[0]][self.pos[1]] == 3:
-            self.score += 5
-            self.layout[self.pos[0]][self.pos[1]] = 1
-        
         # Pacman movement
-        if self.dir == 0:
-            if self.is_pos_empty(self.pos[0]-1, self.pos[1]):
-                self.pos[0] -= 1
-            if not self.is_pos_empty(self.pos[0]-1, self.pos[1]) or \
-            self.is_pos_empty(self.pos[0], self.pos[1]-1) or self.is_pos_empty(self.pos[0], self.pos[1]+1):
-                self.dir = -1
-        
-        if self.dir == 1:
-            if self.is_pos_empty(self.pos[0], self.pos[1]-1):
-                self.pos[1] -= 1
-            if not self.is_pos_empty(self.pos[0], self.pos[1]-1) or \
-            self.is_pos_empty(self.pos[0]-1, self.pos[1]) or self.is_pos_empty(self.pos[0]+1, self.pos[1]):
-                self.dir = -1
-        
-        if self.dir == 2:
-            if self.is_pos_empty(self.pos[0]+1, self.pos[1]):
-                self.pos[0] += 1
-            if not self.is_pos_empty(self.pos[0]+1, self.pos[1]) or \
-            self.is_pos_empty(self.pos[0], self.pos[1]-1) or self.is_pos_empty(self.pos[0], self.pos[1]+1):
-                self.dir = -1
-        
-        if self.dir == 3:
-            if self.is_pos_empty(self.pos[0], self.pos[1]+1):
-                self.pos[1] += 1
-            if not self.is_pos_empty(self.pos[0], self.pos[1]+1) or \
-            self.is_pos_empty(self.pos[0]-1, self.pos[1]) or self.is_pos_empty(self.pos[0]+1, self.pos[1]):
-                self.dir = -1
+        if self.dir == 0 and self.is_pos_empty(self.pos[0]-1, self.pos[1]):
+            self.pos[0] -= 1
+        if self.dir == 1 and self.is_pos_empty(self.pos[0], self.pos[1]-1):
+            self.pos[1] -= 1
+        if self.dir == 2 and self.is_pos_empty(self.pos[0]+1, self.pos[1]):
+            self.pos[0] += 1
+        if self.dir == 3 and self.is_pos_empty(self.pos[0], self.pos[1]+1):
+            self.pos[1] += 1
         
         # Looping around
         if self.pos[0] < 0:
@@ -142,32 +150,57 @@ class Game:
         if self.pos[0] > len(self.layout) - 2:
             self.pos[0] = 0
         
+        # Orb eating
+        reward = 0
+        if self.layout[self.pos[0]][self.pos[1]] == 2:
+            self.score += 1
+            reward = 2
+            self.layout[self.pos[0]][self.pos[1]] = 1
+        elif self.layout[self.pos[0]][self.pos[1]] == 3:
+            self.score += 5
+            reward = 4
+            self.layout[self.pos[0]][self.pos[1]] = 1
+        
         # Death
         has_lost = False
         for g in self.ghosts:
             if g.x == self.pos[0] and g.y == self.pos[1]:
                 has_lost = True
+                reward = -10
                 break
         
         # Send server request
-        if self.dir == -1 or has_lost:
-            req = session.post(f"http://localhost:{PORT}", json={
-                "state": self.get_state(),
-                "score": self.score,
-                "reward": 1,
-                "lost": has_lost
-            })
-            self.dir = req.json()["action"]
+        req = session.post(f"http://localhost:{PORT}", json={
+            "state": self.get_state(),
+            "score": self.score,
+            "reward": reward,
+            "lost": has_lost
+        })
 
-            if req.json()["reset"] or has_lost:
-                self.reset()
-                return
+        action = req.json()["action"]
+        if action == 0:
+            if self.is_pos_empty(self.pos[0]-1, self.pos[1]):
+                self.dir = action
+        elif action == 1:
+            if self.is_pos_empty(self.pos[0], self.pos[1]-1):
+                self.dir = action
+        elif action == 2:
+            if self.is_pos_empty(self.pos[0]+1, self.pos[1]):
+                self.dir = action
+        elif action == 3:
+            if self.is_pos_empty(self.pos[0], self.pos[1]+1):
+                self.dir = action
+        
+        if req.json()["reset"] or has_lost:
+            self.reset()
+            return
         
     def first_frame(self):
-        pygame.init()
-        self.win = pygame.display.set_mode((SURFACE_SIZE[0] * UPSCALE, SURFACE_SIZE[1] * UPSCALE))
-        pygame.display.set_caption("Pac-Man")
-        self.s = pygame.Surface(SURFACE_SIZE)
+        if SHOW_WINDOW:
+            pygame.init()
+            self.win = pygame.display.set_mode((SURFACE_SIZE[0] * UPSCALE, SURFACE_SIZE[1] * UPSCALE))
+            pygame.display.set_caption("Pac-Man")
+            self.s = pygame.Surface(SURFACE_SIZE)
 
         print(f"Mašīnmācīšanās programmai izmantojiet portu {1785}!\n")
 
